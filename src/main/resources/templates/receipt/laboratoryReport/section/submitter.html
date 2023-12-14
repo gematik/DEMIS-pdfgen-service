@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+
+<th:block th:fragment="submitter(submitter)">
+    <!--/*@thymesVar id="submitter" type="de.gematik.demis.pdfgenmodels.model.submitter.Submitter"*/-->
+
+    <th:block th:if="${submitter != null}">
+        <th:block th:if="${submitter.hasPerson()}">
+
+            <tr th:replace='~{fragment/rows :: titleRow(#{laboratory-report.submitter.person.header})}'></tr>
+
+            <tr th:replace='~{fragment/rows :: paddedRow(
+                #{laboratory-report.submitter.person.name},
+                ${submitter.person.nameDTO?.getFullName()})}'></tr>
+
+            <tr th:replace='~{fragment/rows :: paddedRow(
+                #{laboratory-report.submitter.person.address},
+                ${submitter.person.addressDTO?.getFullAddressAsSingleLine()})}'></tr>
+
+            <tr th:replace='~{fragment/rows :: paddedRow(
+                #{laboratory-report.submitter.person.nameDTO},
+                ${submitter.person.getTelecomsAsMultipleLines()})}'></tr>
+
+        </th:block>
+        <th:block th:if="${!submitter.hasPerson() && submitter.hasFacility()}">
+
+            <tr th:replace='~{fragment/rows :: titleRow(#{laboratory-report.submitter.facility.header})}'></tr>
+
+            <tr th:replace='~{fragment/rows :: paddedRow(
+                #{laboratory-report.submitter.facility.name},
+                ${submitter.facility.name})}'></tr>
+
+            <tr th:replace='~{fragment/rows :: paddedRow(
+                #{laboratory-report.submitter.facility.identifier},
+                ${submitter.facility.identifier?.getAsMultipleLines()})}'></tr>
+
+            <tr th:replace='~{fragment/rows :: paddedRow(
+                #{laboratory-report.submitter.facility.address},
+                ${submitter.facility.addressDTO?.getFullAddressAsSingleLine()})}'></tr>
+
+            <tr th:replace='~{fragment/rows :: paddedRow(
+                #{laboratory-report.submitter.facility.nameDTO},
+                ${submitter.facility.getTelecomsAsMultipleLines()})}'></tr>
+
+            <tr th:replace='~{fragment/rows :: paddedRow(
+                #{laboratory-report.submitter.facility.nameDTO.person},
+                ${submitter.facility.nameDTO?.getFullName()})}'></tr>
+        </th:block>
+
+    </th:block>
+
+</th:block>
+
+</body>
+</html>

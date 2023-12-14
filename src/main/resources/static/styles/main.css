@@ -1,0 +1,186 @@
+body {
+    font-family: Arimo, sans-serif;
+    font-size: 12px;
+    line-height: 1.2;
+}
+
+@page {
+    size: A4;
+    margin: 1.03cm;
+}
+
+table {
+    border-spacing: 0;
+}
+
+table th {
+    font-weight: bold;
+    color: #2469bc;
+    width: 37%;
+    vertical-align: top;
+    text-align: left;
+    padding-top: 2.15px;
+    padding-bottom: 2.15px;
+    border-bottom: 0.5px solid #000;
+    white-space: pre-line;
+}
+
+table td {
+    font-size: 10.7px;
+    vertical-align: top;
+    text-align: left;
+    border-bottom: 0.5px solid #000;
+    white-space: pre-line;
+}
+
+table tr {
+    /* Thymeleaf needs deprecated syntax here */
+    page-break-inside: avoid;
+}
+
+.table-padding {
+    padding-left: 0.72cm;
+    padding-right: 0.72cm;
+    padding-top: 0.5cm
+}
+
+.single-padded {
+    padding-left: 14px;
+    font-size: 10.7px;
+}
+
+.double-padded {
+    padding-left: 28px;
+    font-size: 10.7px;
+}
+
+.italic-header {
+    font-weight: normal;
+    font-style: italic;
+}
+
+.double-border {
+    height: 5px;
+}
+
+.inside-cell-table {
+    width: 100%;
+}
+
+.header-table {
+    width: 100%;
+    display: table;
+    margin-bottom: 0;
+}
+
+.header-row {
+    display: table-row;
+    margin-bottom: 0;
+}
+
+.header-cell {
+    width: 50%;
+    display: table-cell;
+}
+
+.document-title {
+    color: #2469bc;
+    font-size: 17.4px;
+    padding-left: 0.75cm;
+    position: relative;
+    top: -4px;
+}
+
+.title-qr {
+    height: 2.5cm;
+    width: 2.5cm;
+    padding: 0;
+    margin: 0;
+}
+
+.sub-title-row {
+    display: flex;
+    width: 100%;
+    padding-left: 0;
+    padding-top: 0.25cm;
+    padding-bottom: 0.25cm;
+}
+
+.sub-title-row-first {
+    float: left;
+    margin-right: 0.5cm;
+}
+
+.blue-font {
+    color: #2469bc;
+}
+
+.new-page {
+    page-break-before: always;
+}
+
+.frame-box {
+    color: black;
+    border: 2px solid;
+    padding: 1em;
+}
+
+.small-font {
+    font-size: 10.7px;
+}
+
+.heavy-font {
+    font-weight: bolder;
+}
+
+/**
+Set the Container as a Float Layout due to CSS 2.1 Support in FlyingSource
+MSDN: https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Legacy_Layout_Methods
+ */
+.grid-box {
+    width: 100%;
+    margin: 0 auto;
+}
+
+/**
+Set the boxes aligned in the Grid
+ */
+.notification-box {
+    width: 58%;
+    padding: 0.2cm 0.2cm 0.2cm 0.1cm;
+    float: left;
+    word-wrap: break-word;
+}
+
+.qrcode-placeholder {
+    width: 38%;
+    padding: 0.2cm 0.2cm 0.2cm 0;
+    float: right;
+    align-content: center;
+    text-align: center;
+}
+
+/**
+Align image to center
+ */
+.qrcode-placeholder > img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/**
+Reset floating
+ */
+.clear-row {
+    clear: both;
+}
+
+/**
+The Laboratory Id entry uses all the width available
+ */
+.laboratory-id-box {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0.1cm 0.1cm 0.3cm;
+}

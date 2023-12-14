@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!--/*@thymesVar id="notifiedPerson" type="de.gematik.demis.pdfgenmodels.model.notified.NotifiedPerson"*/-->
+
+<th:block th:fragment="notifiedPerson(notifiedPerson)">
+
+    <th:block th:if="${notifiedPerson != null}">
+
+        <tr th:replace='~{fragment/rows :: titleRow(#{common.notified.person.header})}'></tr>
+
+        <tr th:replace='~{fragment/rows :: paddedRow(
+            #{common.notified.person.name},
+            ${notifiedPerson.nameDTO?.getFullName()})}'></tr>
+
+        <tr th:replace='~{fragment/rows :: paddedRow(
+            #{common.notified.person.gender},
+            ${notifiedPerson.gender})}'></tr>
+
+        <th:block th:if="${notifiedPerson.birthdate!=null}">
+            <tr th:replace='~{fragment/rows :: paddedRow(
+            #{common.notified.person.birthdate},
+            ${notifiedPerson.birthdate})}'></tr>
+        </th:block>
+
+        <th:block th:each="address : ${notifiedPerson.addressDTOs}"
+                  th:if="${notifiedPerson.addressDTOs!=null}">
+            <th:block th:if="${address!=null}" th:with="addressPrefix=#{common.notified.person.address}">
+                <tr th:replace='~{fragment/rows :: paddedRow(
+                    ${address.getAddressUseWithPrefix(addressPrefix)},
+                    ${address.getFullAddressAsSingleLine()})}'></tr>
+            </th:block>
+        </th:block>
+
+        <th:block th:each="organizationDTO : ${notifiedPerson.organizationDTOs}"
+                  th:if="${notifiedPerson.organizationDTOs!=null}">
+            <!--/*@thymesVar id="organizationDTO" type="de.gematik.demis.pdfgen.receipt.common.model.subsection.OrganizationDTO"*/-->
+            <th:block th:if="${organizationDTO!=null}"
+                      th:with="addressPrefix=#{common.notified.person.organizationDTO.address}">
+                <tr th:replace="~{fragment/rows :: paddedRow(
+                    ${organizationDTO.getAddressDTO.getAddressUseWithPrefix(addressPrefix)},
+                    ${organizationDTO.getOrganizationInfoIncludingName()})}"></tr>
+            </th:block>
+        </th:block>
+
+        <tr th:replace='~{fragment/rows :: paddedRow(
+            #{common.notified.person.nameDTO},
+            ${notifiedPerson.getTelecomsAsMultipleLines()})}'></tr>
+
+        <tr th:replace='~{fragment/rows :: doubleBorder}'></tr>
+    </th:block>
+</th:block>
+
+</body>
+</html>

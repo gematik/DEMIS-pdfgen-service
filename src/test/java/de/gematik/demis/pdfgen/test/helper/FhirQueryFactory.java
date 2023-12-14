@@ -1,0 +1,53 @@
+/*
+ * Copyright [2023], gematik GmbH
+ *
+ * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
+ * European Commission – subsequent versions of the EUPL (the "Licence").
+ * You may not use this work except in compliance with the Licence.
+ *
+ * You find a copy of the Licence in the "Licence" file or at
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied.
+ * In case of changes by gematik find details in the "Readme" file.
+ *
+ * See the Licence for the specific language governing permissions and limitations under the Licence.
+ */
+
+package de.gematik.demis.pdfgen.test.helper;
+
+import de.gematik.demis.pdfgen.fhir.extract.FhirQueries;
+import de.gematik.demis.pdfgen.fhir.extract.LaboratoryFhirQueries;
+import de.gematik.demis.pdfgen.fhir.extract.NotificationFhirQueries;
+import de.gematik.demis.pdfgen.fhir.extract.NotifiedFhirQueries;
+import de.gematik.demis.pdfgen.fhir.extract.NotifierFhirQueries;
+import de.gematik.demis.pdfgen.fhir.extract.SubmitterFhirQueries;
+
+public class FhirQueryFactory {
+
+  public static FhirQueries createFhirQueries() {
+    return new FhirQueries();
+  }
+
+  public static NotifierFhirQueries createNotifierFhirQueries() {
+    return new NotifierFhirQueries(createFhirQueries());
+  }
+
+  public static SubmitterFhirQueries createSubmitterFhirQueries() {
+    return new SubmitterFhirQueries(createFhirQueries());
+  }
+
+  public static NotificationFhirQueries createNotificationFhirQueries() {
+    return new NotificationFhirQueries();
+  }
+
+  public static NotifiedFhirQueries createNotifiedFhirQueries() {
+    return new NotifiedFhirQueries(createNotificationFhirQueries());
+  }
+
+  public static LaboratoryFhirQueries createLaboratoryFhirQueries() {
+    return new LaboratoryFhirQueries(createNotificationFhirQueries());
+  }
+}

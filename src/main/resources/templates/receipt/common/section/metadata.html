@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!--/*@thymesVar id="metadata" type="de.gematik.demis.pdfgenmodels.model.metadata.Metadata"*/-->
+<th:block th:fragment="metadata(metadata)">
+
+    <th:block th:if="${metadata != null}">
+        <tr th:replace="~{fragment/rows :: entryRow(
+                    #{common.metadata.identifier},
+                    ${metadata.identifier})}"></tr>
+
+        <tr th:replace='~{fragment/rows :: entryRow(
+                    #{common.metadata.date},
+                    ${metadata.date})}'></tr>
+
+    </th:block>
+</th:block>
+
+</body>
+</html>

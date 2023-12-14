@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<th:block th:fragment="infectProtectFacility(commonQuestions)">
+    <!--/*@thymesVar id="commonQuestions" type="de.gematik.demis.pdfgenmodels.model.commonquestions.CommonQuestions"*/-->
+
+    <tr th:replace="~{fragment/rows :: paddedRow(
+                    #{disease-notification.common-questions.infect-protect-facility.header},
+                   ${commonQuestions.wasInInfectProtectFacility})}"></tr>
+
+    <tr th:replace="~{fragment/rows :: paddedRow(
+                        #{disease-notification.common-questions.infect-protect-facility.entry.begin},
+                        ${commonQuestions.infectProtectFacility?.begin})}"></tr>
+
+    <tr th:replace="~{fragment/rows :: paddedRow(
+                        #{disease-notification.common-questions.infect-protect-facility.entry.end},
+                        ${commonQuestions.infectProtectFacility?.end})}"></tr>
+
+    <tr th:replace="~{fragment/rows :: paddedRow(
+                        #{disease-notification.common-questions.infect-protect-facility.entry.role},
+                        ${commonQuestions.infectProtectFacility?.role})}"></tr>
+
+    <tr th:replace="~{fragment/rows :: paddedRow(
+                        #{disease-notification.section.organizationDTO.description},
+                        ${commonQuestions.infectProtectFacility?.organizationDTO?.getOrganizationInfoIncludingName()})}"></tr>
+
+    <tr th:replace='~{fragment/rows :: doubleBorder}'></tr>
+
+</th:block>
+
+</body>
+</html>

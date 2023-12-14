@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Table row fragments</title>
+</head>
+<body>
+<table>
+    <tr th:fragment="titleRow(value)">
+        <th colspan="2" th:text='${value}'></th>
+    </tr>
+
+    <tr th:fragment="paddedTitleRow(value)">
+        <th colspan="2" class="single-padded" th:text='${value}'></th>
+    </tr>
+
+    <tr th:fragment="doubleBorder">
+        <th class="double-border" colspan="2"></th>
+    </tr>
+
+    <tr th:fragment="entryRow(left,right)" th:if="${!#strings.isEmpty(right)}">
+        <th th:text='${left}'></th>
+        <td th:text='${right}'></td>
+    </tr>
+
+    <tr th:fragment="paddedRow(left,right)" th:if="${!#strings.isEmpty(right)}">
+        <th class="single-padded italic-header" th:text='${left}'></th>
+        <td th:text='${right}'></td>
+    </tr>
+
+    <tr th:fragment="doublePaddedRow(left,right)" th:if="${!#strings.isEmpty(right)}">
+        <th class="double-padded italic-header" th:text='${left}'></th>
+        <td th:text='${right}'></td>
+    </tr>
+
+    <tr th:fragment="paddedStrongValueRow(left,right)" th:if="${!#strings.isEmpty(right)}">
+        <th class="single-padded italic-header" th:text='${left}'></th>
+        <td><strong th:text='${right}'></strong></td>
+    </tr>
+
+</table>
+</body>
+</html>

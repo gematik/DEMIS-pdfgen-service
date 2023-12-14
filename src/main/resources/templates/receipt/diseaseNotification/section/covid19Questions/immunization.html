@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<th:block th:fragment="immunization(covid19Questions)">
+    <!--/*@thymesVar id="covid19Questions" type="de.gematik.demis.pdfgenmodels.model.covid19questions.Covid19Questions"*/-->
+
+    <th:block th:with="hasImmunization=${covid19Questions.hasImmunization},
+                immunizations=${covid19Questions.immunizations}">
+
+        <tr th:replace="~{fragment/rows :: paddedRow(
+                    #{disease-notification.covid19-questions.immunization},
+                    ${hasImmunization})}"></tr>
+
+        <th:block
+                th:if="${T(de.gematik.demis.pdfgen.receipt.diseasenotification.util.TemplateUtils).isTrue(hasImmunization) && immunizations!=null}">
+
+            <th:block th:each="immunization, iter : ${immunizations}">
+
+                <th:block th:if="${immunizations.size()>1}" th:with="headerPrefix=#{disease-notification.covid19-questions.immunization.entry.header}">
+                    <tr th:replace='~{fragment/rows :: paddedTitleRow(value=${headerPrefix+" "+(iter.index+1)})}'></tr>
+                </th:block>
+
+                <tr th:replace="~{fragment/rows :: paddedRow(
+                        #{disease-notification.covid19-questions.immunization.entry.vaccine},
+                        ${immunization.vaccineCodeText})}"></tr>
+
+                <tr th:replace="~{fragment/rows :: paddedRow(
+                        #{disease-notification.covid19-questions.immunization.entry.date},
+                        ${immunization.occurrenceDate})}"></tr>
+
+                <tr th:replace="~{fragment/rows :: paddedRow(
+                        #{disease-notification.covid19-questions.immunization.entry.note},
+                        ${immunization.note})}"></tr>
+
+            </th:block>
+        </th:block>
+    </th:block>
+</th:block>
+
+</body>
+</html>
