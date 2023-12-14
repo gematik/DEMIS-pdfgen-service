@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<configuration scan="true" scanPeriod="30 seconds">
+  <appender name="std-log" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+      <providers>
+        <timestamp>
+          <timeZone>Europe/Berlin</timeZone>
+        </timestamp>
+        <pattern>
+          <pattern>
+            {
+            "service": "pdfgen-service",
+            "type":"std",
+            "severity": "%level",
+            "trace": "%X{traceId:-}",
+            "span": "%X{spanId:-}",
+            "baggage": "%X{key:-}",
+            "pid": "${PID:-}",
+            "thread": "%thread",
+            "class": "%logger{40}",
+            "rest": "%message",
+            "exc": "%exception"
+            }
+          </pattern>
+        </pattern>
+      </providers>
+    </encoder>
+  </appender>
+
+  <variable name="ROOT_LOG_LEVEL" value="${ROOT_LOG_LEVEL:-INFO}"/>
+  <root level="${ROOT_LOG_LEVEL}">
+    <appender-ref ref="std-log"/>
+  </root>
+</configuration>

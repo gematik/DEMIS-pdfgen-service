@@ -1,0 +1,49 @@
+<!--suppress ALL -->
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <link rel="stylesheet" th:href="@{classpath:/static/styles/main.css}"/>
+    <title th:text="#{laboratory-report.title}"></title>
+</head>
+<body>
+
+<!--Title-->
+<span th:replace="~{receipt/common/section/header :: header(#{laboratory-report.title})}"/>
+
+<!--/*@thymesVar id="laboratoryReportTemplateDto" type="de.gematik.demis.pdfgen.receipt.laboratoryreport.model.LaboratoryReportTemplateDto"*/-->
+<div style="padding-left: 0.72cm; padding-right: 0.72cm;">
+    <div id="qrcode-entry" class="sub-title-row">
+        <div class="sub-title-row-first">
+            <img alt="qr-notification-identifier" class="title-qr" th:src='${"data:image/png;base64," + laboratoryReportTemplateDto.qrCode}' />
+        </div>
+        <div>
+            <!--Text-->
+            <p th:text='#{common.header.text}'></p>
+        </div>
+    </div>
+
+    <table>
+        <th:block th:replace="~{receipt/common/section/metadata :: metadata(${laboratoryReportTemplateDto.metadata})}"/>
+
+        <th:block th:replace='~{receipt/common/section/notification :: notification(${laboratoryReportTemplateDto.notification})}'/>
+
+        <th:block th:replace='~{receipt/common/section/recipient :: recipient(${laboratoryReportTemplateDto.recipient})}'/>
+
+        <th:block th:replace='~{receipt/common/section/notifier :: notifier(${laboratoryReportTemplateDto.notifier})}'/>
+
+        <th:block th:replace="~{receipt/common/section/notifiedPerson :: notifiedPerson(${laboratoryReportTemplateDto.getNotifiedPersonDTO})}"/>
+
+        <th:block th:replace='~{receipt/laboratoryReport/section/submitter :: submitter(${laboratoryReportTemplateDto.submitter})}'/>
+
+        <th:block th:replace='~{receipt/laboratoryReport/section/labReport :: labReport(${laboratoryReportTemplateDto.labReport})}'/>
+
+    </table>
+
+    <!-- Conditionally include last page with QR Code -->
+    <div th:if="${laboratoryReportTemplateDto.qrCodeOnLastPage}">
+        <div class="new-page" />
+        <div th:replace="~{receipt/laboratoryReport/section/lifecyclemanagement :: lifecyclemanagement(${laboratoryReportTemplateDto})}"></div>
+    </div>
+</div>
+
+</body>
+</html>

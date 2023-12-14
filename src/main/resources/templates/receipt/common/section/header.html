@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Header fragment</title>
+</head>
+<body>
+
+<th:block th:fragment="header(title)">
+    <div class="header-table">
+        <div class="header-row">
+            <div class="header-cell">
+                <span class="document-title" th:text='${title}'></span>
+            </div>
+            <div class="header-cell">
+                <img alt="demis-logo" height="53px" width="375px" th:src="@{classpath:/static/images/demis_logo.jpg}" />
+            </div>
+        </div>
+    </div>
+</th:block>
+
+</body>
+</html>

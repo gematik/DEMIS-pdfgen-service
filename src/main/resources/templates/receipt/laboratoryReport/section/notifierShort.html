@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<th:block th:fragment="notifier(notifier)">
+    <!--/*@thymesVar id="notifier" type="de.gematik.demis.pdfgenmodels.model.notifier.Notifier"*/-->
+
+    <th:block th:if="${notifier != null}">
+
+        <th:block th:if="${notifier.hasFacility()}">
+
+            <tr th:replace='~{fragment/rows :: titleRow(#{common.notifier.facility.header})}'></tr>
+
+            <tr th:replace='~{fragment/rows :: paddedRow(
+                        #{common.notifier.facility.name},
+                        ${notifier.facility.getNameAndType()})}'></tr>
+
+            <tr th:replace='~{fragment/rows :: paddedRow(
+                        #{common.notifier.facility.address},
+                        ${notifier.facility.addressDTO?.getFullAddressAsSingleLine()})}'></tr>
+
+            <tr th:replace='~{fragment/rows :: paddedRow(
+                        #{common.notifier.facility.nameDTO},
+                        ${notifier.facility.getTelecomsAsMultipleLines()})}'></tr>
+        </th:block>
+    </th:block>
+</th:block>
+
+</body>
+</html>

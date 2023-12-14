@@ -1,0 +1,18 @@
+{
+  "resourceType": "Bundle",
+  "id": "d41d8cd9-8f00-3204-a980-0998ecf8427e",
+  "meta": {
+    "lastUpdated": "2021-11-20T17:50:00.000+01:00",
+    "profile": [
+      "https://demis.rki.de/fhir/StructureDefinition/ReportBundle"
+    ]
+  },
+  "identifier": {
+    "system": "https://demis.rki.de/fhir/NamingSystem/NotificationBundleId",
+    "value": "cfcd2084-95d5-35ef-a6e7-dff9f98764da"
+  },
+  "type": "document",
+  "timestamp": "2021-11-20T17:50:00.000+01:00",
+  "entry": [
+  ]
+}

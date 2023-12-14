@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<th:block th:fragment="lifecyclemanagement(laboratoryReportTemplateDto)">
+    <div id="lifecycle-title">
+        <p class="document-title">Informationen zur Weitergabe der zugehörigen Probe an andere Labore
+            entsprechend dem DEMIS Lifecyclemanagement</p>
+
+        <p>
+            Das DEMIS-Lifecyclemanagement von Meldungen beschreibt in verschiedenen Szenarien den
+            Umgang mit Meldungen, inkl. Korrekturen und Ergänzungen
+            (<a
+                href="https://go.gematik.de/demis-lifecycle-lab">https://go.gematik.de/demis-lifecycle-lab</a>).
+            Ein
+            Teil des Lifecyclemanagements sieht auch die weiterführende Untersuchung der Probe in einem
+            Sekundärlabor vor. Dies ist z.B. in den Szenarien 2B und 3B beschrieben. <b>Mit der
+            Weitergabe der
+            Probe und des Probenbegleitscheins muss auch die Meldungs-ID (NotificationID) der
+            Erstmeldung an das Sekundärlabor weitergegeben werden.</b> Diese finden Sie zur einfachen
+            Weitergabe auf dieser Seite.
+        </p>
+    </div>
+    <div id="lifecycle-summary" class="grid-box">
+        <div class="notification-box frame-box">
+            <div id="box-person-information">
+                <span class="blue-font heavy-font" th:text='#{common.notified.person.header}'></span>
+                <br/>
+                <span class="blue-font small-font" th:text='#{common.notified.person.gender}'></span>
+                <span class="small-font"
+                      th:text='${laboratoryReportTemplateDto.notifiedPersonDTO.anonymized().gender()}'></span>
+                <br/>
+                <span class="blue-font small-font"
+                      th:text='#{common.notified.person.birthdate-short}'></span>
+                <span class="small-font"
+                      th:text='${laboratoryReportTemplateDto.notifiedPersonDTO.anonymized().birthdate()}'></span>
+                <br/>
+                <span class="blue-font small-font"
+                      th:text='#{common.notified.person.postal-code-short}'></span>
+                <span class="small-font"
+                      th:text='${laboratoryReportTemplateDto.notifiedPersonDTO.anonymized().postalCode()}'></span>
+            </div>
+            <br/>
+            <br/>
+            <div id="box-organisation-information">
+                <span class="blue-font heavy-font" th:text='#{common.notifier.facility.header}'></span>
+                <br/>
+                <span class="blue-font small-font" th:text='#{common.notifier.facility.name}'></span>
+                <span class="small-font"
+                      th:text='${laboratoryReportTemplateDto.notifier.facility?.getNameAndType()}'></span>
+                <br/>
+                <span class="blue-font small-font" th:text='#{common.notifier.facility.address}'></span>
+                <span class="small-font"
+                      th:text='${laboratoryReportTemplateDto.notifier.facility?.addressDTO?.getFullAddressAsSingleLine()}'></span>
+                <br/>
+                <span class="blue-font small-font" th:text='#{common.notifier.facility.nameDTO}'></span>
+                <span class="small-font"
+                      th:text='${laboratoryReportTemplateDto.notifier.facility?.getTelecomsAsMultipleLines()}'></span>
+            </div>
+            <br/>
+            <br/>
+            <div id="box-request-id">
+                <span class="blue-font small-font"
+                      th:text='#{laboratory-report.lab-report.order-number}'></span>
+                <span class="small-font"
+                      th:text='${laboratoryReportTemplateDto.labReport.labRequestId}'></span>
+            </div>
+            <br/>
+        </div>
+        <div class="qrcode-placeholder">
+            <span th:text='#{common.notification.identifier}'></span>
+            <br/>
+            <img alt="qr-notification-identifier" class="title-qr"
+                 th:src='${"data:image/png;base64," + laboratoryReportTemplateDto.qrCode}'/>
+            <br/>
+            <span class="small-font"
+                  th:text='${laboratoryReportTemplateDto.notification.identifier}'></span>
+        </div>
+    </div>
+    <div class="clear-row"></div>
+    <br/>
+    <div id="lab-id-box" class="laboratory-id-box frame-box">
+        <p>
+            Bitte ergänzen Sie den auf dem Probenbegleitschein genannten <b>Labor-Identifikator</b>
+            für die Probe:
+        </p>
+        <br/>
+        <input name="lab-id" style="width: 100%;border-bottom: 1px solid black"/>
+    </div>
+</th:block>
+</body>
+</html>

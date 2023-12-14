@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!--/*@thymesVar id="notification" type="de.gematik.demis.pdfgenmodels.model.notification.Notification"*/-->
+
+<th:block th:fragment="notification(notification)">
+
+    <th:block th:if="${notification != null}">
+
+        <tr th:replace='~{fragment/rows :: entryRow(
+                    #{common.notification.identifier},
+                    ${notification.identifier})}'></tr>
+
+        <tr th:replace='~{fragment/rows :: entryRow(
+                    #{common.notification.status},
+                    ${notification.status})}'></tr>
+
+        <tr th:replace='~{fragment/rows :: entryRow(
+                    #{common.notification.date},
+                    ${notification.dateTime})}'></tr>
+
+        <tr th:replace='~{fragment/rows :: entryRow(
+                    #{common.notification.relates-to},
+                    ${notification.getAllRelatesTo()})}'></tr>
+    </th:block>
+</th:block>
+
+</body>
+</html>

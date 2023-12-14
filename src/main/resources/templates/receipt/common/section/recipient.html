@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<th:block th:fragment="recipient(recipient)">
+    <!--/*@thymesVar id="recipient" type="de.gematik.demis.pdfgenmodels.model.recipient.Recipient"*/-->
+
+    <th:block th:if="${recipient != null}">
+
+        <tr th:replace='~{fragment/rows :: titleRow(#{common.recipient.header})}'></tr>
+
+        <tr th:replace='~{fragment/rows :: paddedRow(
+            #{common.section.facility.name},
+            ${recipient?.organizationDTO?.getName()})}'></tr>
+
+        <tr th:replace='~{fragment/rows :: paddedRow(
+            #{common.section.address.header},
+            ${recipient?.organizationDTO?.addressDTO?.getFullNameAndAddressAsSingleLine()}
+            )}'></tr>
+
+        <tr th:replace="~{fragment/rows :: paddedRow(
+            #{common.section.contact.header},
+            ${recipient?.organizationDTO?.getTelecomsAsMultipleLines()})}"></tr>
+    </th:block>
+
+</th:block>
+
+</body>
+</html>

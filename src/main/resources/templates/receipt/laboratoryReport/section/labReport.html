@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+
+<th:block th:fragment="labReport(labReport)">
+    <!--/*@thymesVar id="labReport" type="de.gematik.demis.pdfgenmodels.model.labreport.LabReport"*/-->
+
+    <th:block th:if="${labReport != null && labReport.hasContent()}">
+
+        <tr th:replace='~{fragment/rows :: titleRow(#{laboratory-report.lab-report.header})}'></tr>
+
+        <th:block th:if="${labReport.hasIssued()}">
+            <tr th:replace='~{fragment/rows :: paddedRow(
+                #{laboratory-report.lab-report.issued},
+                ${labReport.issued})}'></tr>
+
+            <tr th:replace='~{fragment/rows :: paddedRow(
+                #{laboratory-report.lab-report.status},
+                ${labReport.status})}'></tr>
+
+            <tr th:replace='~{fragment/rows :: paddedStrongValueRow(
+                #{laboratory-report.lab-report.notification-reason},
+                ${labReport.code})}'></tr>
+
+            <tr th:replace='~{fragment/rows :: paddedStrongValueRow(
+                #{laboratory-report.lab-report.result},
+                ${labReport.conclusionCode})}'></tr>
+
+            <tr th:replace='~{fragment/rows :: paddedRow(
+                #{laboratory-report.lab-report.explanation},
+                ${labReport.conclusion})}'></tr>
+
+            <tr th:replace='~{fragment/rows :: paddedRow(
+                #{laboratory-report.lab-report.order-number},
+                ${labReport.labRequestId})}'></tr>
+
+        </th:block>
+
+        <th:block th:if="${labReport.hasLabTest()}">
+            <th:block th:each="test: ${labReport.labTests}">
+                <th:block th:if="${test!=null}" th:with="titlePrefix=#{laboratory-report.lab-test.code.prefix}">
+
+                    <tr th:replace='~{fragment/rows :: paddedTitleRow(${titlePrefix+test.code})}'></tr>
+
+                    <tr th:replace='~{fragment/rows :: doublePaddedRow(
+                            #{laboratory-report.lab-test.status},
+                            ${test.status})}'></tr>
+
+                    <tr th:replace='~{fragment/rows :: doublePaddedRow(
+                            #{laboratory-report.lab-test.result-value},
+                            ${test.value})}'></tr>
+
+                    <tr th:replace='~{fragment/rows :: doublePaddedRow(
+                            #{laboratory-report.lab-test.result-interpretation},
+                            ${test.interpretation})}'></tr>
+
+                    <tr th:replace='~{fragment/rows :: doublePaddedRow(
+                            #{laboratory-report.lab-test.method},
+                            ${test.method})}'></tr>
+
+                    <tr th:replace='~{fragment/rows :: doublePaddedRow(
+                            #{laboratory-report.lab-test.explanation},
+                            ${test.notesAsMultipleLines})}'></tr>
+
+                    <tr th:replace='~{fragment/rows :: doublePaddedRow(
+                            #{laboratory-report.lab-test.specimen.received},
+                            ${test.specimen?.receivedTime.toStringWithoutTime})}'></tr>
+
+                    <tr th:replace='~{fragment/rows :: doublePaddedRow(
+                            #{laboratory-report.lab-test.specimen.collection},
+                            ${test.specimen?.collectionTime.toStringWithoutTime})}'></tr>
+
+                    <tr th:replace='~{fragment/rows :: doublePaddedRow(
+                            #{laboratory-report.lab-test.specimen.status},
+                            ${test.specimen?.status})}'></tr>
+
+                    <tr th:replace='~{fragment/rows :: doublePaddedRow(
+                            #{laboratory-report.lab-test.specimen.material},
+                            ${test.specimen?.material})}'></tr>
+
+                    <tr th:replace='~{fragment/rows :: doublePaddedRow(
+                            #{laboratory-report.lab-test.specimen.explanation},
+                            ${test.specimen?.getNotesAsMultipleLines()})}'></tr>
+
+                    <tr th:replace='~{fragment/rows :: doublePaddedRow(
+                            #{laboratory-report.lab-test.specimen.transaction-id},
+                            ${test.specimen?.transactionId})}'></tr>
+
+                </th:block>
+
+            </th:block>
+
+        </th:block>
+
+    </th:block>
+</th:block>
+<br/>
+</body>
+</html>

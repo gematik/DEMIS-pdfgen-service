@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+
+<th:block th:fragment="conditionDTO(conditionDTO)">
+    <!--/*@thymesVar id="conditionDTO" type="de.gematik.demis.pdfgenmodels.model.conditionDTO.Condition"*/-->
+
+    <th:block th:if="${conditionDTO != null}">
+        <tr th:replace='~{fragment/rows :: titleRow(#{disease-notification.conditionDTO.header})}'></tr>
+
+        <tr th:replace='~{fragment/rows :: paddedRow(
+            #{disease-notification.conditionDTO.onset-date},
+            ${conditionDTO.onsetDate.dateWithoutTime})}'></tr>
+
+        <tr th:replace='~{fragment/rows :: paddedRow(
+            #{disease-notification.conditionDTO.recorded-date},
+            ${conditionDTO.recordedDate.dateWithoutTime})}'></tr>
+
+        <tr th:replace='~{fragment/rows :: paddedRow(
+            #{disease-notification.conditionDTO.evidence},
+            ${conditionDTO.getAllSymptoms()})}'></tr>
+
+        <tr th:replace='~{fragment/rows :: paddedRow(
+            #{disease-notification.conditionDTO.note},
+            ${conditionDTO.note})}'></tr>
+
+        <tr th:replace='~{fragment/rows :: doubleBorder}'></tr>
+    </th:block>
+</th:block>
+
+</body>
+</html>

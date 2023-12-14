@@ -1,0 +1,394 @@
+{
+  "resourceType": "Bundle",
+  "id": "e4f61ac7-aed9-4655-8558-42e728f2043c",
+  "meta": {
+    "lastUpdated": "2023-05-19T17:42:21.755+02:00",
+    "profile": [
+      "https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratory"
+    ],
+    "tag": [
+      {
+        "system": "https://demis.rki.de/fhir/CodeSystem/ResponsibleDepartment",
+        "code": "test-int"
+      },
+      {
+        "system": "https://demis.rki.de/fhir/CodeSystem/ResponsibleDepartmentSubmitter",
+        "code": "test-int"
+      },
+      {
+        "system": "https://demis.rki.de/fhir/CodeSystem/ResponsibleDepartmentNotifier",
+        "code": "test-int"
+      },
+      {
+        "system": "https://demis.rki.de/fhir/CodeSystem/ResponsibleDepartmentCurrentAddress",
+        "code": "test-int"
+      }
+    ]
+  },
+  "identifier": {
+    "system": "https://demis.rki.de/fhir/NamingSystem/NotificationBundleId",
+    "value": "0fab3395-a9d7-5b1c-b4e6-7a5305c1da1a"
+  },
+  "type": "document",
+  "timestamp": "2023-05-19T17:35:02.490+02:00",
+  "entry": [
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Composition/c1819a6d-93e7-4f9b-8acc-fa774917f119",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "c1819a6d-93e7-4f9b-8acc-fa774917f119",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotificationLaboratory"
+          ]
+        },
+        "extension": [
+          {
+            "url": "https://demis.rki.de/fhir/StructureDefinition/ReceptionTimeStampType",
+            "valueDateTime": "2023-05-19T17:42:21+02:00"
+          }
+        ],
+        "identifier": {
+          "system": "https://demis.rki.de/fhir/NamingSystem/NotificationId",
+          "value": "601d4a50-0d5d-41f7-bd3a-28d11e156030"
+        },
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "34782-3",
+              "display": "Infectious disease Note"
+            }
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "11502-2",
+                "display": "Laboratory report"
+              }
+            ]
+          }
+        ],
+        "subject": {
+          "reference": "Patient/7772ff63-6a19-4424-b400-190945bb4608"
+        },
+        "date": "2023-05-19T17:35:02+02:00",
+        "author": [
+          {
+            "reference": "PractitionerRole/78877967-8579-44ca-a2a0-f64e457b26c7"
+          }
+        ],
+        "title": "Erregernachweismeldung",
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "11502-2",
+                  "display": "Laboratory report"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "DiagnosticReport/f0e400fc-f797-44f1-8818-4ecd09c40f95"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Patient/7772ff63-6a19-4424-b400-190945bb4608",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "7772ff63-6a19-4424-b400-190945bb4608",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifiedPerson"
+          ]
+        },
+        "name": [
+          {
+            "text": "Bertha Betroffen",
+            "family": "Betroffen",
+            "given": [
+              "Bertha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "address": [
+          {
+            "extension": [
+              {
+                "url": "https://demis.rki.de/fhir/StructureDefinition/AddressUse",
+                "valueCoding": {
+                  "system": "https://demis.rki.de/fhir/CodeSystem/addressUse",
+                  "code": "current",
+                  "display": "Derzeitiger Aufenthaltsort"
+                }
+              }
+            ],
+            "city": "Buchhorst",
+            "postalCode": "abcde",
+            "country": "20422"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/PractitionerRole/78877967-8579-44ca-a2a0-f64e457b26c7",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "78877967-8579-44ca-a2a0-f64e457b26c7",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifierRole"
+          ]
+        },
+        "organization": {
+          "reference": "Organization/52214793-6343-4ec3-a520-561445b55b1b"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Organization/52214793-6343-4ec3-a520-561445b55b1b",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "52214793-6343-4ec3-a520-561445b55b1b",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifierFacility"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "https://demis.rki.de/fhir/NamingSystem/SendingServiceProvider",
+            "value": "test-int"
+          }
+        ],
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "https://demis.rki.de/fhir/CodeSystem/organizationType",
+                "code": "othPrivatLab",
+                "display": "Sonstige private Untersuchungsstelle"
+              }
+            ]
+          }
+        ],
+        "name": "TEST Organisation",
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "01234567"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Straße 1"
+            ],
+            "city": "Buchhorst",
+            "postalCode": "abcde",
+            "country": "20422"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/PractitionerRole/f7bc3069-70ed-435b-be5e-5445b117d3b9",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "f7bc3069-70ed-435b-be5e-5445b117d3b9",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/SubmittingRole"
+          ]
+        },
+        "organization": {
+          "reference": "Organization/d8cac0ac-58ec-4a1e-af70-9106e1a00938"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Organization/d8cac0ac-58ec-4a1e-af70-9106e1a00938",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "d8cac0ac-58ec-4a1e-af70-9106e1a00938",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/SubmittingFacility"
+          ]
+        },
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "https://demis.rki.de/fhir/CodeSystem/organizationType",
+                "code": "othPrivatLab",
+                "display": "Sonstige private Untersuchungsstelle"
+              }
+            ]
+          }
+        ],
+        "name": "TEST Organisation",
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "01234567"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Straße 1"
+            ],
+            "city": "Buchhorst",
+            "postalCode": "abcde",
+            "country": "20422"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Specimen/799d48a9-4c17-4eb8-bf51-898e894fdf84",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "799d48a9-4c17-4eb8-bf51-898e894fdf84",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/SpecimenINVP"
+          ]
+        },
+        "status": "available",
+        "type": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "258607008",
+              "display": "Bronchoalveolar lavage fluid sample (specimen)"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/7772ff63-6a19-4424-b400-190945bb4608"
+        },
+        "receivedTime": "2023-05-19T17:35:02+02:00",
+        "collection": {
+          "collector": {
+            "reference": "PractitionerRole/f7bc3069-70ed-435b-be5e-5445b117d3b9"
+          },
+          "collectedDateTime": "2023-05-19T17:35:02+02:00"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Observation/6c0fbd6c-069f-4083-bcf6-7c023f048a65",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "6c0fbd6c-069f-4083-bcf6-7c023f048a65",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/PathogenDetectionINVP"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "99623-1",
+              "display": "Influenza virus A N1 RNA [Presence] in Specimen by NAA with probe detection"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/7772ff63-6a19-4424-b400-190945bb4608"
+        },
+        "valueString": "Positive",
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "code": "POS"
+              }
+            ]
+          }
+        ],
+        "method": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "67122001",
+              "display": "Acid fast stain method (procedure)"
+            }
+          ]
+        },
+        "specimen": {
+          "reference": "Specimen/799d48a9-4c17-4eb8-bf51-898e894fdf84"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/DiagnosticReport/f0e400fc-f797-44f1-8818-4ecd09c40f95",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "f0e400fc-f797-44f1-8818-4ecd09c40f95",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/LaboratoryReportINVP"
+          ]
+        },
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "https://demis.rki.de/fhir/CodeSystem/notificationCategory",
+              "code": "invp",
+              "display": "Influenzavirus; Meldepflicht nur für den direkten Nachweis"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/7772ff63-6a19-4424-b400-190945bb4608"
+        },
+        "issued": "2023-05-19T17:35:02.460+02:00",
+        "result": [
+          {
+            "reference": "Observation/6c0fbd6c-069f-4083-bcf6-7c023f048a65"
+          }
+        ],
+        "conclusionCode": [
+          {
+            "coding": [
+              {
+                "system": "https://demis.rki.de/fhir/CodeSystem/conclusionCode",
+                "code": "pathogenDetected",
+                "display": "Meldepflichtiger Erreger nachgewiesen"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
