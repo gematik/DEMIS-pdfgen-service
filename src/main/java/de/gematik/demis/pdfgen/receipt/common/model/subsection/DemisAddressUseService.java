@@ -18,12 +18,35 @@
 
 package de.gematik.demis.pdfgen.receipt.common.model.subsection;
 
+/*-
+ * #%L
+ * pdfgen-service
+ * %%
+ * Copyright (C) 2025 gematik GmbH
+ * %%
+ * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
+ * European Commission – subsequent versions of the EUPL (the "Licence").
+ * You may not use this work except in compliance with the Licence.
+ *
+ * You find a copy of the Licence in the "Licence" file or at
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied.
+ * In case of changes by gematik find details in the "Readme" file.
+ *
+ * See the Licence for the specific language governing permissions and limitations under the Licence.
+ * #L%
+ */
+
 import static de.gematik.demis.pdfgen.fhir.extract.ExtensionQueries.resolve;
 import static java.util.stream.Collectors.joining;
 
 import de.gematik.demis.pdfgen.lib.profile.DemisExtensions;
-import de.gematik.demis.pdfgen.translation.TranslationAddressProvider;
+import de.gematik.demis.pdfgen.receipt.common.model.enums.AddressUseEnum;
 import de.gematik.demis.pdfgen.utils.StringUtils;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
@@ -66,7 +89,7 @@ public final class DemisAddressUseService {
   /** Code of primary address */
   static final String CODE_PRIMARY = "primary";
 
-  private final TranslationAddressProvider translationAddressProvider;
+  private final AddressTranslationService addressTranslationService;
 
   /**
    * Create translated text of all DEMIS address uses attached to the given address.
@@ -80,8 +103,16 @@ public final class DemisAddressUseService {
    */
   String toString(Address address) {
     return getUses(address)
-        .map(this.translationAddressProvider::translateUse)
+        .map(this.addressTranslationService::translateUse)
         .collect(joining(StringUtils.LIST_DELIMITER));
+  }
+
+  AddressUseEnum toUseEnum(final Address address) {
+    final List<Coding> collect = getUses(address).toList();
+    if (collect.size() == 1) {
+      return AddressUseEnum.from(collect.getFirst());
+    }
+    return AddressUseEnum.NULL;
   }
 
   @NotNull

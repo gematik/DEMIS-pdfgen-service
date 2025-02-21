@@ -18,6 +18,28 @@
 
 package de.gematik.demis.pdfgen.utils;
 
+/*-
+ * #%L
+ * pdfgen-service
+ * %%
+ * Copyright (C) 2025 gematik GmbH
+ * %%
+ * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
+ * European Commission – subsequent versions of the EUPL (the "Licence").
+ * You may not use this work except in compliance with the Licence.
+ *
+ * You find a copy of the Licence in the "Licence" file or at
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied.
+ * In case of changes by gematik find details in the "Readme" file.
+ *
+ * See the Licence for the specific language governing permissions and limitations under the Licence.
+ * #L%
+ */
+
 import static ca.uhn.fhir.model.api.TemporalPrecisionEnum.DAY;
 import static ca.uhn.fhir.model.api.TemporalPrecisionEnum.MILLI;
 import static ca.uhn.fhir.model.api.TemporalPrecisionEnum.MINUTE;
@@ -26,15 +48,16 @@ import static ca.uhn.fhir.model.api.TemporalPrecisionEnum.SECOND;
 import static ca.uhn.fhir.model.api.TemporalPrecisionEnum.YEAR;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 import lombok.Getter;
 import org.hl7.fhir.r4.model.BaseDateTimeType;
 import org.hl7.fhir.r4.model.DateTimeType;
 
+/**
+ * This class is handle a date and time and provide a string representation of it. It supports also
+ * the possibility that no date or time is given.
+ */
 public class DateTimeHolder {
   private static final Set<TemporalPrecisionEnum> SHOULD_HAVE_MONTH =
       Set.of(MONTH, DAY, MINUTE, SECOND, MILLI);
@@ -42,47 +65,38 @@ public class DateTimeHolder {
       Set.of(DAY, MINUTE, SECOND, MILLI);
   private static final Set<TemporalPrecisionEnum> SHOULD_HAVE_TIME = Set.of(MINUTE, SECOND, MILLI);
 
-  private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-
   @Getter private final BaseDateTimeType dateTime;
-  @Getter private final Date date;
 
   @Getter private final String dateWithoutTime;
   @Getter private final String dateWithoutTimeAndDay;
 
   public DateTimeHolder(final BaseDateTimeType dateTime) {
     this.dateTime = validOrNull(dateTime);
-    this.date = null;
-    dateWithoutTime = toStringWithoutTime();
-    dateWithoutTimeAndDay = toStringWithoutTimeAndDay();
-  }
-
-  public DateTimeHolder(final Date date) {
-    this.dateTime = null;
-    this.date = date;
-    dateWithoutTime = toStringWithoutTime();
-    dateWithoutTimeAndDay = toStringWithoutTimeAndDay();
-  }
-
-  private BaseDateTimeType validOrNull(BaseDateTimeType dateTime) {
-    if (dateTime == null || dateTime.getPrecision() == null || dateTime.getYear() == null) {
-      return null;
-    }
-    if (dateTime.getMonth() == null && SHOULD_HAVE_MONTH.contains(dateTime.getPrecision())) {
-      return null;
-    }
-    if (dateTime.getDay() == null && SHOULD_HAVE_DAY.contains(dateTime.getPrecision())) {
-      return null;
-    }
-    if ((dateTime.getHour() == null || dateTime.getMinute() == null)
-        && SHOULD_HAVE_TIME.contains(dateTime.getPrecision())) {
-      return null;
-    }
-    return dateTime;
+    this.dateWithoutTime = toStringWithoutTime();
+    this.dateWithoutTimeAndDay = toStringWithoutTimeAndDay();
   }
 
   public static DateTimeHolder now() {
     return new DateTimeHolder(DateTimeType.now());
+  }
+
+  private BaseDateTimeType validOrNull(final BaseDateTimeType dateTime) {
+    if (dateTime == null || dateTime.getPrecision() == null || dateTime.getYear() == null) {
+      return null;
+    }
+    if (dateTime.getMonth() == null
+        && DateTimeHolder.SHOULD_HAVE_MONTH.contains(dateTime.getPrecision())) {
+      return null;
+    }
+    if (dateTime.getDay() == null
+        && DateTimeHolder.SHOULD_HAVE_DAY.contains(dateTime.getPrecision())) {
+      return null;
+    }
+    if ((dateTime.getHour() == null || dateTime.getMinute() == null)
+        && DateTimeHolder.SHOULD_HAVE_TIME.contains(dateTime.getPrecision())) {
+      return null;
+    }
+    return dateTime;
   }
 
   public String toStringWithoutTime() {
@@ -99,46 +113,46 @@ public class DateTimeHolder {
   }
 
   private String dateString() {
-    if (dateTime == null) {
-      return date != null ? dateFormat.format(date) : "";
+    if (Objects.isNull(this.dateTime)) {
+      return "";
     }
 
-    if (dateTime.getPrecision() == YEAR) {
-      return dateTime.getYear().toString();
+    if (this.dateTime.getPrecision() == YEAR) {
+      return this.dateTime.getYear().toString();
     }
-    if (dateTime.getPrecision() == MONTH) {
-      return doubleDigit(dateTime.getMonth() + 1) + "." + dateTime.getYear();
+    if (this.dateTime.getPrecision() == MONTH) {
+      return doubleDigit(this.dateTime.getMonth() + 1) + "." + this.dateTime.getYear();
     }
-    return doubleDigit(dateTime.getDay())
+    return doubleDigit(this.dateTime.getDay())
         + "."
-        + doubleDigit(dateTime.getMonth() + 1)
+        + doubleDigit(this.dateTime.getMonth() + 1)
         + "."
-        + dateTime.getYear();
+        + this.dateTime.getYear();
   }
 
   private String dateOfMounthAndYearString() {
-    if (date != null) {
-      LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-      return doubleDigit(localDate.getMonthValue()) + "/" + localDate.getYear();
+    if (this.dateTime != null && this.dateTime.getPrecision() == YEAR) {
+      return this.dateTime.getYear().toString();
     }
-    if (dateTime != null && dateTime.getPrecision() == YEAR) {
-      return dateTime.getYear().toString();
-    }
-    if (dateTime != null) {
-      return doubleDigit(dateTime.getMonth() + 1) + "/" + dateTime.getYear();
+    if (this.dateTime != null) {
+      return doubleDigit(this.dateTime.getMonth() + 1) + "/" + this.dateTime.getYear();
     }
 
     return "";
   }
 
   private String timeStringWithSpacePrefix() {
-    if (dateTime == null || !SHOULD_HAVE_TIME.contains(dateTime.getPrecision())) {
+    if (this.dateTime == null
+        || !DateTimeHolder.SHOULD_HAVE_TIME.contains(this.dateTime.getPrecision())) {
       return "";
     }
-    return " " + doubleDigit(dateTime.getHour()) + ":" + doubleDigit(dateTime.getMinute());
+    return " "
+        + doubleDigit(this.dateTime.getHour())
+        + ":"
+        + doubleDigit(this.dateTime.getMinute());
   }
 
-  private String doubleDigit(int i) {
+  private String doubleDigit(final int i) {
     return 0 <= i && i <= 9 ? "0" + i : String.valueOf(i);
   }
 }

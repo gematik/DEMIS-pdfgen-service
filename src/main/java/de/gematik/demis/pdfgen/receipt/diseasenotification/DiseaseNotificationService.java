@@ -18,6 +18,28 @@
 
 package de.gematik.demis.pdfgen.receipt.diseasenotification;
 
+/*-
+ * #%L
+ * pdfgen-service
+ * %%
+ * Copyright (C) 2025 gematik GmbH
+ * %%
+ * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
+ * European Commission – subsequent versions of the EUPL (the "Licence").
+ * You may not use this work except in compliance with the Licence.
+ *
+ * You find a copy of the Licence in the "Licence" file or at
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied.
+ * In case of changes by gematik find details in the "Readme" file.
+ *
+ * See the Licence for the specific language governing permissions and limitations under the Licence.
+ * #L%
+ */
+
 import de.gematik.demis.fhirparserlibrary.FhirParser;
 import de.gematik.demis.pdfgen.pdf.PdfData;
 import de.gematik.demis.pdfgen.pdf.PdfGenerationException;
@@ -68,20 +90,6 @@ public class DiseaseNotificationService {
     return generatePdfFromBundle(bundle);
   }
 
-  private PdfData generatePdfFromBundle(final Bundle bundle) throws PdfGenerationException {
-    DiseaseNotificationTemplateDto dto = diseaseNotificationTemplateDtoFactory.create(bundle);
-    return generatePdfFromDto(dto);
-  }
-
-  public PdfData generatePdfFromDto(final DiseaseNotificationTemplateDto dto)
-      throws PdfGenerationException {
-    return new PdfData(this.pdfGenerator.generatePdfFromHtml(createHtml(dto)));
-  }
-
-  private String createHtml(DiseaseNotificationTemplateDto dto) {
-    return this.templateParser.process(dto, this.diseaseNotificationTemplate);
-  }
-
   /**
    * Run a complete PDF rendering to initialize FHIR, Thymeleaf and Flying Sourcer.
    *
@@ -95,6 +103,16 @@ public class DiseaseNotificationService {
     log.debug(
         "Initialized disease notifications service! Duration: {} ms PdfBytes: {}",
         (System.currentTimeMillis() - startMillis),
-        String.valueOf(pdf.bytes().length));
+        pdf.bytes().length);
+  }
+
+  private PdfData generatePdfFromBundle(final Bundle bundle) throws PdfGenerationException {
+    DiseaseNotificationTemplateDto data = diseaseNotificationTemplateDtoFactory.create(bundle);
+    String html = createHtml(data);
+    return new PdfData(this.pdfGenerator.generatePdfFromHtml(html));
+  }
+
+  private String createHtml(DiseaseNotificationTemplateDto dto) {
+    return this.templateParser.process(dto, this.diseaseNotificationTemplate);
   }
 }

@@ -18,9 +18,29 @@
 
 package de.gematik.demis.pdfgen.receipt.laboratoryreport.model.labreport;
 
-import static de.gematik.demis.pdfgen.fhir.extract.ExtensionQueries.resolve;
+/*-
+ * #%L
+ * pdfgen-service
+ * %%
+ * Copyright (C) 2025 gematik GmbH
+ * %%
+ * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
+ * European Commission – subsequent versions of the EUPL (the "Licence").
+ * You may not use this work except in compliance with the Licence.
+ *
+ * You find a copy of the Licence in the "Licence" file or at
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied.
+ * In case of changes by gematik find details in the "Readme" file.
+ *
+ * See the Licence for the specific language governing permissions and limitations under the Licence.
+ * #L%
+ */
+
 import static de.gematik.demis.pdfgen.utils.StringUtils.LIST_DELIMITER;
-import static java.util.stream.Collectors.joining;
 
 import de.gematik.demis.pdfgen.fhir.extract.LaboratoryFhirQueries;
 import de.gematik.demis.pdfgen.fhir.schema.SchemaVersion;
@@ -32,9 +52,9 @@ import de.gematik.demis.pdfgen.utils.DateTimeHolder;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4.model.*;
 import org.springframework.stereotype.Service;
 
@@ -98,11 +118,11 @@ public class SpecimenFactory {
 
   private String extractMaterialWithDV1Fallback(org.hl7.fhir.r4.model.Specimen fhirSpecimen) {
     CodeableConcept type = fhirSpecimen.getType();
-    String material;
+    final String material;
     if (type.getCodingFirstRep().getCode() != null) {
       material = displayTranslationService.resolveCodeableConceptValues(type);
     } else {
-      material = type.getText() != null ? type.getText() : "";
+      material = Objects.requireNonNullElse(type.getText(), "");
     }
     return material;
   }
@@ -117,12 +137,27 @@ public class SpecimenFactory {
 
   String getTransactionIdFromProcessing(
       List<org.hl7.fhir.r4.model.Specimen.SpecimenProcessingComponent> processing) {
-    return processing.stream()
-        .map(component -> component.getExtensionByUrl(DemisExtensions.EXTENSION_URL_TRANSACTION_ID))
-        .map(extension -> resolve(extension, StringType.class))
-        .filter(Objects::nonNull)
-        .map(StringType::getValue)
-        .filter(StringUtils::isNotBlank)
-        .collect(joining(LIST_DELIMITER));
+
+    return processing.parallelStream()
+        .filter(entry -> entry.hasExtension(DemisExtensions.EXTENSION_URL_TRANSACTION_ID))
+        .map(
+            entry ->
+                extractExtensionValue(
+                    entry.getExtensionByUrl(DemisExtensions.EXTENSION_URL_TRANSACTION_ID)))
+        .filter(value -> value != null && !value.isBlank())
+        .collect(Collectors.joining(LIST_DELIMITER));
+  }
+
+  private String extractExtensionValue(final Extension extension) {
+    var extensionValue = extension.getValue();
+    if (extensionValue instanceof StringType stringType) {
+      return stringType.getValue();
+    }
+
+    if (extensionValue instanceof Identifier identifier) {
+      return identifier.getValue();
+    }
+
+    return null;
   }
 }

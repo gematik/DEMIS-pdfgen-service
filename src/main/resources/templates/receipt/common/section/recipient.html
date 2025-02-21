@@ -2,25 +2,21 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
 
+<!--/*@thymesVar id="recipient" type="de.gematik.demis.pdfgen.receipt.common.model.section.Recipient"*/-->
+<!--/*@thymesVar id="organization" type="de.gematik.demis.pdfgen.receipt.common.model.subsection.OrganizationDTO"*/-->
 <th:block th:fragment="recipient(recipient)">
-    <!--/*@thymesVar id="recipient" type="de.gematik.demis.pdfgenmodels.model.recipient.Recipient"*/-->
 
-    <th:block th:if="${recipient != null}">
-
+    <th:block th:if="${recipient != null}" th:with="organization=${recipient.getOrganizationDTO()}">
         <tr th:replace='~{fragment/rows :: titleRow(#{common.recipient.header})}'></tr>
-
         <tr th:replace='~{fragment/rows :: paddedRow(
             #{common.section.facility.name},
-            ${recipient?.organizationDTO?.getName()})}'></tr>
-
+            ${organization?.getNameAndType()})}'></tr>
         <tr th:replace='~{fragment/rows :: paddedRow(
             #{common.section.address.header},
-            ${recipient?.organizationDTO?.addressDTO?.getFullNameAndAddressAsSingleLine()}
-            )}'></tr>
-
+            ${organization?.addressDTO?.getOrganizationAddressAsSingleLine()})}'></tr>
         <tr th:replace="~{fragment/rows :: paddedRow(
             #{common.section.contact.header},
-            ${recipient?.organizationDTO?.getTelecomsAsMultipleLines()})}"></tr>
+            ${organization?.getTelecomsAsMultipleLines()})}"></tr>
     </th:block>
 
 </th:block>

@@ -68,6 +68,17 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+Deployment labels
+*/}}
+{{- define "pdfgen-service.deploymentLabels" -}}
+{{ if .Values.istio.enable -}}
+istio-validate-jwt: "{{ .Values.istio.validateJwt | required ".Values.istio.validateJwt is required" }}"
+{{- with .Values.deploymentLabels }}
+{{ toYaml . }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "pdfgen-service.serviceAccountName" -}}

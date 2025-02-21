@@ -18,10 +18,33 @@
 
 package de.gematik.demis.pdfgen.receipt.common.model.section;
 
+/*-
+ * #%L
+ * pdfgen-service
+ * %%
+ * Copyright (C) 2025 gematik GmbH
+ * %%
+ * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
+ * European Commission – subsequent versions of the EUPL (the "Licence").
+ * You may not use this work except in compliance with the Licence.
+ *
+ * You find a copy of the Licence in the "Licence" file or at
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied.
+ * In case of changes by gematik find details in the "Readme" file.
+ *
+ * See the Licence for the specific language governing permissions and limitations under the Licence.
+ * #L%
+ */
+
 import static de.gematik.demis.pdfgen.receipt.common.model.enums.GenderEnum.MALE;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import de.gematik.demis.pdfgen.receipt.common.model.enums.AddressUseEnum;
 import de.gematik.demis.pdfgen.receipt.common.model.enums.GenderEnum;
 import de.gematik.demis.pdfgen.receipt.common.model.subsection.AddressDTO;
 import de.gematik.demis.pdfgen.receipt.common.model.subsection.NameDTO;
@@ -110,5 +133,43 @@ class NotifiedPersonDTOTest {
     // then
     assertThat(nullContactPerson.getNotifiedName()).isEmpty();
     assertThat(fullContactPerson.getNotifiedName()).isEqualTo("prefix given family");
+  }
+
+  @Test
+  void thatGetAddressesGracefullyHandlesNull() {
+    final NotifiedPersonDTO build = NotifiedPersonDTO.builder().build();
+    assertThat(build.getAddresses()).isEmpty();
+  }
+
+  @Test
+  void thatAddressesAreInWellDefinedOrder() {
+    final var primary = AddressDTO.builder().useEnum(AddressUseEnum.PRIMARY).build();
+    final var current = AddressDTO.builder().useEnum(AddressUseEnum.CURRENT).build();
+    final var usual = AddressDTO.builder().useEnum(AddressUseEnum.ORDINARY).build();
+
+    final NotifiedPersonDTO build =
+        NotifiedPersonDTO.builder().addressDTOs(List.of(current, primary, usual)).build();
+
+    assertThat(build.getAddresses())
+        .extracting(AddressTemplateAdapter::getUse)
+        .containsExactly(AddressUseEnum.PRIMARY, AddressUseEnum.ORDINARY, AddressUseEnum.CURRENT);
+  }
+
+  @Test
+  void thatAddressesAreInWellDefinedOrderWhenReferencingOrganizations() {
+    final var primary = AddressDTO.builder().useEnum(AddressUseEnum.PRIMARY).build();
+    final var current = AddressDTO.builder().useEnum(AddressUseEnum.CURRENT).build();
+    final var usual = AddressDTO.builder().useEnum(AddressUseEnum.ORDINARY).build();
+    final var org = OrganizationDTO.builder().addressDTO(current).build();
+
+    final NotifiedPersonDTO build =
+        NotifiedPersonDTO.builder()
+            .addressDTOs(List.of(usual, primary))
+            .organizationDTOs(List.of(org))
+            .build();
+
+    assertThat(build.getAddresses())
+        .extracting(AddressTemplateAdapter::getUse)
+        .containsExactly(AddressUseEnum.PRIMARY, AddressUseEnum.ORDINARY, AddressUseEnum.CURRENT);
   }
 }

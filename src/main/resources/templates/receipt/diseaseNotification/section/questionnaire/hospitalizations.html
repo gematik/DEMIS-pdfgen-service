@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!--/*@thymesVar id="answer" type="de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.Answer"*/-->
+<!--/*@thymesVar id="subitem" type="de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.Item"*/-->
+<!--/*@thymesVar id="hospitalization" type="de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.resources.Hospitalization"*/-->
+<th:block th:fragment="hospitalizations(answer)">
+    <th:block
+            th:with="subitems=${answer.subitems()},heading=#{disease-notification.common-questions.hospitalization.entry.header}">
+        <th:block th:each="subitem, iter : ${subitems}">
+
+            <!-- heading -->
+            <th:block th:if="${subitems.size()} == 1">
+                <tr th:replace='~{fragment/rows :: paddedTitleRow(${heading})}'></tr>
+            </th:block>
+            <th:block th:if="${subitems.size()} > 1">
+                <tr th:replace='~{fragment/rows :: paddedTitleRow(${heading+" "+(iter.index+1)})}'></tr>
+            </th:block>
+
+            <!-- hospitalization -->
+            <th:block th:with="hospitalization=${subitem.getResource().getHospitalization()}">
+                <tr th:replace="~{fragment/rows :: paddedRow(
+                        #{disease-notification.common-questions.hospitalization.name},
+                        ${hospitalization.organization().getNameAndType()})}"></tr>
+                <tr th:replace="~{fragment/rows :: paddedRow(
+                        #{disease-notification.common-questions.hospitalization.department},
+                        ${hospitalization.serviceType})}"></tr>
+                <tr th:replace="~{fragment/rows :: paddedRow(
+                        #{disease-notification.section.organizationDTO.description},
+                        ${hospitalization.organization?.getOrganizationInfo()})}"></tr>
+                <tr th:replace="~{fragment/rows :: paddedRow(
+                        #{disease-notification.common-questions.hospitalization.begin},
+                        ${hospitalization.start.dateWithoutTime})}"></tr>
+                <tr th:replace="~{fragment/rows :: paddedRow(
+                        #{disease-notification.common-questions.hospitalization.end},
+                        ${hospitalization.end.dateWithoutTime})}"></tr>
+                <tr th:replace="~{fragment/rows :: paddedRow(
+                        #{disease-notification.common-questions.hospitalization.reason},
+                        ${hospitalization.reason})}"></tr>
+                <tr th:replace="~{fragment/rows :: paddedRow(
+                        #{disease-notification.common-questions.hospitalization.note},
+                        ${hospitalization.note})}"></tr>
+            </th:block>
+
+        </th:block>
+    </th:block>
+</th:block>
+
+</body>
+</html>

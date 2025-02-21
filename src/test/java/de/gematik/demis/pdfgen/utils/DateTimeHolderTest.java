@@ -1,6 +1,11 @@
-/*
- * Copyright [2023], gematik GmbH
- *
+package de.gematik.demis.pdfgen.utils;
+
+/*-
+ * #%L
+ * pdfgen-service
+ * %%
+ * Copyright (C) 2025 gematik GmbH
+ * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
  * You may not use this work except in compliance with the Licence.
@@ -14,16 +19,11 @@
  * In case of changes by gematik find details in the "Readme" file.
  *
  * See the Licence for the specific language governing permissions and limitations under the Licence.
+ * #L%
  */
-
-package de.gematik.demis.pdfgen.utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.ZoneId;
-import java.util.Date;
 import org.hl7.fhir.r4.model.BaseDateTimeType;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.junit.jupiter.api.Test;
@@ -33,28 +33,11 @@ class DateTimeHolderTest {
   @Test
   void constructorAndToString_shouldHandleBlankGracefully() {
     // when
-    DateTimeHolder dateTimeHolder1 = new DateTimeHolder((BaseDateTimeType) null);
-    DateTimeHolder dateTimeHolder2 = new DateTimeHolder((Date) null);
+    DateTimeHolder dateTimeHolder = new DateTimeHolder((BaseDateTimeType) null);
 
     // then
-    assertThat(dateTimeHolder1).isNotNull();
-    assertThat(dateTimeHolder1.toString()).isEmpty();
-
-    assertThat(dateTimeHolder2).isNotNull();
-    assertThat(dateTimeHolder2.toString()).isEmpty();
-  }
-
-  @Test
-  void constructorAndToString_shouldHandleDateAsExpected() {
-    // given
-    LocalDate localDate = LocalDate.of(2023, Month.MARCH, 20);
-    Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-    // when
-    DateTimeHolder holder = new DateTimeHolder(date);
-
-    // then
-    assertThat(holder).isNotNull().hasToString("20.03.2023");
+    assertThat(dateTimeHolder).isNotNull();
+    assertThat(dateTimeHolder.toString()).isEmpty();
   }
 
   @Test
@@ -81,5 +64,65 @@ class DateTimeHolderTest {
     assertThat(monthAndYearHolder).isNotNull().hasToString("12.2023");
     assertThat(justDateHolder).isNotNull().hasToString("20.12.2023");
     assertThat(dateAndTimeHolder).isNotNull().hasToString("20.12.2023 17:35");
+  }
+
+  @Test
+  void toStringWithoutTime_shouldReturnExpectedString() {
+    // given
+    DateTimeType dateAndTime = new DateTimeType("2023-12-20T17:35:00");
+
+    // when
+    DateTimeHolder dateTimeHolder = new DateTimeHolder(dateAndTime);
+
+    // then
+    assertThat(dateTimeHolder.toStringWithoutTime()).isEqualTo("20.12.2023");
+  }
+
+  @Test
+  void toStringWithoutTimeAndDay_shouldReturnExpectedString() {
+    // given
+    DateTimeType dateAndTime = new DateTimeType("2023-12-20T17:35:00");
+
+    // when
+    DateTimeHolder dateTimeHolder = new DateTimeHolder(dateAndTime);
+
+    // then
+    assertThat(dateTimeHolder.toStringWithoutTimeAndDay()).isEqualTo("12/2023");
+  }
+
+  @Test
+  void now_shouldReturnCurrentDateTimeHolder() {
+    // when
+    DateTimeHolder nowHolder = DateTimeHolder.now();
+
+    // then
+    assertThat(nowHolder).isNotNull();
+    assertThat(nowHolder.getDateTime()).isNotNull();
+  }
+
+  @Test
+  void check_different_combinations() {
+    // when
+    DateTimeHolder dateNull = new DateTimeHolder(null);
+    DateTimeHolder dateOnlyYear = new DateTimeHolder(new DateTimeType("2023"));
+    DateTimeHolder dateYearMonth = new DateTimeHolder(new DateTimeType("2023-12"));
+    DateTimeHolder dateNoTime = new DateTimeHolder(new DateTimeType("2023-12-20"));
+    // then
+    assertThat(dateNull.getDateTime()).isNull();
+    assertThat(dateOnlyYear.getDateTime()).isNotNull();
+    assertThat(dateYearMonth.getDateTime()).isNotNull();
+    assertThat(dateNoTime.getDateTime()).isNotNull();
+  }
+
+  @Test
+  void validOrNull_shouldReturnValidDateTime() {
+    // given
+    DateTimeType validDateTime = new DateTimeType("2023-12-20T17:35:00");
+
+    // when
+    DateTimeHolder dateTimeHolder = new DateTimeHolder(validDateTime);
+
+    // then
+    assertThat(dateTimeHolder.getDateTime()).isEqualTo(validDateTime);
   }
 }

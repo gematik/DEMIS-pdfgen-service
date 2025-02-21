@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!--/*@thymesVar id="questionnaire" type="de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.Questionnaire"*/-->
+<!--/*@thymesVar id="item" type="de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.Item"*/-->
+<!--/*@thymesVar id="answer" type="de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.Answer"*/-->
+<th:block th:fragment="questionnaire(questionnaire)">
+    <th:block th:if="${questionnaire != null}">
+        <tr th:replace='~{fragment/rows :: titleRow(${questionnaire.title})}'></tr>
+
+        <tr th:replace='~{fragment/rows :: paddedRow(#{disease-notification.questionnaire.response.status},${questionnaire.status})}'></tr>
+        <!-- iterate top-level items -->
+        <th:block th:each="item : ${questionnaire.items}">
+
+            <th:block th:unless="${item.isResourceBlock()}">
+                <!-- top-level item -->
+                <th:block th:replace='~{receipt/diseaseNotification/section/questionnaire/item :: item(${item})}'/>
+                <th:block th:if="${item.hasSubitems()}">
+                    <tr th:replace='~{fragment/rows :: doubleBorder}'></tr>
+                </th:block>
+            </th:block>
+
+            <th:block th:if="${item.isResourceBlock()}">
+                <!-- top-level resource block item -->
+                <th:block th:with="answer=${item.getAnswers().get(0)}">
+                    <tr th:replace='~{fragment/rows :: paddedRow(${item.getText()}, ${answer.value()})}'></tr>
+                    <th:block th:replace='~{receipt/diseaseNotification/section/questionnaire/resources :: resources(${answer})}'/>
+                    <tr th:replace='~{fragment/rows :: doubleBorder}'></tr>
+                </th:block>
+            </th:block>
+
+        </th:block>
+    </th:block>
+</th:block>
+
+</body>
+</html>

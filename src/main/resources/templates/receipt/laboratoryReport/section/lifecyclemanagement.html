@@ -2,6 +2,7 @@
 <html lang="de" xmlns:th="http://www.thymeleaf.org">
 <body>
 
+
 <th:block th:fragment="lifecyclemanagement(laboratoryReportTemplateDto)">
     <div id="lifecycle-title">
         <p class="document-title">Informationen zur Weitergabe der zugehörigen Probe an andere Labore
@@ -38,7 +39,7 @@
                 <span class="blue-font small-font"
                       th:text='#{common.notified.person.postal-code-short}'></span>
                 <span class="small-font"
-                      th:text='${laboratoryReportTemplateDto.notifiedPersonDTO.anonymized().postalCode()}'></span>
+                      th:text='${laboratoryReportTemplateDto.notifiedPersonDTO.anonymized().shortPostalCode()}'></span>
             </div>
             <br/>
             <br/>
@@ -65,12 +66,33 @@
                 <span class="small-font"
                       th:text='${laboratoryReportTemplateDto.labReport.labRequestId}'></span>
             </div>
+            <th:block th:if="${laboratoryReportTemplateDto.labReport.hasLabTest()}">
+                <br/>
+                <br/>
+                <div id="box-observation-id">
+                    <div>
+                        <span class="blue-font small-font" th:text='#{laboratory-report.lab-report.notification-reason}'></span>
+                        <span class="small-font" th:text='${#strings.toUpperCase(laboratoryReportTemplateDto.labReport.notificationCategoryShortCode)}'></span>
+                    </div>
+                    <th:block th:each="test : ${laboratoryReportTemplateDto.labReport.labTests}">
+                        <div class="specimen-wrapper">
+                        <th:block th:unless="${test.specimen.collectionTime.toStringWithoutTime.isBlank()}">
+                            <span class="blue-font small-font" th:text='#{laboratory-report.lab-test.specimen.collection}'></span>
+                            <span class="small-font" th:text="${test.specimen.collectionTime.toStringWithoutTime}"></span>
+                            <br />
+                        </th:block>
+                        <span class="blue-font small-font" th:text='#{laboratory-report.lab-test.specimen.material}'></span>
+                        <span class="small-font" th:text='${test.specimen.material}'></span>
+                        </div>
+                    </th:block>
+                </div>
+            </th:block>
             <br/>
         </div>
         <div class="qrcode-placeholder">
             <span th:text='#{common.notification.identifier}'></span>
             <br/>
-            <img alt="qr-notification-identifier" class="title-qr"
+            <img alt="qr-notification-identifier" class="lifecycle-qr"
                  th:src='${"data:image/png;base64," + laboratoryReportTemplateDto.qrCode}'/>
             <br/>
             <span class="small-font"

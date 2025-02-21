@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <link rel="stylesheet" th:href="@{classpath:/static/styles/main.css}"/>
+    <link rel="stylesheet" th:href="@{~/styles/main.css}"/>
     <title th:text="#{laboratory-report.title}"></title>
 </head>
 <body>
@@ -35,6 +35,8 @@
         <th:block th:replace='~{receipt/laboratoryReport/section/submitter :: submitter(${laboratoryReportTemplateDto.submitter})}'/>
 
         <th:block th:replace='~{receipt/laboratoryReport/section/labReport :: labReport(${laboratoryReportTemplateDto.labReport})}'/>
+
+        <th:block th:replace='~{receipt/common/section/authentication :: authentication(${laboratoryReportTemplateDto.authentication})}'/>
 
     </table>
 

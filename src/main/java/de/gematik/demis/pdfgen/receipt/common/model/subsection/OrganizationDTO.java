@@ -18,54 +18,40 @@
 
 package de.gematik.demis.pdfgen.receipt.common.model.subsection;
 
-import static de.gematik.demis.pdfgen.utils.StringUtils.concatenateWithDelimiter;
-import static org.apache.commons.lang3.StringUtils.isBlank;
+/*-
+ * #%L
+ * pdfgen-service
+ * %%
+ * Copyright (C) 2025 gematik GmbH
+ * %%
+ * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
+ * European Commission – subsequent versions of the EUPL (the "Licence").
+ * You may not use this work except in compliance with the Licence.
+ *
+ * You find a copy of the Licence in the "Licence" file or at
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied.
+ * In case of changes by gematik find details in the "Readme" file.
+ *
+ * See the Licence for the specific language governing permissions and limitations under the Licence.
+ * #L%
+ */
 
-import de.gematik.demis.pdfgen.receipt.common.model.interfaces.TelecomsHolder;
-import de.gematik.demis.pdfgen.utils.MessageUtil;
-import de.gematik.demis.pdfgen.utils.StringUtils;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class OrganizationDTO extends TelecomsHolder {
-
+public class OrganizationDTO implements PrintableOrganization {
+  private String id;
   private String name;
   private String type;
   private AddressDTO addressDTO;
   private List<Telecom> telecoms;
   private NameDTO nameDTO;
-
-  public String getOrganizationInfoIncludingName() {
-    return concatenateWithDelimiter(
-        StringUtils.LINE_BREAK,
-        getNameAndType(),
-        addressDTO.getFullNameAndAddressAsSingleLine(),
-        getTelecomsAsMultipleLines(),
-        getContactWithLabel());
-  }
-
-  public String getOrganizationInfo() {
-    return concatenateWithDelimiter(
-        StringUtils.LINE_BREAK,
-        addressDTO.getFullNameAndAddressAsSingleLine(),
-        getTelecomsAsMultipleLines(),
-        getContactWithLabel());
-  }
-
-  private String getNameAndType() {
-    return isBlank(type) ? name : name + " (" + type + ")";
-  }
-
-  private String getContactWithLabel() {
-    if (nameDTO == null) {
-      return "";
-    }
-    String fullName = nameDTO.getFullName();
-    return isBlank(fullName)
-        ? ""
-        : MessageUtil.get("common.organization.contact.prefix").trim() + " " + fullName;
-  }
+  private String department;
 }

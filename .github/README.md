@@ -4,10 +4,12 @@
 
 ## About The Project
 
-Service generating pdf document from a thymeleaf template for a notification receipt
+This service processes FHIR messages and converts them into PDF receipts. The goal is to encapsulate all pertinent business information into a printable format. Currently, the service supports the generation of PDF files from the following types of FHIR messages:
+- Bed occupancy report
+- Disease notification
+- Pathogen notification (aka. laboratory report)
 
-There are receipt endpoints which accept a FHIR Bundle either as a JSON or as an XML,
-and returns a receipt PDF file as bytes. The media type must be provided as a request header and must be type
+The media type must be provided as a request header and must be of type
 "application/json" or "application/xml".
 
 ### Quality Gate
@@ -30,6 +32,12 @@ mvn clean install -Pdocker
 
 ## Usage
 
+### Swagger
+
+When running locally, swagger can be found at:
+
+http://localhost:8080/swagger-ui/index.html
+
 ### Properties
 
 | Property                             | Default Value                                             | Description                                                 |
@@ -41,11 +49,26 @@ mvn clean install -Pdocker
 
 ### Endpoints
 
-| Endpoint               | Description                                     |
-|------------------------|-------------------------------------------------|
-| `/bedOccupancy `       | POST endpoint for bed occupancy report receipts |
-| `/diseaseNotification` | POST endpoint for disease notification receipts |
-| `/laboratoryReport `   | POST endpoint for laboratory report receipts    |
+Endpoints offered by the service.
+
+| Endpoint             | Method | Input                                | Output         |
+|----------------------|--------|--------------------------------------|----------------|
+| /bedOccupancy        | POST   | FHIR bed-occupancy report JSON/XML   | PDF file bytes |
+| /diseaseNotification | POST   | FHIR disease notification JSON/XML   | PDF file bytes |
+| /laboratoryReport    | POST   | FHIR pathogen notification JSON/XML  | PDF file bytes |
+
+
+### Configuration
+
+The Spring application properties of the service.
+
+| Feature             | Parameter                            | Description                                                 | Example values                                  |
+|---------------------|--------------------------------------|-------------------------------------------------------------|-------------------------------------------------|
+| Spring cache (FUTS) | SPRING_CACHE_TYPE                    | On-off switch for Spring caching. Remove to enable caching. | none                                            |
+|                     | SPRING_CACHE_CAFFEINE_SPEC           | All-in-one text to configure all caching parameters.        | "expireAfterWrite=1h,expireAfterAccess=15m"     |
+|                     | SPRING_CACHE_CACHE_NAMES             | Listing of all enabled caches.                              | "futs-code-systems,futs-disease-questionnaires" |
+|                     | SPRING_CLOUD_OPENFEIGN_CACHE_ENABLED | On-off switch for Feign caching.                            | false                                           |
+
 
 ## Contributing
 

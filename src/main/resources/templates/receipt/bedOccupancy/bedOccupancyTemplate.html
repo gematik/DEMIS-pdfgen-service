@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" th:href="@{classpath:/static/styles/main.css}"/>
+    <link rel="stylesheet" th:href="@{~/styles/main.css}"/>
     <title th:text="#{bed-occupancy.title}+' - '+${bedOccupancy.organization.name}"></title>
 </head>
 <body>
@@ -9,6 +9,8 @@
 <!--Title-->
 <span th:replace='~{receipt/common/section/header :: header(#{bed-occupancy.title})}'></span>
 
+<!--/*@thymesVar id="bedOccupancy" type="de.gematik.demis.pdfgen.receipt.bedoccupancy.model.BedOccupancy"*/-->
+<!--/*@thymesVar id="organization" type="de.gematik.demis.pdfgen.receipt.common.model.subsection.OrganizationDTO"*/-->
 <div class="table-padding">
 
     <table>
@@ -19,23 +21,21 @@
                     #{common.notification.identifier},
                     ${bedOccupancy.notificationId})}'></tr>
 
-        <tr th:replace='~{fragment/rows :: titleRow(#{bed-occupancy.organization.header})}'></tr>
-
-        <tr th:replace='~{fragment/rows :: paddedRow(
-            #{bed-occupancy.organization.name},
-            ${bedOccupancy.organization.name})}'></tr>
-
-        <tr th:replace='~{fragment/rows :: paddedRow(
-            #{bed-occupancy.organization.identifier},
-            ${bedOccupancy.organization.id})}'></tr>
-
-        <tr th:replace='~{fragment/rows :: paddedRow(
-            #{bed-occupancy.organization.address},
-            ${bedOccupancy.organization.address.getFullAddressAsSingleLine()})}'></tr>
-
-        <tr th:replace='~{fragment/rows :: paddedRow(
-                        #{bed-occupancy.organization.telecom},
-                        ${bedOccupancy.organization.getTelecomsAsMultipleLines()})}'></tr>
+        <th:block th:with="organization=${bedOccupancy.getOrganization()}">
+            <tr th:replace='~{fragment/rows :: titleRow(#{bed-occupancy.organization.header})}'></tr>
+            <tr th:replace='~{fragment/rows :: paddedRow(
+                #{bed-occupancy.organization.name},
+                ${organization.getNameAndType()})}'></tr>
+            <tr th:replace='~{fragment/rows :: paddedRow(
+                #{bed-occupancy.organization.identifier},
+                ${organization.getId()})}'></tr>
+            <tr th:replace='~{fragment/rows :: paddedRow(
+                #{bed-occupancy.organization.address},
+                ${organization.getAddressDTO().getOrganizationAddressAsSingleLine()})}'></tr>
+            <tr th:replace='~{fragment/rows :: paddedRow(
+                #{bed-occupancy.organization.telecom},
+                ${organization.getTelecomsAsMultipleLines()})}'></tr>
+        </th:block>
 
         <tr th:replace='~{fragment/rows :: titleRow(#{bed-occupancy.beds.occupied.header})}'></tr>
 
@@ -59,6 +59,9 @@
                 ${bedOccupancy.numberOperableBedsGeneralWardChildren})}'></tr>
 
         </th:block>
+
+        <th:block
+                th:replace='~{receipt/common/section/authentication :: authentication(${bedOccupancy.authentication})}'/>
 
     </table>
 </div>
