@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!--/*@thymesVar id="answer" type="de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.Answer"*/-->
+<!--/*@thymesVar id="subitem" type="de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.Item"*/-->
+<!--/*@thymesVar id="organization" type="de.gematik.demis.pdfgen.receipt.common.model.subsection.OrganizationDTO"*/-->
+<th:block th:fragment="laboratories(answer)">
+    <th:block
+            th:with="subitems=${answer.subitems()}">
+        <th:block th:each="subitem, iter : ${subitems}">
+
+            <!-- heading -->
+            <th:block th:if="${subitems.size()} == 1">
+                <tr th:replace='~{fragment/rows :: paddedTitleRow(${subitem.getText()})}'></tr>
+            </th:block>
+            <th:block th:if="${subitems.size()} > 1">
+                <tr th:replace='~{fragment/rows :: paddedTitleRow(${subitem.getText() + " " + (iter.index+1)})}'></tr>
+            </th:block>
+
+            <!-- laboratory -->
+            <th:block th:with="organization=${subitem.getResource().getLaboratory()}">
+                <tr th:replace="~{fragment/rows :: paddedRow(
+                        #{disease-notification.common-questions.lab.name},
+                        ${organization.getNameAndType})}"></tr>
+                <tr th:replace='~{fragment/rows :: paddedRow(
+                        #{common.section.address.header},
+                        ${organization.getAddressDTO()?.getFullAddressAsSingleLine()})}'></tr>
+                <tr th:replace="~{fragment/rows :: paddedRow(
+                        #{common.section.contact.header},
+                        ${organization.getTelecomsAsMultipleLines()})}"></tr>
+                <tr th:replace='~{fragment/rows :: paddedRow(
+                        #{disease-notification.common-questions.lab.organizationDTO.nameDTO.person},
+                        ${organization.getNameDTO()?.getFullName()})}'></tr>
+            </th:block>
+
+        </th:block>
+    </th:block>
+</th:block>
+
+</body>
+</html>

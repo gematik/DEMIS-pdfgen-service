@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!--/*@thymesVar id="answer" type="de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.Answer"*/-->
+<!--/*@thymesVar id="subitem" type="de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.Item"*/-->
+<!--/*@thymesVar id="immunization" type="de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.resources.Immunization"*/-->
+<th:block th:fragment="immunizations(answer)">
+    <th:block
+            th:with="subitems=${answer.subitems()}">
+        <th:block th:each="subitem, iter : ${subitems}">
+
+            <!-- heading -->
+            <th:block th:if="${subitems.size()} == 1">
+                <tr th:replace='~{fragment/rows :: paddedTitleRow(${subitem.getText()})}'></tr>
+            </th:block>
+            <th:block th:if="${subitems.size()} > 1">
+                <tr th:replace='~{fragment/rows :: paddedTitleRow(${subitem.getText() + " " + (iter.index+1)})}'></tr>
+            </th:block>
+
+            <!-- immunization -->
+            <th:block th:with="immunization=${subitem.getResource().getImmunization()}">
+                <tr th:replace="~{fragment/rows :: paddedRow(
+                        #{disease-notification.disease-questions.immunization.entry.vaccine},
+                        ${immunization.vaccine()})}"></tr>
+                <tr th:replace="~{fragment/rows :: paddedRow(
+                        #{disease-notification.disease-questions.immunization.entry.date},
+                        ${immunization.occurrence()})}"></tr>
+                <tr th:replace="~{fragment/rows :: paddedRow(
+                        #{disease-notification.disease-questions.immunization.entry.note},
+                        ${immunization.note()})}"></tr>
+            </th:block>
+
+        </th:block>
+    </th:block>
+</th:block>
+
+</body>
+</html>

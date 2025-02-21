@@ -18,6 +18,28 @@
 
 package de.gematik.demis.pdfgen.receipt.laboratoryreport;
 
+/*-
+ * #%L
+ * pdfgen-service
+ * %%
+ * Copyright (C) 2025 gematik GmbH
+ * %%
+ * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
+ * European Commission – subsequent versions of the EUPL (the "Licence").
+ * You may not use this work except in compliance with the Licence.
+ *
+ * You find a copy of the Licence in the "Licence" file or at
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied.
+ * In case of changes by gematik find details in the "Readme" file.
+ *
+ * See the Licence for the specific language governing permissions and limitations under the Licence.
+ * #L%
+ */
+
 import de.gematik.demis.fhirparserlibrary.FhirParser;
 import de.gematik.demis.pdfgen.pdf.PdfData;
 import de.gematik.demis.pdfgen.pdf.PdfGenerationException;
@@ -68,19 +90,9 @@ public class LaboratoryReportService {
     return generatePdfFromBundle(bundle);
   }
 
-  private PdfData generatePdfFromBundle(final Bundle bundle) throws PdfGenerationException {
-    LaboratoryReportTemplateDto laboratoryReportTemplateDto =
-        this.laboratoryReportTemplateDtoFactory.create(bundle, this.qrCodeOnLastPage);
-    return generatePdfFromDto(laboratoryReportTemplateDto);
-  }
-
   public PdfData generatePdfFromDto(final LaboratoryReportTemplateDto dto)
       throws PdfGenerationException {
     return new PdfData(this.pdfGenerator.generatePdfFromHtml(createHtml(dto)));
-  }
-
-  private String createHtml(LaboratoryReportTemplateDto dto) {
-    return this.templateParser.process(dto, this.laboratoryReportTemplate);
   }
 
   /**
@@ -96,6 +108,16 @@ public class LaboratoryReportService {
     log.debug(
         "Initialized laboratory reports service! Duration: {} ms PdfBytes: {}",
         (System.currentTimeMillis() - startMillis),
-        String.valueOf(pdf.bytes().length));
+        pdf.bytes().length);
+  }
+
+  private PdfData generatePdfFromBundle(final Bundle bundle) throws PdfGenerationException {
+    LaboratoryReportTemplateDto laboratoryReportTemplateDto =
+        this.laboratoryReportTemplateDtoFactory.create(bundle, this.qrCodeOnLastPage);
+    return generatePdfFromDto(laboratoryReportTemplateDto);
+  }
+
+  private String createHtml(LaboratoryReportTemplateDto dto) {
+    return this.templateParser.process(dto, this.laboratoryReportTemplate);
   }
 }

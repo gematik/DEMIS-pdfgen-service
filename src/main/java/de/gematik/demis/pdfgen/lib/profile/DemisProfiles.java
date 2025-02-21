@@ -18,6 +18,28 @@
 
 package de.gematik.demis.pdfgen.lib.profile;
 
+/*-
+ * #%L
+ * pdfgen-service
+ * %%
+ * Copyright (C) 2025 gematik GmbH
+ * %%
+ * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
+ * European Commission – subsequent versions of the EUPL (the "Licence").
+ * You may not use this work except in compliance with the Licence.
+ *
+ * You find a copy of the Licence in the "Licence" file or at
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied.
+ * In case of changes by gematik find details in the "Readme" file.
+ *
+ * See the Licence for the specific language governing permissions and limitations under the Licence.
+ * #L%
+ */
+
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import java.util.Objects;
 import org.hl7.fhir.r4.model.Bundle;
@@ -32,6 +54,7 @@ import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Practitioner;
 import org.hl7.fhir.r4.model.PractitionerRole;
 import org.hl7.fhir.r4.model.PrimitiveType;
+import org.hl7.fhir.r4.model.Provenance;
 import org.hl7.fhir.r4.model.QuestionnaireResponse;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.Specimen;
@@ -105,6 +128,8 @@ public final class DemisProfiles {
       profile(PROFILE_BASE_URL + "StructureDefinition/NotifiedPersonNotByName");
   public static final Profile<QuestionnaireResponse> STATISTIC_INFORMATION_BED_OCCUPANCY =
       profile(PROFILE_BASE_URL + "StructureDefinition/StatisticInformationBedOccupancy");
+  public static final Profile<Provenance> DEMIS_PROVENANCE =
+      profile(PROFILE_BASE_URL + "StructureDefinition/DemisProvenance");
 
   private DemisProfiles() {
     throw new IllegalStateException();

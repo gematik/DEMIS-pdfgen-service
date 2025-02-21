@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" th:href="@{classpath:/static/styles/main.css}"/>
+    <link rel="stylesheet" th:href="@{~/styles/main.css}"/>
     <title th:text="#{disease-notification.title}"></title>
 </head>
 <body>
@@ -13,9 +13,12 @@
 
     <!--Text-->
     <p style="margin-top: 0px; margin-bottom: 4px;" th:text="#{common.header.text}"></p>
+    <p style="margin-top: 0px; margin-bottom: 8px;">
+        Weiterführende Informationen zur Meldung gemäß §6 IfSG finden Sie in der <a href="https://go.gematik.de/demis-info-disease">DEMIS-Wissensdatenbank</a>
+    </p>
 
     <table>
-        <!--/*@thymesVar id="diseaseNotificationTemplateDto" type="de.gematik.demis.pdfgenmodels.model.DiseaseNotificationBundle"*/-->
+        <!--/*@thymesVar id="diseaseNotificationTemplateDto" type="de.gematik.demis.pdfgen.receipt.diseasenotification.model.DiseaseNotificationTemplateDto"*/-->
 
         <th:block th:replace='~{receipt/common/section/metadata :: metadata(${diseaseNotificationTemplateDto.metadata})}'/>
 
@@ -34,10 +37,13 @@
                 th:replace='~{receipt/diseaseNotification/section/condition :: conditionDTO(${diseaseNotificationTemplateDto.conditionDTO})}'/>
 
         <th:block
-                th:replace='~{receipt/diseaseNotification/section/commonQuestions/commonQuestions :: commonQuestions(${diseaseNotificationTemplateDto.commonQuestions})}'/>
+                th:replace='~{receipt/diseaseNotification/section/questionnaire/questionnaire :: questionnaire(${diseaseNotificationTemplateDto.commonQuestionnaire})}'/>
 
         <th:block
-                th:replace='~{receipt/diseaseNotification/section/covid19Questions/covid19Questions :: covid19Questions(${diseaseNotificationTemplateDto.covid19Questions})}'/>
+                th:replace='~{receipt/diseaseNotification/section/questionnaire/questionnaire :: questionnaire(${diseaseNotificationTemplateDto.specificQuestionnaire})}'/>
+
+        <th:block
+                th:replace='~{receipt/common/section/authentication :: authentication(${diseaseNotificationTemplateDto.authentication})}'/>
 
     </table>
 </div>

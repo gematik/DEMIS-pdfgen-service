@@ -2,6 +2,22 @@
 
 # Release pdfgen-Service
 
+## Release 2.6.3 (205-02-21)
+- Updates:
+  - Dependency-Updates (CVEs et al.)
+  - Introducing resistances after §7.1 
+  - Extend internal data model
+  - Adding FUTS caching
+  - PDF receipt enriched with context information
+  - Link to info package in PDF Receipt for illness reports
+  - Add sampling and sample material to PDF Receipt
+  - Update Error-Handling
+  - Allow multiple samples in the PDF receipt
+  - Include the reason for the examination in the PDF receipt
+  - Presentation of data from the non-formal notification
+  - Address order updated
+  - Update reason for hospitalization
+
 ## Release 2.1.5 (2023-12-14)
 - first official GitHub-Release
 

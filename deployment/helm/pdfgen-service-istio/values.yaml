@@ -4,20 +4,20 @@ service:
   ports:
     http: 8080
 istio:
-  enable: true
   virtualService:
     gateways: {}
     http:
-      uri:
-        prefix: /
+      match:
+        - uri:
+            prefix: /
       rewrite:
         uri: /
-#      timeout: 15s
+      timeout: null
       retries:
         enable: true
         attempts: 3
         perTryTimeout: 2s
-#        retryOn: 503
+        retryOn: null
     hosts: {}
   subsets:
     main:

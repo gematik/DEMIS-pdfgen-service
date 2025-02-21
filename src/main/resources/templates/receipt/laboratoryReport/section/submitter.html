@@ -3,50 +3,43 @@
 <body>
 
 
+<!--/*@thymesVar id="submitter" type="de.gematik.demis.pdfgen.receipt.laboratoryreport.model.submitter.Submitter"*/-->
+<!--/*@thymesVar id="facility" type="de.gematik.demis.pdfgen.receipt.common.model.subsection.Facility"*/-->
+<!--/*@thymesVar id="person" type="de.gematik.demis.pdfgen.receipt.common.model.subsection.Person"*/-->
 <th:block th:fragment="submitter(submitter)">
-    <!--/*@thymesVar id="submitter" type="de.gematik.demis.pdfgenmodels.model.submitter.Submitter"*/-->
 
     <th:block th:if="${submitter != null}">
-        <th:block th:if="${submitter.hasPerson()}">
 
+        <th:block th:if="${submitter.hasPerson()}" th:with="person=${submitter.getPerson()}">
             <tr th:replace='~{fragment/rows :: titleRow(#{laboratory-report.submitter.person.header})}'></tr>
-
             <tr th:replace='~{fragment/rows :: paddedRow(
                 #{laboratory-report.submitter.person.name},
-                ${submitter.person.nameDTO?.getFullName()})}'></tr>
-
+                ${person.getNameDTO()?.getFullName()})}'></tr>
             <tr th:replace='~{fragment/rows :: paddedRow(
                 #{laboratory-report.submitter.person.address},
-                ${submitter.person.addressDTO?.getFullAddressAsSingleLine()})}'></tr>
-
+                ${person.getAddressDTO()?.getFullAddressAsSingleLine()})}'></tr>
             <tr th:replace='~{fragment/rows :: paddedRow(
                 #{laboratory-report.submitter.person.nameDTO},
-                ${submitter.person.getTelecomsAsMultipleLines()})}'></tr>
-
+                ${person.getTelecomsAsMultipleLines()})}'></tr>
         </th:block>
-        <th:block th:if="${!submitter.hasPerson() && submitter.hasFacility()}">
 
+        <th:block th:if="${!submitter.hasPerson() && submitter.hasFacility()}" th:with="facility=${submitter.facility}">
             <tr th:replace='~{fragment/rows :: titleRow(#{laboratory-report.submitter.facility.header})}'></tr>
-
             <tr th:replace='~{fragment/rows :: paddedRow(
                 #{laboratory-report.submitter.facility.name},
-                ${submitter.facility.name})}'></tr>
-
+                ${facility.getNameAndStationOrType()})}'></tr>
             <tr th:replace='~{fragment/rows :: paddedRow(
                 #{laboratory-report.submitter.facility.identifier},
-                ${submitter.facility.identifier?.getAsMultipleLines()})}'></tr>
-
+                ${facility.getIdentifier()?.getAsMultipleLines()})}'></tr>
             <tr th:replace='~{fragment/rows :: paddedRow(
                 #{laboratory-report.submitter.facility.address},
-                ${submitter.facility.addressDTO?.getFullAddressAsSingleLine()})}'></tr>
-
+                ${facility.getAddressDTO()?.getFullAddressAsSingleLine()})}'></tr>
             <tr th:replace='~{fragment/rows :: paddedRow(
                 #{laboratory-report.submitter.facility.nameDTO},
-                ${submitter.facility.getTelecomsAsMultipleLines()})}'></tr>
-
+                ${facility.getTelecomsAsMultipleLines()})}'></tr>
             <tr th:replace='~{fragment/rows :: paddedRow(
                 #{laboratory-report.submitter.facility.nameDTO.person},
-                ${submitter.facility.nameDTO?.getFullName()})}'></tr>
+                ${facility.getNameDTO()?.getFullName()})}'></tr>
         </th:block>
 
     </th:block>

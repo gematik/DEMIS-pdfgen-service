@@ -18,6 +18,28 @@
 
 package de.gematik.demis.pdfgen;
 
+/*-
+ * #%L
+ * pdfgen-service
+ * %%
+ * Copyright (C) 2025 gematik GmbH
+ * %%
+ * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
+ * European Commission – subsequent versions of the EUPL (the "Licence").
+ * You may not use this work except in compliance with the Licence.
+ *
+ * You find a copy of the Licence in the "Licence" file or at
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied.
+ * In case of changes by gematik find details in the "Readme" file.
+ *
+ * See the Licence for the specific language governing permissions and limitations under the Licence.
+ * #L%
+ */
+
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.parser.DataFormatException;
 import de.gematik.demis.pdfgen.pdf.PdfGenerationException;
@@ -48,16 +70,20 @@ public class ExceptionHandlingController extends ResponseEntityExceptionHandler 
   }
 
   @ExceptionHandler(DataFormatException.class)
-  public ResponseEntity<String> fhirResourceParsingExceptionReturns422() {
+  public ResponseEntity<String> fhirResourceParsingExceptionReturns422(
+      DataFormatException exception) {
     log.warn(
-        "Returning 422 (Unprocessable Entity) response status due to FhirResourceParsingException");
+        "Returning 422 (Unprocessable Entity) response status due to FhirResourceParsingException",
+        exception);
     String serializedOperationOutcome = createErrorOperationOutcome("Unsupported resource bundle");
     return ResponseEntity.unprocessableEntity().body(serializedOperationOutcome);
   }
 
   @ExceptionHandler(PdfGenerationException.class)
-  public ResponseEntity<String> pdfGenerationExceptionReturns500() {
-    log.error("Returning 500 Internal Server error response status due to PdfGenerationException");
+  public ResponseEntity<String> pdfGenerationExceptionReturns500(PdfGenerationException exception) {
+    log.error(
+        "Returning 500 Internal Server error response status due to PdfGenerationException",
+        exception);
     String serializedOperationOutcome =
         createErrorOperationOutcome("Internal Error: pdf generation failed");
     return ResponseEntity.internalServerError().body(serializedOperationOutcome);

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- Recursively prints item, answers, answers' subitems and this item's subitems -->
+<!--/*@thymesVar id="item" type="de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.Item"*/-->
+<!--/*@thymesVar id="answer" type="de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.Answer"*/-->
+<!--/*@thymesVar id="subitem" type="de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.Item"*/-->
+<th:block th:fragment="item(item)">
+
+    <th:block th:unless="${item.isResource()}">
+        <th:block th:with="answers=${item.getAnswers()}">
+            <th:block th:unless="${answers.size()} > 1">
+                <th:block th:replace='~{this :: multiRowItem(${item})}'/>
+            </th:block>
+            <th:block th:if="${answers.size()} > 1">
+                <th:block th:replace='~{this::singleRowItem(${item})}'/>
+            </th:block>
+        </th:block>
+    </th:block>
+
+    <th:block th:if="${item.isResource()}">
+        <th:block th:replace='~{receipt/diseaseNotification/section/questionnaire/resources :: resource(${item})}'/>
+    </th:block>
+
+</th:block>
+
+<th:block th:fragment="multiRowItem(item)">
+    <!-- printing standard item -->
+    <th:block th:if="${!item.getAnswers().isEmpty()}" th:with="answer=${item.getAnswers().get(0)}">
+        <th:block th:if="${answer.value()} != null">
+            <th:block th:replace='~{fragment/rows :: paddedRow(${item.getText()}, ${answer.value()})}'/>
+        </th:block>
+        <th:block th:each="subitem : ${answer.subitems()}">
+            <th:block th:replace='~{this::item(${subitem})}'/>
+        </th:block>
+    </th:block>
+    <th:block th:each="subitem : ${item.getSubitems()}">
+        <th:block th:replace='~{this::item(${subitem})}'/>
+    </th:block>
+</th:block>
+
+<!-- Prints all data of the item as listing in a single table cell -->
+<th:block th:fragment="singleRowItem(item)">
+    <!-- printing complex item to single row with data listing -->
+    <tr>
+        <th class="single-padded italic-header" th:text='${item.getText()}'></th>
+        <td>
+            <ul>
+                <th:block th:each="answer : ${item.getAnswers()}">
+                    <th:block th:replace='~{this::listAnswer(${answer})}'/>
+                </th:block>
+                <th:block th:each="subitem : ${item.getSubitems()}">
+                    <th:block th:replace='~{this::listItem(${subitem})}'/>
+                </th:block>
+            </ul>
+        </td>
+    </tr>
+</th:block>
+
+<th:block th:fragment="listAnswer(answer)">
+    <li>
+        <th:block th:if="${answer.value()}  != null">
+            <span th:text="${answer.value()}"/>
+        </th:block>
+        <ul th:each="subitem : ${answer.subitems()}">
+            <th:block th:replace='~{this::listItem(${subitem})}'/>
+        </ul>
+    </li>
+</th:block>
+
+<th:block th:fragment="listItem(item)">
+    <li>
+        <span th:text="${item.getText()}"/>
+        <ul>
+            <th:block th:each="answer : ${item.getAnswers()}">
+                <th:block th:replace='~{this::listAnswer(${answer})}'/>
+            </th:block>
+            <th:block th:each="subitem : ${item.getSubitems()}">
+                <th:block th:replace='~{this::listItem(${subitem})}'/>
+            </th:block>
+        </ul>
+    </li>
+</th:block>
+
+</body>
+</html>

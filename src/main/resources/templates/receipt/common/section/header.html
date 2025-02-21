@@ -8,11 +8,11 @@
 <th:block th:fragment="header(title)">
     <div class="header-table">
         <div class="header-row">
-            <div class="header-cell">
+            <div class="title-cell">
                 <span class="document-title" th:text='${title}'></span>
             </div>
-            <div class="header-cell">
-                <img alt="demis-logo" height="53px" width="375px" th:src="@{classpath:/static/images/demis_logo.jpg}" />
+            <div class="logo-cell">
+                <img src="../../images/demis_logo.jpg" title="DEMIS-Logo" alt="DEMIS-Logo" height="53px" width="375px" th:src="@{~/images/demis_logo.jpg}"/>
             </div>
         </div>
     </div>

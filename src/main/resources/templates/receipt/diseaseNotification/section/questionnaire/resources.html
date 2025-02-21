@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- resources block as answer subitems -->
+<!--/*@thymesVar id="item" type="de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.Item"*/-->
+<!--/*@thymesVar id="answer" type="de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.Answer"*/-->
+<!--/*@thymesVar id="resource" type="de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.resources.Resource"*/-->
+<th:block th:fragment="resources(answer)">
+    <th:block th:with="resource=${answer.subitems().get(0).getResource()}">
+        <th:block th:if="${resource.getHospitalization()} != null">
+            <th:block
+                    th:replace="~{receipt/diseaseNotification/section/questionnaire/hospitalizations :: hospitalizations(${answer})}"/>
+        </th:block>
+        <th:block th:if="${resource.getImmunization()} != null">
+            <th:block
+                    th:replace='~{receipt/diseaseNotification/section/questionnaire/immunizations :: immunizations(${answer})}'/>
+        </th:block>
+        <th:block th:if="${resource.getLaboratory()} != null">
+            <th:block
+                    th:replace='~{receipt/diseaseNotification/section/questionnaire/laboratories :: laboratories(${answer})}'/>
+        </th:block>
+    </th:block>
+</th:block>
+
+<!-- single resource -->
+<th:block th:fragment="resource(item)">
+    <th:block th:with="resource=${item.getResource()}">
+        <tr th:replace="~{fragment/rows :: paddedRow(
+                        #{disease-notification.section.organizationDTO.description},
+                        ${resource.getOrganization()?.getOrganizationInfoIncludingName()})}"></tr>
+    </th:block>
+</th:block>
+
+</body>
+</html>

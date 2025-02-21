@@ -13,6 +13,11 @@ table {
     border-spacing: 0;
 }
 
+table tr {
+    /* Thymeleaf needs deprecated syntax here */
+    page-break-inside: avoid;
+}
+
 table th {
     font-weight: bold;
     color: #2469bc;
@@ -33,9 +38,11 @@ table td {
     white-space: pre-line;
 }
 
-table tr {
-    /* Thymeleaf needs deprecated syntax here */
-    page-break-inside: avoid;
+table td ul {
+    margin: 0;
+    padding-left: 14px;
+    padding-top: 0;
+    white-space: normal;
 }
 
 .table-padding {
@@ -78,7 +85,16 @@ table tr {
     margin-bottom: 0;
 }
 
-.header-cell {
+.title-cell {
+    width: 50%;
+    display: table-cell;
+    padding: 0 0 0 0.75cm;
+    margin: 0 0 0 0;
+    vertical-align: middle;
+    text-align: left;
+}
+
+.logo-cell {
     width: 50%;
     display: table-cell;
 }
@@ -86,9 +102,6 @@ table tr {
 .document-title {
     color: #2469bc;
     font-size: 17.4px;
-    padding-left: 0.75cm;
-    position: relative;
-    top: -4px;
 }
 
 .title-qr {
@@ -98,12 +111,19 @@ table tr {
     margin: 0;
 }
 
+.lifecycle-qr {
+    height: 2.5cm;
+    width: 2.5cm;
+    padding: 0;
+    margin-top: 0.5cm;
+}
+
 .sub-title-row {
     display: flex;
     width: 100%;
     padding-left: 0;
     padding-top: 0.25cm;
-    padding-bottom: 0.25cm;
+    padding-bottom: 0.5cm;
 }
 
 .sub-title-row-first {
@@ -131,6 +151,11 @@ table tr {
 
 .heavy-font {
     font-weight: bolder;
+}
+
+.specimen-wrapper {
+    padding: 0;
+    margin: 0 0 0.1cm;
 }
 
 /**

@@ -18,6 +18,29 @@
 
 package de.gematik.demis.pdfgen.receipt.laboratoryreport.model;
 
+/*-
+ * #%L
+ * pdfgen-service
+ * %%
+ * Copyright (C) 2025 gematik GmbH
+ * %%
+ * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
+ * European Commission – subsequent versions of the EUPL (the "Licence").
+ * You may not use this work except in compliance with the Licence.
+ *
+ * You find a copy of the Licence in the "Licence" file or at
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied.
+ * In case of changes by gematik find details in the "Readme" file.
+ *
+ * See the Licence for the specific language governing permissions and limitations under the Licence.
+ * #L%
+ */
+
+import de.gematik.demis.pdfgen.receipt.common.model.section.AuthenticationFactory;
 import de.gematik.demis.pdfgen.receipt.common.model.section.MetadataFactory;
 import de.gematik.demis.pdfgen.receipt.common.model.section.NotificationFactory;
 import de.gematik.demis.pdfgen.receipt.common.model.section.NotifiedPersonFactory;
@@ -45,6 +68,7 @@ public class LaboratoryReportTemplateDtoFactory {
   private final NotifiedPersonFactory notifiedPersonFactory;
   private final SubmitterFactory submitterFactory;
   private final LabReportFactory labReportFactory;
+  private final AuthenticationFactory authenticationFactory;
   private final QrGenerator qrGenerator;
 
   public LaboratoryReportTemplateDto create(final Bundle bundle, final boolean qrCodeOnLastPage) {
@@ -74,6 +98,7 @@ public class LaboratoryReportTemplateDtoFactory {
         .notifiedPersonDTO(notifiedPersonFactory.create(bundle))
         .submitter(submitterFactory.create(bundle))
         .labReport(labReportFactory.create(bundle))
+        .authentication(authenticationFactory.create(bundle))
         .qrCodeOnLastPage(qrCodeOnLastPage)
         .build();
   }

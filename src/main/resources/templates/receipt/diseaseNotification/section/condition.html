@@ -3,11 +3,23 @@
 <body>
 
 
+<!--/*@thymesVar id="conditionDTO" type="de.gematik.demis.pdfgen.receipt.diseasenotification.model.condition.ConditionDTO"*/-->
 <th:block th:fragment="conditionDTO(conditionDTO)">
-    <!--/*@thymesVar id="conditionDTO" type="de.gematik.demis.pdfgenmodels.model.conditionDTO.Condition"*/-->
 
     <th:block th:if="${conditionDTO != null}">
         <tr th:replace='~{fragment/rows :: titleRow(#{disease-notification.conditionDTO.header})}'></tr>
+
+        <tr th:replace='~{fragment/rows :: paddedRow(
+            #{disease-notification.conditionDTO.verification-status},
+            ${conditionDTO.verificationStatus})}'></tr>
+
+        <tr th:replace='~{fragment/rows :: paddedRow(
+            #{disease-notification.conditionDTO.clinical-status},
+            ${conditionDTO.clinicalStatus})}'></tr>
+
+        <tr th:replace='~{fragment/rows :: paddedStrongValueRow(
+            #{laboratory-report.lab-report.notification-reason},
+            ${conditionDTO.disease})}'></tr>
 
         <tr th:replace='~{fragment/rows :: paddedRow(
             #{disease-notification.conditionDTO.onset-date},

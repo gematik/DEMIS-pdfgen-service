@@ -18,6 +18,28 @@
 
 package de.gematik.demis.pdfgen.lib.profile;
 
+/*-
+ * #%L
+ * pdfgen-service
+ * %%
+ * Copyright (C) 2025 gematik GmbH
+ * %%
+ * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
+ * European Commission – subsequent versions of the EUPL (the "Licence").
+ * You may not use this work except in compliance with the Licence.
+ *
+ * You find a copy of the Licence in the "Licence" file or at
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied.
+ * In case of changes by gematik find details in the "Readme" file.
+ *
+ * See the Licence for the specific language governing permissions and limitations under the Licence.
+ * #L%
+ */
+
 import lombok.experimental.UtilityClass;
 
 /** Holds the URLs of all FHIR extensions used in the Notification API */
@@ -28,6 +50,9 @@ public class DemisExtensions {
 
   public static final String EXTENSION_URL_ADDRESS_USE =
       DemisProfiles.PROFILE_BASE_URL + "StructureDefinition/AddressUse";
+
+  public static final String EXTENSION_URL_REASON_FOR_TEST =
+      "http://hl7.org/fhir/StructureDefinition/workflow-reasonCode";
 
   public static final String EXTENSION_URL_COMMENT =
       DemisProfiles.PROFILE_BASE_URL + "StructureDefinition/Comment";
@@ -50,7 +75,7 @@ public class DemisExtensions {
   public static final String EXTENSION_URL_RECEPTION_TIME_STAMP_TYPE =
       DemisProfiles.PROFILE_BASE_URL + "StructureDefinition/ReceptionTimeStampType";
 
-  // DEMIS Arztmeldung
+  // DEMIS disease notification
 
   public static final String EXTENSION_URL_HOSPITALIZATION_NOTE =
       DemisProfiles.PROFILE_BASE_URL + "StructureDefinition/HospitalizationNote";

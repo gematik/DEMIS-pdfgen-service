@@ -18,15 +18,32 @@
 
 package de.gematik.demis.pdfgen.receipt.common.model.section;
 
+/*-
+ * #%L
+ * pdfgen-service
+ * %%
+ * Copyright (C) 2025 gematik GmbH
+ * %%
+ * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
+ * European Commission – subsequent versions of the EUPL (the "Licence").
+ * You may not use this work except in compliance with the Licence.
+ *
+ * You find a copy of the Licence in the "Licence" file or at
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied.
+ * In case of changes by gematik find details in the "Readme" file.
+ *
+ * See the Licence for the specific language governing permissions and limitations under the Licence.
+ * #L%
+ */
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.gematik.demis.pdfgen.receipt.common.model.enums.GenderEnum;
 import de.gematik.demis.pdfgen.receipt.common.model.subsection.AddressDTO;
-import de.gematik.demis.pdfgen.utils.DateTimeHolder;
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
@@ -34,6 +51,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 class AnonymizedNotifiedPersonFactoryTest {
+
+  private static final String ANONYMIZED_POSTAL_CODE_PATIENT_INFO = "101--";
+  private static final String ANONYMIZED_POSTAL_CODE_LIFECYCLE_PAGE = "101";
 
   @ParameterizedTest
   @EnumSource(value = GenderEnum.class)
@@ -46,17 +66,6 @@ class AnonymizedNotifiedPersonFactoryTest {
   void shouldAcceptNullGender() {
     AnonymizedNotifiedPerson actual = new AnonymizedNotifiedPersonFactory(null, null, null).get();
     assertThat(actual.gender()).as("missing gender of anonymized person").isNull();
-  }
-
-  @Test
-  void shouldAnonymizeBirthdate() {
-    LocalDate date = LocalDate.of(2003, Month.JULY, 24);
-    DateTimeHolder birthdate =
-        new DateTimeHolder(
-            Date.from(date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
-    AnonymizedNotifiedPerson actual =
-        new AnonymizedNotifiedPersonFactory(null, birthdate, null).get();
-    assertThat(actual.birthdate()).as("anonymized birthdate").isEqualTo("07/2003");
   }
 
   @Test
@@ -74,7 +83,12 @@ class AnonymizedNotifiedPersonFactoryTest {
                 null,
                 Collections.singleton(AddressDTO.builder().postalCode(postalCode).build()))
             .get();
-    assertThat(actual.postalCode()).as("anonymized postal code").isEqualTo("101");
+    assertThat(actual.postalCode())
+        .as("anonymized postal code")
+        .isEqualTo(ANONYMIZED_POSTAL_CODE_PATIENT_INFO);
+    assertThat(actual.shortPostalCode())
+        .as("anonymized short postal code")
+        .isEqualTo(ANONYMIZED_POSTAL_CODE_LIFECYCLE_PAGE);
   }
 
   @Test
@@ -83,7 +97,12 @@ class AnonymizedNotifiedPersonFactoryTest {
     AddressDTO spare = AddressDTO.builder().postalCode("26579").build();
     AnonymizedNotifiedPerson actual =
         new AnonymizedNotifiedPersonFactory(null, null, Arrays.asList(spare, primary)).get();
-    assertThat(actual.postalCode()).as("primary address postal code").isEqualTo("101");
+    assertThat(actual.postalCode())
+        .as("primary address postal code")
+        .isEqualTo(ANONYMIZED_POSTAL_CODE_PATIENT_INFO);
+    assertThat(actual.shortPostalCode())
+        .as("primary address short postal code")
+        .isEqualTo(ANONYMIZED_POSTAL_CODE_LIFECYCLE_PAGE);
   }
 
   @Test
@@ -93,6 +112,7 @@ class AnonymizedNotifiedPersonFactoryTest {
     AnonymizedNotifiedPerson actual =
         new AnonymizedNotifiedPersonFactory(null, null, Arrays.asList(spare, primary)).get();
     assertThat(actual.postalCode()).as("primary address set but without postal code").isNull();
+    assertThat(actual.shortPostalCode()).as("primary address set but without postal code").isNull();
   }
 
   @Test
@@ -103,7 +123,12 @@ class AnonymizedNotifiedPersonFactoryTest {
     AnonymizedNotifiedPerson actual =
         new AnonymizedNotifiedPersonFactory(null, null, Arrays.asList(spare1, spare2, spare3))
             .get();
-    assertThat(actual.postalCode()).as("first spare postal code").isEqualTo("101");
+    assertThat(actual.postalCode())
+        .as("first spare postal code")
+        .isEqualTo(ANONYMIZED_POSTAL_CODE_PATIENT_INFO);
+    assertThat(actual.shortPostalCode())
+        .as("first spare short postal code")
+        .isEqualTo(ANONYMIZED_POSTAL_CODE_LIFECYCLE_PAGE);
   }
 
   @Test

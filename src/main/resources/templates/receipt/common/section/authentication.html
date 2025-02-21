@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!--/*@thymesVar id="authentication" type="de.gematik.demis.pdfgen.receipt.common.model.section.Authentication"*/-->
+
+<th:block th:fragment="authentication(authentication)">
+
+    <th:block th:if="${authentication != null}">
+
+        <tr th:replace='~{fragment/rows :: titleRow(#{common.authentication.header})}'></tr>
+
+        <tr th:replace='~{fragment/rows :: paddedRow(
+                    #{common.authentication.routing},
+                    ${authentication.routing})}'></tr>
+
+        <tr th:replace='~{fragment/rows :: paddedRow(
+                    #{common.authentication.method},
+                    ${authentication.method})}'></tr>
+
+        <tr th:replace='~{fragment/rows :: paddedRow(
+                    #{common.authentication.level-of-assurance},
+                    ${authentication.levelOfAssurance})}'></tr>
+    </th:block>
+</th:block>
+
+</body>
+</html>

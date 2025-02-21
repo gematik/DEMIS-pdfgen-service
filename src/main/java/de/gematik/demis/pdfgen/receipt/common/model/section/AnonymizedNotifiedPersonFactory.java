@@ -18,21 +18,41 @@
 
 package de.gematik.demis.pdfgen.receipt.common.model.section;
 
+/*-
+ * #%L
+ * pdfgen-service
+ * %%
+ * Copyright (C) 2025 gematik GmbH
+ * %%
+ * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
+ * European Commission – subsequent versions of the EUPL (the "Licence").
+ * You may not use this work except in compliance with the Licence.
+ *
+ * You find a copy of the Licence in the "Licence" file or at
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied.
+ * In case of changes by gematik find details in the "Readme" file.
+ *
+ * See the Licence for the specific language governing permissions and limitations under the Licence.
+ * #L%
+ */
+
 import de.gematik.demis.pdfgen.receipt.common.model.enums.GenderEnum;
 import de.gematik.demis.pdfgen.receipt.common.model.subsection.AddressDTO;
 import de.gematik.demis.pdfgen.utils.DateTimeHolder;
+import de.gematik.demis.pdfgen.utils.PostalCodeUtils;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 
 @RequiredArgsConstructor
 final class AnonymizedNotifiedPersonFactory implements Supplier<AnonymizedNotifiedPerson> {
-
-  private static final int POSTAL_CODE_MAX_LENGTH = 3;
 
   private final GenderEnum gender;
   private final DateTimeHolder birthdate;
@@ -59,7 +79,7 @@ final class AnonymizedNotifiedPersonFactory implements Supplier<AnonymizedNotifi
    * @return postal code <code>null</code>
    */
   private String anonymizedPostalCode() {
-    return anonymizePostalCode(pickPostalCode());
+    return PostalCodeUtils.anonymizeWithPlaceholders(pickPostalCode());
   }
 
   private String pickPostalCode() {
@@ -87,15 +107,5 @@ final class AnonymizedNotifiedPersonFactory implements Supplier<AnonymizedNotifi
         .filter(Objects::nonNull)
         .findFirst()
         .orElse(null);
-  }
-
-  private static String anonymizePostalCode(String postalCode) {
-    if (StringUtils.isBlank(postalCode)) {
-      return null;
-    }
-    if (postalCode.length() > POSTAL_CODE_MAX_LENGTH) {
-      return postalCode.substring(0, POSTAL_CODE_MAX_LENGTH);
-    }
-    return postalCode;
   }
 }

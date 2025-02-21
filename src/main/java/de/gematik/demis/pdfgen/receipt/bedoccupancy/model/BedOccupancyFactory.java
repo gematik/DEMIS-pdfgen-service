@@ -18,11 +18,35 @@
 
 package de.gematik.demis.pdfgen.receipt.bedoccupancy.model;
 
+/*-
+ * #%L
+ * pdfgen-service
+ * %%
+ * Copyright (C) 2025 gematik GmbH
+ * %%
+ * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
+ * European Commission – subsequent versions of the EUPL (the "Licence").
+ * You may not use this work except in compliance with the Licence.
+ *
+ * You find a copy of the Licence in the "Licence" file or at
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied.
+ * In case of changes by gematik find details in the "Readme" file.
+ *
+ * See the Licence for the specific language governing permissions and limitations under the Licence.
+ * #L%
+ */
+
 import de.gematik.demis.pdfgen.fhir.extract.NotifierFhirQueries;
 import de.gematik.demis.pdfgen.fhir.extract.QuestionnaireFhirQueries;
+import de.gematik.demis.pdfgen.receipt.common.model.section.AuthenticationFactory;
 import de.gematik.demis.pdfgen.receipt.common.model.section.MetadataFactory;
 import de.gematik.demis.pdfgen.receipt.common.model.section.Notification;
 import de.gematik.demis.pdfgen.receipt.common.model.section.NotificationFactory;
+import de.gematik.demis.pdfgen.receipt.common.model.subsection.OrganizationFactory;
 import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +61,8 @@ public class BedOccupancyFactory {
   private final NotificationFactory notificationFactory;
   private final QuestionnaireFhirQueries questionnaireFhirQueries;
   private final NotifierFhirQueries notifierFhirQueries;
-  private final BedOccupancyOrganizationFactory organizationFactory;
+  private final OrganizationFactory organizationFactory;
+  private final AuthenticationFactory authenticationFactory;
 
   /**
    * Create bed occupancy report data object
@@ -54,11 +79,12 @@ public class BedOccupancyFactory {
     setNotificationId(bundle, bedOccupancy);
     setOrganization(bundle, bedOccupancy);
     setBedStatistics(bundle, bedOccupancy);
+    setAuthentication(bundle, bedOccupancy);
     return bedOccupancy.build();
   }
 
   private void setBedStatistics(Bundle bundle, BedOccupancy.BedOccupancyBuilder bedOccupancy) {
-    Map<String, String> answers = getQuestionnaireAnswers(bundle);
+    final Map<String, String> answers = getQuestionnaireAnswers(bundle);
     bedOccupancy.numberOccupiedBedsGeneralWardAdults(
         answers.get("numberOccupiedBedsGeneralWardAdults"));
     bedOccupancy.numberOccupiedBedsGeneralWardChildren(
@@ -75,7 +101,7 @@ public class BedOccupancyFactory {
   }
 
   private void setNotificationId(Bundle bundle, BedOccupancy.BedOccupancyBuilder bedOccupancy) {
-    Notification notificationDetails = this.notificationFactory.create(bundle);
+    final Notification notificationDetails = notificationFactory.create(bundle);
     if (notificationDetails != null) {
       bedOccupancy.notificationId(notificationDetails.getIdentifier());
     }
@@ -83,6 +109,10 @@ public class BedOccupancyFactory {
 
   private static void setMetaData(Bundle bundle, BedOccupancy.BedOccupancyBuilder bedOccupancy) {
     bedOccupancy.metadata(MetadataFactory.create(bundle));
+  }
+
+  private void setAuthentication(Bundle bundle, BedOccupancy.BedOccupancyBuilder bedOccupancy) {
+    bedOccupancy.authentication(this.authenticationFactory.create(bundle));
   }
 
   private Map<String, String> getQuestionnaireAnswers(Bundle bundle) {

@@ -28,6 +28,10 @@
                 ${labReport.conclusionCode})}'></tr>
 
             <tr th:replace='~{fragment/rows :: paddedRow(
+                #{laboratory-report.lab-report.reason},
+                ${labReport.reasonForTesting})}'></tr>
+
+            <tr th:replace='~{fragment/rows :: paddedRow(
                 #{laboratory-report.lab-report.explanation},
                 ${labReport.conclusion})}'></tr>
 
@@ -65,11 +69,11 @@
 
                     <tr th:replace='~{fragment/rows :: doublePaddedRow(
                             #{laboratory-report.lab-test.specimen.received},
-                            ${test.specimen?.receivedTime.toStringWithoutTime})}'></tr>
+                            ${test.specimen?.receivedTime?.toStringWithoutTime})}'></tr>
 
                     <tr th:replace='~{fragment/rows :: doublePaddedRow(
                             #{laboratory-report.lab-test.specimen.collection},
-                            ${test.specimen?.collectionTime.toStringWithoutTime})}'></tr>
+                            ${test.specimen?.collectionTime?.toStringWithoutTime})}'></tr>
 
                     <tr th:replace='~{fragment/rows :: doublePaddedRow(
                             #{laboratory-report.lab-test.specimen.status},

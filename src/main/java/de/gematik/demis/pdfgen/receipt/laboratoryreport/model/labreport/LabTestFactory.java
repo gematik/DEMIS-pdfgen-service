@@ -18,8 +18,29 @@
 
 package de.gematik.demis.pdfgen.receipt.laboratoryreport.model.labreport;
 
+/*-
+ * #%L
+ * pdfgen-service
+ * %%
+ * Copyright (C) 2025 gematik GmbH
+ * %%
+ * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
+ * European Commission – subsequent versions of the EUPL (the "Licence").
+ * You may not use this work except in compliance with the Licence.
+ *
+ * You find a copy of the Licence in the "Licence" file or at
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied.
+ * In case of changes by gematik find details in the "Readme" file.
+ *
+ * See the Licence for the specific language governing permissions and limitations under the Licence.
+ * #L%
+ */
+
 import de.gematik.demis.pdfgen.fhir.extract.LaboratoryFhirQueries;
-import de.gematik.demis.pdfgen.receipt.laboratoryreport.model.labreport.enums.LabTestInterpretationEnum;
 import de.gematik.demis.pdfgen.receipt.laboratoryreport.model.labreport.enums.LabTestStatusEnum;
 import de.gematik.demis.pdfgen.translation.TranslationService;
 import java.util.List;
@@ -52,8 +73,7 @@ public class LabTestFactory {
         displayTranslationService.resolveCodeableConceptValues(pathogenDetection.getCode());
     LabTestStatusEnum status = LabTestStatusEnum.of(pathogenDetection.getStatus());
     String value = getValue(pathogenDetection);
-    Optional<LabTestInterpretationEnum> interpretationOptional =
-        getInterpretation(pathogenDetection);
+    Optional<String> interpretationOptional = getInterpretation(pathogenDetection);
     String method = extractMethodWithDV1Fallback(pathogenDetection);
     List<String> notes = getNotes(pathogenDetection);
     Specimen specimen = specimenFactory.create(pathogenDetection, bundle);
@@ -72,15 +92,17 @@ public class LabTestFactory {
   }
 
   private String extractMethodWithDV1Fallback(Observation pathogenDetection) {
-    CodeableConcept methodCoding = pathogenDetection.getMethod();
+    final CodeableConcept methodCoding = pathogenDetection.getMethod();
+    final String methodCodingText = methodCoding.getText() != null ? methodCoding.getText() : "";
     return methodCoding.getCodingFirstRep().getCode() != null
         ? displayTranslationService.resolveCodeableConceptValues(methodCoding)
-        : methodCoding.getText() != null ? methodCoding.getText() : "";
+        : methodCodingText;
   }
 
-  private Optional<LabTestInterpretationEnum> getInterpretation(Observation pathogenDetection) {
-    Coding coding = pathogenDetection.getInterpretationFirstRep().getCodingFirstRep();
-    return LabTestInterpretationEnum.ofCode(coding.getCode());
+  private Optional<String> getInterpretation(Observation pathogenDetection) {
+    return Optional.of(
+        displayTranslationService.resolveCodeableConceptValues(
+            pathogenDetection.getInterpretationFirstRep()));
   }
 
   private List<String> getNotes(Observation pathogenDetection) {
@@ -95,16 +117,14 @@ public class LabTestFactory {
 
     Type type = observation.getValue();
 
-    if (type instanceof StringType) {
-      return type.castToString(type).getValue();
+    if (type instanceof StringType stringType) {
+      return stringType.getValue();
 
-    } else if (type instanceof Quantity) {
-      return resolveQuantityValues(type.castToQuantity(type));
+    } else if (type instanceof Quantity quantity) {
+      return resolveQuantityValues(quantity);
 
-    } else if (type instanceof CodeableConcept) {
-      // TODO check if really needed
-      return displayTranslationService.resolveCodeableConceptValues(
-          type.castToCodeableConcept(type));
+    } else if (type instanceof CodeableConcept codeableConcept) {
+      return displayTranslationService.resolveCodeableConceptValues(codeableConcept);
     }
     return null;
   }

@@ -18,6 +18,28 @@
 
 package de.gematik.demis.pdfgen.receipt.common.model.section;
 
+/*-
+ * #%L
+ * pdfgen-service
+ * %%
+ * Copyright (C) 2025 gematik GmbH
+ * %%
+ * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
+ * European Commission – subsequent versions of the EUPL (the "Licence").
+ * You may not use this work except in compliance with the Licence.
+ *
+ * You find a copy of the Licence in the "Licence" file or at
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied.
+ * In case of changes by gematik find details in the "Readme" file.
+ *
+ * See the Licence for the specific language governing permissions and limitations under the Licence.
+ * #L%
+ */
+
 import static de.gematik.demis.pdfgen.lib.profile.DemisExtensions.EXTENSION_URL_FACILTY_ADDRESS_NOTIFIED_PERSON;
 import static de.gematik.demis.pdfgen.test.helper.FhirFactory.createLaboratoryReportBundle;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -53,7 +75,6 @@ class NotifiedPersonFactoryTest {
   @Mock private TelecomFactory telecomFactory;
   @Mock private AddressFactory addressFactory;
   @Mock private OrganizationFactory organizationFactory;
-  private final DemisAddressUseService demisAddressUseService = new DemisAddressUseService(null);
 
   @BeforeEach()
   void setUp() {
@@ -63,8 +84,7 @@ class NotifiedPersonFactoryTest {
             contactFactory,
             telecomFactory,
             addressFactory,
-            organizationFactory,
-            demisAddressUseService);
+            organizationFactory);
   }
 
   @AfterEach
@@ -170,7 +190,7 @@ class NotifiedPersonFactoryTest {
                     LocalDate.of(1950, 2, 11).atStartOfDay(ZoneId.systemDefault()).toInstant()))
             .setGender(Enumerations.AdministrativeGender.FEMALE)
             .addAddress(addressForNPP)
-            .buildExampleNotifiedPerson();
+            .build();
 
     when(notifiedFhirQueries.getNotifiedPerson(diseaseNotificationBundle))
         .thenReturn(Optional.of(notifiedPersonPatient));
@@ -191,15 +211,12 @@ class NotifiedPersonFactoryTest {
         .isNull();
     NotifiedPersonDTO notifiedPersonDTO = notifiedPersonFactory.create(diseaseNotificationBundle);
     assertThat(notifiedPersonDTO).isNotNull();
-    assertThat(notifiedPersonDTO.getAddressDTOs()).containsExactly(notifiedPersonAddress);
+    assertThat(notifiedPersonDTO.getAddressDTOs()).isEmpty();
     assertThat(notifiedPersonDTO.getOrganizationDTOs()).containsExactly(organizationDTO);
     assertThat(organizationDTO.getAddressDTO()).isSameAs(organizationAddress);
     assertThat(organizationAddress.getUse())
         .as(
             "address factory updated use of organization address with value from notified person address use")
         .isEqualTo(addressUse);
-    assertThat(notifiedPersonDTO.getAddressDTOs().get(0).isPrimaryAddress())
-        .as("address is primary address")
-        .isTrue();
   }
 }

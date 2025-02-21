@@ -1,0 +1,450 @@
+{
+  "resourceType": "Bundle",
+  "meta": {
+    "lastUpdated": "2023-09-25T15:02:10.847+01:00",
+    "profile": [
+      "https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratory"
+    ],
+    "tag": [
+      {
+        "system": "https://demis.rki.de/fhir/CodeSystem/ResponsibleDepartment",
+        "code": "test-int"
+      },
+      {
+        "system": "https://demis.rki.de/fhir/CodeSystem/ResponsibleDepartmentSubmitter",
+        "code": "test-int"
+      },
+      {
+        "system": "https://demis.rki.de/fhir/CodeSystem/ResponsibleDepartmentNotifier",
+        "code": "1.11.0.11.01."
+      },
+      {
+        "system": "https://demis.rki.de/fhir/CodeSystem/ResponsibleDepartmentPrimaryAddress",
+        "code": "test-int"
+      }
+    ]
+  },
+  "identifier": {
+    "system": "https://demis.rki.de/fhir/NamingSystem/NotificationBundleId",
+    "value": "bba9c569-b7f0-50e8-b4ca-eb5f13ea24e5"
+  },
+  "type": "document",
+  "timestamp": "2021-03-04T20:16:01.000+01:00",
+  "entry": [
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Composition/72905498-8719-375e-bebd-739e0efa3e7f",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "72905498-8719-375e-bebd-739e0efa3e7f",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotificationLaboratory"
+          ]
+        },
+        "extension": [
+          {
+            "url": "https://demis.rki.de/fhir/StructureDefinition/ReceptionTimeStampType",
+            "valueDateTime": "2023-09-25T16:02:10+02:00"
+          }
+        ],
+        "identifier": {
+          "system": "https://demis.rki.de/fhir/NamingSystem/NotificationId",
+          "value": "6c0e8976-b28a-42b4-a50c-ec06025c2948"
+        },
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "34782-3",
+              "display": "Infectious disease Note"
+            }
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "11502-2",
+                "display": "Laboratory report"
+              }
+            ]
+          }
+        ],
+        "subject": {
+          "reference": "Patient/0ab70ea9-4a58-3b6d-9448-1fcf87c1d07d"
+        },
+        "date": "2021-03-04T20:16:00.000+01:00",
+        "author": [
+          {
+            "reference": "PractitionerRole/224b8a7d-ec47-369f-9621-cc02c8e883a2"
+          }
+        ],
+        "title": "Erregernachweismeldung",
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "11502-2",
+                  "display": "Laboratory report"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "DiagnosticReport/6e6fe0c5-4259-337d-a4cc-d3099320a10f"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Patient/0ab70ea9-4a58-3b6d-9448-1fcf87c1d07d",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "0ab70ea9-4a58-3b6d-9448-1fcf87c1d07d",
+        "meta": {
+          "lastUpdated": "2023-09-25T16:02:10.847+02:00",
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifiedPerson"
+          ]
+        },
+        "extension": [
+          {
+            "url": "https://demis.rki.de/fhir/StructureDefinition/PseudonymRecordType",
+            "valueBase64Binary": "eyJ0eXBlIjoiZGVtaXNQc2V1ZG9ueW0iLCJhY3RpdmVQc2V1ZG9ueW0iOnsiZmFtaWx5TmFtZSI6WyJBQUFBQUFRRUFBRUFnQUFBQUFBQUJ3QUFBQkFvQUFSQkVLUkJGQVFCZ0FBQUNBQUFBQWtFQUlBQUFBQUFBZ0FBQWdBRUFLZ0lBQUFBQUFCQUlBQUVBQUFBQUFSSUFBQUFBQVFBQUZJQUFBQUFSQUNBQUVaQUFRQUFBR0FFSUFBQVFCUUFDQkJDQUFBQUFFQUNCSUFBUUFBQUNBREFBSUFBQlVBQUFBQUFBQkE9Il0sImZpcnN0TmFtZSI6WyJBQ0FBQUFBRUFBRUFBQUFnQUFBQUFRQUFBUkFBQUlBQUNJQVFFQWdBQUFBUUNDQUFBQmdBQUlBQUVBQUFBZ0JBQWdBQUNLQUFBQUFBQUFCQUlBQUFBQUFBZ0FRSUFBQUFJQklBQUVZQUVBZ0FSQUNRQUdCQUFBQUFBR0FBSUFBQlFCQUFDQUJLQUFBQUFFQkNBSUFBWUFBQUdnQkFnSUFRRVVBQUFCSUFnUkE9Il0sImRhdGVPZkJpcnRoIjoiVUdnQVFFUUFBS0tSUmdvcHBKSUpBQWdBZ0FCaVFBSUFBRUFnQWdJRUpBUUVGaVFnTVNBb3BpQWdJaUFnQUFRU0FDQUFnNGdnQUFBQ0FBQUVDVUJBUUE9PSIsImRpc2Vhc2VDb2RlIjoiaW52In0sIm91dGRhdGVkUHNldWRvbnltIjp7ImZhbWlseU5hbWUiOlsiQUtBQUFBZ0FnQWdRQUFJSWdBQUFEQUFBQUJnQUFBWWdBQUNBQUFDQ2dBQUFBSUlBQTRBQUFDQUFnVUFCQkFLQUFFQUlBSUFBQUFBZ0lnSUFBQUFBQUpDQUFBQUlBQUFBUUFBZ0FBSWdBaUFBQ0FDQUFFZ0FBSUFBQWdBQW9FQUFnZ0FBQUFBQUFnQUFBQUFCRUFBQkFBZ0NFZ0FBQkFBQUFBQklnSUFBQW9BPSJdLCJmaXJzdE5hbWUiOlsiQUNBQUFRZ2dBQUFRQ0FBQWdBQUlDQUVBQUJnQWdBUWdBQUNBQUFDRGdBQUFBSVFJQVFFQUFDQUFnUUFBQUFDQUFFQUpBQUFBQWdBZ0lnQUFDQUFBQVJDQUFBQUlBQUFBQUlBQkFBQUFBQ0FBQ0VBQUFRZ0lBQUFBQUFBQWdFQUFnZ0dBQUFBQUlnUUFBZ0FCZ0FCQkFDaENFQUFJQkFVQUFnQlFnSUFBQUlBPSJdLCJkYXRlT2ZCaXJ0aCI6IkFCd2dNQ1JFQ0NBZ0lBWUlJRUJBQUFJMmtLTkFCQU1nQmdBQkFoQWdLV0lTQUFDQUFDc0pRQkFCc29GQjRZQVFBQUFBSVFBZ0VHZ29nZ1VrSUNJQUJBPT0iLCJkaXNlYXNlQ29kZSI6ImludiJ9fQ=="
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Tester",
+            "given": [
+              "Testus"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1978-12-12",
+        "address": [
+          {
+            "extension": [
+              {
+                "url": "https://demis.rki.de/fhir/StructureDefinition/AddressUse",
+                "valueCoding": {
+                  "system": "https://demis.rki.de/fhir/CodeSystem/addressUse",
+                  "code": "primary"
+                }
+              }
+            ],
+            "line": [
+              "Teststr. 123"
+            ],
+            "city": "Lauenburg",
+            "postalCode": "abcde",
+            "country": "20422"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/PractitionerRole/224b8a7d-ec47-369f-9621-cc02c8e883a2",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "224b8a7d-ec47-369f-9621-cc02c8e883a2",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifierRole"
+          ]
+        },
+        "organization": {
+          "reference": "Organization/565a5c7e-91aa-32b3-90bd-5e2148f0f0ef"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Organization/565a5c7e-91aa-32b3-90bd-5e2148f0f0ef",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "565a5c7e-91aa-32b3-90bd-5e2148f0f0ef",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifierFacility"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "https://demis.rki.de/fhir/NamingSystem/DemisLaboratoryId",
+            "value": "12345"
+          },
+          {
+            "system": "https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR",
+            "value": "98765430"
+          },
+          {
+            "system": "https://demis.rki.de/fhir/NamingSystem/SendingServiceProvider",
+            "value": "test-int"
+          }
+        ],
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "https://demis.rki.de/fhir/CodeSystem/organizationType",
+                "code": "laboratory",
+                "display": "Erregerdiagnostische Untersuchungsstelle"
+              }
+            ]
+          }
+        ],
+        "name": "Primärlabor",
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "0309876543210",
+            "use": "work"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Dingsweg 321"
+            ],
+            "city": "Berlin",
+            "postalCode": "13055",
+            "country": "20422"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/PractitionerRole/6c13bbeb-b67e-3753-ac20-59fffff1c7b3",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "6c13bbeb-b67e-3753-ac20-59fffff1c7b3",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/SubmittingRole"
+          ]
+        },
+        "organization": {
+          "reference": "Organization/21d21b44-213b-36a7-8af2-49dc10bc27a5"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Organization/21d21b44-213b-36a7-8af2-49dc10bc27a5",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "21d21b44-213b-36a7-8af2-49dc10bc27a5",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/SubmittingFacility"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR",
+            "value": "123456780"
+          }
+        ],
+        "name": "Einsendepraxis ABC",
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "030 1234567890",
+            "use": "work"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Teststr. 123"
+            ],
+            "city": "Berlin",
+            "postalCode": "13055",
+            "country": "20422"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/DiagnosticReport/6e6fe0c5-4259-337d-a4cc-d3099320a10f",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "6e6fe0c5-4259-337d-a4cc-d3099320a10f",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/LaboratoryReportINVP"
+          ]
+        },
+        "basedOn": [
+          {
+            "type": "ServiceRequest",
+            "identifier": {
+              "system": "https://demis.rki.de/fhir/NamingSystem/ServiceRequestId",
+              "value": "2021-000573458"
+            }
+          }
+        ],
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "https://demis.rki.de/fhir/CodeSystem/notificationCategory",
+              "code": "invp",
+              "display": "Influenzavirus, Meldepflicht nur für den direkten Nachweis"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/0ab70ea9-4a58-3b6d-9448-1fcf87c1d07d"
+        },
+        "issued": "2021-03-04T20:15:00.000+01:00",
+        "result": [
+          {
+            "reference": "Observation/622b4acf-fdde-3767-8c89-3a2cc37a0a21"
+          }
+        ],
+        "conclusion": "Ich bin die textuelle Conclusion ...",
+        "conclusionCode": [
+          {
+            "coding": [
+              {
+                "system": "https://demis.rki.de/fhir/CodeSystem/conclusionCode",
+                "code": "pathogenDetected",
+                "display": "Meldepflichtiger Erreger nachgewiesen"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Observation/622b4acf-fdde-3767-8c89-3a2cc37a0a21",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "622b4acf-fdde-3767-8c89-3a2cc37a0a21",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/PathogenDetectionINVP"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "38270-5",
+              "display": "Influenza virus A H7 RNA [Presence] in Specimen by NAA with probe detection"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/0ab70ea9-4a58-3b6d-9448-1fcf87c1d07d"
+        },
+        "valueCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "LA6576-8",
+              "display": "Positive"
+            }
+          ]
+        },
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "code": "POS",
+                "display": "Positive"
+              }
+            ]
+          }
+        ],
+        "note": [
+          {
+            "text": "Nette Zusatzinformation …"
+          }
+        ],
+        "method": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "398545005",
+              "display": "Nucleic acid assay (procedure)"
+            }
+          ]
+        },
+        "specimen": {
+          "reference": "Specimen/87ec64e7-1c2e-3d77-878f-5a21818e34eb"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Specimen/87ec64e7-1c2e-3d77-878f-5a21818e34eb",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "87ec64e7-1c2e-3d77-878f-5a21818e34eb",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/SpecimenINVP"
+          ]
+        },
+        "status": "available",
+        "type": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "119389009",
+              "display": "Specimen from throat (specimen)"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/0ab70ea9-4a58-3b6d-9448-1fcf87c1d07d"
+        },
+        "receivedTime": "2021-03-04T14:50:00.000+01:00",
+        "collection": {
+          "collector": {
+            "reference": "PractitionerRole/6c13bbeb-b67e-3753-ac20-59fffff1c7b3"
+          },
+          "collectedDateTime": "2021-03-04T09:50:00.000+01:00"
+        },
+        "processing": [
+          {
+            "extension": [
+              {
+                "url": "https://demis.rki.de/fhir/StructureDefinition/TransactionID",
+                "valueIdentifier": {
+                  "system": "https://demis.rki.de/fhir/NamingSystem/TransactionId",
+                  "value": "IMS-12345-CVDP-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+                }
+              }
+            ]
+          }
+        ],
+        "note": [
+          {
+            "text": "Ich bin eine interessante Zusatzinformation ..."
+          }
+        ]
+      }
+    }
+  ]
+}

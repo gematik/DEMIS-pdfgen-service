@@ -1,0 +1,690 @@
+<!--
+  #%L
+  pdfgen-service
+  %%
+  Copyright (C) 2025 gematik GmbH
+  %%
+  Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
+  European Commission – subsequent versions of the EUPL (the "Licence").
+  You may not use this work except in compliance with the Licence.
+  
+  You find a copy of the Licence in the "Licence" file or at
+  https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+  
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the Licence is distributed on an "AS IS" basis,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied.
+  In case of changes by gematik find details in the "Readme" file.
+  
+  See the Licence for the specific language governing permissions and limitations under the Licence.
+  #L%
+  -->
+<Bundle xmlns="http://hl7.org/fhir">
+   <id value="f332ddaa-f0fd-3e5b-83ec-a4c83c61c8ff"></id>
+   <meta>
+      <lastUpdated value="2023-03-10T09:50:00.000+01:00"></lastUpdated>
+      <profile value="https://demis.rki.de/fhir/StructureDefinition/NotificationBundleDisease"></profile>
+   </meta>
+   <identifier>
+      <system value="https://demis.rki.de/fhir/NamingSystem/NotificationBundleId"></system>
+      <value value="af8cd861-ba72-3c61-9e41-3e40e9deeb4f"></value>
+   </identifier>
+   <type value="document"></type>
+   <timestamp value="2023-03-10T09:50:00.000+01:00"></timestamp>
+   <entry>
+      <fullUrl value="https://demis.rki.de/fhir/Composition/35a3dacb-87c1-3b38-ac07-a4b1c969e9fa"></fullUrl>
+      <resource>
+         <Composition xmlns="http://hl7.org/fhir">
+            <id value="35a3dacb-87c1-3b38-ac07-a4b1c969e9fa"></id>
+            <meta>
+               <lastUpdated value="2023-03-10T09:50:00.000+01:00"></lastUpdated>
+               <profile value="https://demis.rki.de/fhir/StructureDefinition/NotificationDiseaseBPSD"></profile>
+            </meta>
+            <identifier>
+               <system value="https://demis.rki.de/fhir/NamingSystem/NotificationId"></system>
+               <value value="16fdbf70-feb5-4855-9b4f-1393d5a5d490"></value>
+            </identifier>
+            <status value="final"></status>
+            <type>
+               <coding>
+                  <system value="http://loinc.org"></system>
+                  <code value="34782-3"></code>
+                  <display value="Infectious disease Note"></display>
+               </coding>
+            </type>
+            <category>
+               <coding>
+                  <system value="https://demis.rki.de/fhir/CodeSystem/notificationType"></system>
+                  <code value="6.1_2"></code>
+                  <display value="Meldung gemäß §6 Absatz 1, 2"></display>
+               </coding>
+            </category>
+            <subject>
+               <reference value="Patient/48e4549c-6c2a-3451-b543-8a7d55bb6ccd"></reference>
+            </subject>
+            <date value="2023-03-10T01:00:00+01:00"></date>
+            <author>
+               <reference value="PractitionerRole/cdfdfaa7-1103-34ab-8ded-c564ea4b7cc5"></reference>
+            </author>
+            <title value="Meldung gemäß §6 Absatz 1, 2 IfSG"></title>
+            <section>
+               <title value="Diagnose"></title>
+               <code>
+                  <coding>
+                     <system value="https://demis.rki.de/fhir/CodeSystem/sectionCode"></system>
+                     <code value="diagnosis"></code>
+                     <display value="Diagnose"></display>
+                  </coding>
+               </code>
+               <entry>
+                  <reference value="Condition/5c6f8e53-b57e-3f4e-8c54-5849466d96cb"></reference>
+               </entry>
+            </section>
+            <section>
+               <title value="Meldetatbestandsübergreifende klinische und epidemiologische Angaben"></title>
+               <code>
+                  <coding>
+                     <system value="https://demis.rki.de/fhir/CodeSystem/sectionCode"></system>
+                     <code value="generalClinAndEpiInformation"></code>
+                     <display value="Meldetatbestandsübergreifende klinische und epidemiologische Angaben"></display>
+                  </coding>
+               </code>
+               <entry>
+                  <reference value="QuestionnaireResponse/ad98c22e-dd49-36cc-b798-14997d75bbdb"></reference>
+               </entry>
+            </section>
+            <section>
+               <title value="Meldetatbestandsspezifische klinische und epidemiologische Angaben"></title>
+               <code>
+                  <coding>
+                     <system value="https://demis.rki.de/fhir/CodeSystem/sectionCode"></system>
+                     <code value="specificClinAndEpiInformation"></code>
+                     <display value="Meldetatbestandsspezifische klinische und epidemiologische Angaben"></display>
+                  </coding>
+               </code>
+               <entry>
+                  <reference value="QuestionnaireResponse/49471f45-cd45-3aff-ac52-6c88fde59e08"></reference>
+               </entry>
+            </section>
+         </Composition>
+      </resource>
+   </entry>
+   <entry>
+      <fullUrl value="https://demis.rki.de/fhir/Organization/6d137c44-7ac6-34e3-a8dd-2f2ab91f1aa0"></fullUrl>
+      <resource>
+         <Organization xmlns="http://hl7.org/fhir">
+            <id value="6d137c44-7ac6-34e3-a8dd-2f2ab91f1aa0"></id>
+            <meta>
+               <profile value="https://demis.rki.de/fhir/StructureDefinition/NotifiedPersonFacility"></profile>
+            </meta>
+            <name value="St. Johanna Kinderklinik Lichtenberg"></name>
+            <telecom>
+               <system value="phone"></system>
+               <value value="0312312312344"></value>
+               <use value="work"></use>
+            </telecom>
+            <address>
+               <line value="Altenhofer Str. 39"></line>
+               <city value="Berlin"></city>
+               <postalCode value="21481"></postalCode>
+               <country value="20422"></country>
+            </address>
+            <contact>
+               <name>
+                  <use value="official"></use>
+                  <family value="Strasser"></family>
+                  <given value="Alissa"></given>
+               </name>
+            </contact>
+         </Organization>
+      </resource>
+   </entry>
+   <entry>
+      <fullUrl value="https://demis.rki.de/fhir/Patient/48e4549c-6c2a-3451-b543-8a7d55bb6ccd"></fullUrl>
+      <resource>
+         <Patient xmlns="http://hl7.org/fhir">
+            <id value="48e4549c-6c2a-3451-b543-8a7d55bb6ccd"></id>
+            <meta>
+               <profile value="https://demis.rki.de/fhir/StructureDefinition/NotifiedPerson"></profile>
+            </meta>
+            <name>
+               <use value="official"></use>
+               <family value="Kim"></family>
+               <given value="Meyer"></given>
+            </name>
+            <telecom>
+               <system value="phone"></system>
+               <value value="030 123456789"></value>
+            </telecom>
+            <gender value="other"></gender>
+            <birthDate value="2023-01-01"></birthDate>
+            <address>
+               <extension url="https://demis.rki.de/fhir/StructureDefinition/AddressUse">
+                  <valueCoding>
+                     <system value="https://demis.rki.de/fhir/CodeSystem/addressUse"></system>
+                     <code value="current"></code>
+                  </valueCoding>
+               </extension>
+               <extension url="https://demis.rki.de/fhir/StructureDefinition/FacilityAddressNotifiedPerson">
+                  <valueReference>
+                     <reference value="Organization/6d137c44-7ac6-34e3-a8dd-2f2ab91f1aa0"></reference>
+                  </valueReference>
+               </extension>
+            </address>
+            <address>
+               <extension url="https://demis.rki.de/fhir/StructureDefinition/AddressUse">
+                  <valueCoding>
+                     <system value="https://demis.rki.de/fhir/CodeSystem/addressUse"></system>
+                     <code value="primary"></code>
+                  </valueCoding>
+               </extension>
+               <line value="Mehringdamm. 21"></line>
+               <city value="Berlin"></city>
+               <postalCode value="21481"></postalCode>
+               <country value="20422"></country>
+            </address>
+         </Patient>
+      </resource>
+   </entry>
+   <entry>
+      <fullUrl value="https://demis.rki.de/fhir/Condition/5c6f8e53-b57e-3f4e-8c54-5849466d96cb"></fullUrl>
+      <resource>
+         <Condition xmlns="http://hl7.org/fhir">
+            <id value="5c6f8e53-b57e-3f4e-8c54-5849466d96cb"></id>
+            <meta>
+               <profile value="https://demis.rki.de/fhir/StructureDefinition/DiseaseBPSD"></profile>
+            </meta>
+            <verificationStatus>
+               <coding>
+                  <system value="http://terminology.hl7.org/CodeSystem/condition-ver-status"></system>
+                  <code value="confirmed"></code>
+               </coding>
+            </verificationStatus>
+            <code>
+               <coding>
+                  <system value="https://demis.rki.de/fhir/CodeSystem/notificationDiseaseCategory"></system>
+                  <code value="bpsd"></code>
+                  <display value="Keuchhusten"></display>
+               </coding>
+            </code>
+            <subject>
+               <reference value="Patient/48e4549c-6c2a-3451-b543-8a7d55bb6ccd"></reference>
+            </subject>
+            <onsetDateTime value="2023-02-22"></onsetDateTime>
+            <recordedDate value="2023-03-10"></recordedDate>
+            <evidence>
+               <code>
+                  <coding>
+                     <system value="http://snomed.info/sct"></system>
+                     <code value="284523002"></code>
+                     <display value="Husten von mehr als 14 Tagen Dauer"></display>
+                  </coding>
+               </code>
+            </evidence>
+            <evidence>
+               <code>
+                  <coding>
+                     <system value="http://snomed.info/sct"></system>
+                     <code value="58596002"></code>
+                     <display value="Atemgeräusch, inspiratorisches Stridor"></display>
+                  </coding>
+               </code>
+            </evidence>
+            <evidence>
+               <code>
+                  <coding>
+                     <system value="http://snomed.info/sct"></system>
+                     <code value="13094009"></code>
+                     <display value="Atemstillstand (Apnoe) bei Säuglingen"></display>
+                  </coding>
+               </code>
+            </evidence>
+            <note>
+               <text value="Textueller Hinweis"></text>
+            </note>
+         </Condition>
+      </resource>
+   </entry>
+   <entry>
+      <fullUrl value="https://demis.rki.de/fhir/Organization/11768d38-555a-4226-b764-20fd86567a88"></fullUrl>
+      <resource>
+         <Organization xmlns="http://hl7.org/fhir">
+            <id value="11768d38-555a-4226-b764-20fd86567a88"></id>
+            <meta>
+               <profile value="https://demis.rki.de/fhir/StructureDefinition/NotifierFacility"></profile>
+            </meta>
+            <identifier>
+               <system value="http://fhir.de/sid/arge-ik/iknr"></system>
+            </identifier>
+            <type>
+               <coding>
+                  <system value="https://demis.rki.de/fhir/CodeSystem/organizationType"></system>
+                  <code value="hospital"></code>
+               </coding>
+            </type>
+            <name value="St. Johanna Kinderklinik Lichtenberg"></name>
+            <telecom>
+               <system value="phone"></system>
+               <value value="0312312312344"></value>
+               <use value="work"></use>
+            </telecom>
+            <address>
+               <line value="Altenhofer Str. 39"></line>
+               <city value="Berlin"></city>
+               <postalCode value="21481"></postalCode>
+               <country value="20422"></country>
+            </address>
+            <contact>
+               <name>
+                  <use value="official"></use>
+                  <family value="Strasser"></family>
+                  <given value="Alissa"></given>
+               </name>
+            </contact>
+         </Organization>
+      </resource>
+   </entry>
+   <entry>
+      <fullUrl value="https://demis.rki.de/fhir/Immunization/ed0588e0-e9e4-382f-b5dd-b42ece6bef8b"></fullUrl>
+      <resource>
+         <Immunization xmlns="http://hl7.org/fhir">
+            <id value="ed0588e0-e9e4-382f-b5dd-b42ece6bef8b"></id>
+            <meta>
+               <profile value="https://demis.rki.de/fhir/StructureDefinition/ImmunizationInformationBPSD"></profile>
+            </meta>
+            <status value="completed"></status>
+            <vaccineCode>
+               <coding>
+                  <system value="http://snomed.info/sct"></system>
+                  <code value="871883005"></code>
+                  <display value="Diptherie-Tetanus-Pertussis(azellulär)-Poliomyelitis (inaktiviert)-Adsorbat-Impfstoff, reduzierte Antigenmenge (Tetravac)"></display>
+               </coding>
+            </vaccineCode>
+            <patient>
+               <display value="Mutter"></display>
+            </patient>
+            <occurrenceDateTime value="1980-06-15"></occurrenceDateTime>
+            <note>
+               <text value="-"></text>
+            </note>
+         </Immunization>
+      </resource>
+   </entry>
+   <entry>
+      <fullUrl value="https://demis.rki.de/fhir/Immunization/31d7c9f5-2659-3129-b1d5-755922566bc8"></fullUrl>
+      <resource>
+         <Immunization xmlns="http://hl7.org/fhir">
+            <id value="31d7c9f5-2659-3129-b1d5-755922566bc8"></id>
+            <meta>
+               <profile value="https://demis.rki.de/fhir/StructureDefinition/ImmunizationInformationBPSD"></profile>
+            </meta>
+            <status value="completed"></status>
+            <vaccineCode>
+               <coding>
+                  <system value="http://snomed.info/sct"></system>
+                  <code value="74964007"></code>
+                  <display value="-andere/sonstige-"></display>
+               </coding>
+            </vaccineCode>
+            <patient>
+               <display value="Mutter"></display>
+            </patient>
+            <occurrenceDateTime value="1980-08-20"></occurrenceDateTime>
+            <note>
+               <text value="-"></text>
+            </note>
+         </Immunization>
+      </resource>
+   </entry>
+   <entry>
+      <fullUrl value="https://demis.rki.de/fhir/Immunization/ef826412-9be6-3ec1-86ab-6e290eebd88b"></fullUrl>
+      <resource>
+         <Immunization xmlns="http://hl7.org/fhir">
+            <id value="ef826412-9be6-3ec1-86ab-6e290eebd88b"></id>
+            <meta>
+               <profile value="https://demis.rki.de/fhir/StructureDefinition/ImmunizationInformationBPSD"></profile>
+            </meta>
+            <status value="completed"></status>
+            <vaccineCode>
+               <coding>
+                  <system value="http://snomed.info/sct"></system>
+                  <code value="871883005"></code>
+                  <display value="Diptherie-Tetanus-Pertussis(azellulär)-Poliomyelitis (inaktiviert)-Adsorbat-Impfstoff, reduzierte Antigenmenge (Tetravac)"></display>
+               </coding>
+            </vaccineCode>
+            <patient>
+               <display value="Mutter"></display>
+            </patient>
+            <occurrenceDateTime value="1981-03-18"></occurrenceDateTime>
+            <note>
+               <text value="-"></text>
+            </note>
+         </Immunization>
+      </resource>
+   </entry>
+   <entry>
+      <fullUrl value="https://demis.rki.de/fhir/Immunization/1e1ec21c-50cc-390b-ae71-3af264f6f8e4"></fullUrl>
+      <resource>
+         <Immunization xmlns="http://hl7.org/fhir">
+            <id value="1e1ec21c-50cc-390b-ae71-3af264f6f8e4"></id>
+            <meta>
+               <profile value="https://demis.rki.de/fhir/StructureDefinition/ImmunizationInformationBPSD"></profile>
+            </meta>
+            <status value="completed"></status>
+            <vaccineCode>
+               <coding>
+                  <system value="http://snomed.info/sct"></system>
+                  <code value="871883005"></code>
+                  <display value="Diptherie-Tetanus-Pertussis(azellulär)-Poliomyelitis (inaktiviert)-Adsorbat-Impfstoff, reduzierte Antigenmenge (Tetravac)"></display>
+               </coding>
+            </vaccineCode>
+            <patient>
+               <display value="Mutter"></display>
+            </patient>
+            <occurrenceDateTime value="1985-05-10"></occurrenceDateTime>
+            <note>
+               <text value="-"></text>
+            </note>
+         </Immunization>
+      </resource>
+   </entry>
+   <entry>
+      <fullUrl value="https://demis.rki.de/fhir/Immunization/a8fe7a2f-f38f-3154-a9a3-37b9b7517ede"></fullUrl>
+      <resource>
+         <Immunization xmlns="http://hl7.org/fhir">
+            <id value="a8fe7a2f-f38f-3154-a9a3-37b9b7517ede"></id>
+            <meta>
+               <profile value="https://demis.rki.de/fhir/StructureDefinition/ImmunizationInformationBPSD"></profile>
+            </meta>
+            <status value="completed"></status>
+            <vaccineCode>
+               <coding>
+                  <system value="http://snomed.info/sct"></system>
+                  <code value="871883005"></code>
+                  <display value="Diptherie-Tetanus-Pertussis(azellulär)-Poliomyelitis (inaktiviert)-Adsorbat-Impfstoff, reduzierte Antigenmenge (Tetravac)"></display>
+               </coding>
+            </vaccineCode>
+            <patient>
+               <display value="Mutter"></display>
+            </patient>
+            <occurrenceDateTime value="1990-06-13"></occurrenceDateTime>
+            <note>
+               <text value="-"></text>
+            </note>
+         </Immunization>
+      </resource>
+   </entry>
+   <entry>
+      <fullUrl value="https://demis.rki.de/fhir/PractitionerRole/cdfdfaa7-1103-34ab-8ded-c564ea4b7cc5"></fullUrl>
+      <resource>
+         <PractitionerRole xmlns="http://hl7.org/fhir">
+            <id value="cdfdfaa7-1103-34ab-8ded-c564ea4b7cc5"></id>
+            <meta>
+               <profile value="https://demis.rki.de/fhir/StructureDefinition/NotifierRole"></profile>
+            </meta>
+            <organization>
+               <reference value="Organization/11768d38-555a-4226-b764-20fd86567a88"></reference>
+            </organization>
+         </PractitionerRole>
+      </resource>
+   </entry>
+   <entry>
+      <fullUrl value="https://demis.rki.de/fhir/Organization/3303cc17-5adc-4510-96b1-a37c9fc8aae4"></fullUrl>
+      <resource>
+         <Organization xmlns="http://hl7.org/fhir">
+            <id value="3303cc17-5adc-4510-96b1-a37c9fc8aae4"></id>
+            <meta>
+               <profile value="http://hl7.org/fhir/StructureDefinition/Organization"></profile>
+            </meta>
+            <type>
+               <coding>
+                  <system value="https://demis.rki.de/fhir/CodeSystem/organizationType"></system>
+                  <code value="othPrivatLab"></code>
+               </coding>
+            </type>
+            <name value="Labor 123"></name>
+            <telecom>
+               <system value="phone"></system>
+               <value value="030983211"></value>
+               <use value="work"></use>
+            </telecom>
+            <address>
+               <line value="Laborstr. 321"></line>
+               <city value="Berlin"></city>
+               <postalCode value="21481"></postalCode>
+               <country value="20422"></country>
+            </address>
+         </Organization>
+      </resource>
+   </entry>
+   <entry>
+      <fullUrl value="https://demis.rki.de/fhir/Encounter/0a35820b-5da7-39ab-a3f1-a609e47acbed"></fullUrl>
+      <resource>
+         <Encounter xmlns="http://hl7.org/fhir">
+            <id value="0a35820b-5da7-39ab-a3f1-a609e47acbed"></id>
+            <meta>
+               <profile value="https://demis.rki.de/fhir/StructureDefinition/Hospitalization"></profile>
+            </meta>
+            <status value="in-progress"></status>
+            <class>
+               <system value="http://terminology.hl7.org/CodeSystem/v3-ActCode"></system>
+               <code value="IMP"></code>
+               <display value="inpatient encounter"></display>
+            </class>
+            <serviceType>
+               <coding>
+                  <system value="https://demis.rki.de/fhir/CodeSystem/hospitalizationServiceType"></system>
+                  <code value="0152"></code>
+                  <display value="Schwerpunkt Infektionskrankheiten"></display>
+               </coding>
+            </serviceType>
+            <subject>
+               <reference value="Patient/48e4549c-6c2a-3451-b543-8a7d55bb6ccd"></reference>
+            </subject>
+            <period>
+               <start value="2023-03-10"></start>
+            </period>
+            <serviceProvider>
+               <reference value="Organization/6d137c44-7ac6-34e3-a8dd-2f2ab91f1aa0"></reference>
+            </serviceProvider>
+         </Encounter>
+      </resource>
+   </entry>
+   <entry>
+      <fullUrl value="https://demis.rki.de/fhir/QuestionnaireResponse/ad98c22e-dd49-36cc-b798-14997d75bbdb"></fullUrl>
+      <resource>
+         <QuestionnaireResponse xmlns="http://hl7.org/fhir">
+            <id value="ad98c22e-dd49-36cc-b798-14997d75bbdb"></id>
+            <meta>
+               <profile value="https://demis.rki.de/fhir/StructureDefinition/DiseaseInformationCommon"></profile>
+            </meta>
+            <questionnaire value="https://demis.rki.de/fhir/Questionnaire/DiseaseQuestionsCommon"></questionnaire>
+            <status value="completed"></status>
+            <subject>
+               <reference value="Patient/48e4549c-6c2a-3451-b543-8a7d55bb6ccd"></reference>
+            </subject>
+            <item>
+               <linkId value="isDead"></linkId>
+               <answer>
+                  <valueCoding>
+                     <system value="https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer"></system>
+                     <code value="no"></code>
+                     <display value="Nein"></display>
+                  </valueCoding>
+               </answer>
+            </item>
+            <item>
+               <linkId value="militaryAffiliation"></linkId>
+               <answer>
+                  <valueCoding>
+                     <system value="https://demis.rki.de/fhir/CodeSystem/militaryAffiliation"></system>
+                     <code value="noReferenceToBundeswehr"></code>
+                     <display value="Kein Bezug zur BW"></display>
+                  </valueCoding>
+               </answer>
+            </item>
+            <item>
+               <linkId value="labSpecimenTaken"></linkId>
+               <answer>
+                  <valueCoding>
+                     <system value="https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer"></system>
+                     <code value="yes"></code>
+                     <display value="Ja"></display>
+                  </valueCoding>
+                  <item>
+                     <linkId value="labSpecimenLab"></linkId>
+                     <answer>
+                        <valueReference>
+                           <reference value="Organization/3303cc17-5adc-4510-96b1-a37c9fc8aae4"></reference>
+                        </valueReference>
+                     </answer>
+                  </item>
+               </answer>
+            </item>
+            <item>
+               <linkId value="hospitalized"></linkId>
+               <answer>
+                  <valueCoding>
+                     <system value="https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer"></system>
+                     <code value="yes"></code>
+                     <display value="Ja"></display>
+                  </valueCoding>
+                  <item>
+                     <linkId value="hospitalizedGroup"></linkId>
+                     <item>
+                        <linkId value="hospitalizedEncounter"></linkId>
+                        <answer>
+                           <valueReference>
+                              <reference value="Encounter/0a35820b-5da7-39ab-a3f1-a609e47acbed"></reference>
+                           </valueReference>
+                        </answer>
+                     </item>
+                  </item>
+               </answer>
+            </item>
+            <item>
+               <linkId value="infectProtectFacility"></linkId>
+               <answer>
+                  <valueCoding>
+                     <system value="https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer"></system>
+                     <code value="no"></code>
+                     <display value="Nein"></display>
+                  </valueCoding>
+               </answer>
+            </item>
+            <item>
+               <linkId value="placeExposure"></linkId>
+               <answer>
+                  <valueCoding>
+                     <system value="https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer"></system>
+                     <code value="no"></code>
+                     <display value="Nein"></display>
+                  </valueCoding>
+               </answer>
+            </item>
+            <item>
+               <linkId value="organDonation"></linkId>
+               <answer>
+                  <valueCoding>
+                     <system value="https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer"></system>
+                     <code value="no"></code>
+                     <display value="Nein"></display>
+                  </valueCoding>
+               </answer>
+            </item>
+            <item>
+               <linkId value="additionalInformation"></linkId>
+               <answer>
+                  <valueString value="-"></valueString>
+               </answer>
+            </item>
+         </QuestionnaireResponse>
+      </resource>
+   </entry>
+   <entry>
+      <fullUrl value="https://demis.rki.de/fhir/QuestionnaireResponse/49471f45-cd45-3aff-ac52-6c88fde59e08"></fullUrl>
+      <resource>
+         <QuestionnaireResponse xmlns="http://hl7.org/fhir">
+            <id value="49471f45-cd45-3aff-ac52-6c88fde59e08"></id>
+            <meta>
+               <profile value="https://demis.rki.de/fhir/StructureDefinition/DiseaseInformationBPSD"></profile>
+            </meta>
+            <questionnaire value="https://demis.rki.de/fhir/Questionnaire/DiseaseQuestionsBPSD"></questionnaire>
+            <status value="completed"></status>
+            <subject>
+               <reference value="Patient/48e4549c-6c2a-3451-b543-8a7d55bb6ccd"></reference>
+            </subject>
+            <item>
+               <linkId value="immunization"></linkId>
+               <answer>
+                  <valueCoding>
+                     <system value="https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer"></system>
+                     <code value="no"></code>
+                     <display value="Nein"></display>
+                  </valueCoding>
+               </answer>
+            </item>
+            <item>
+               <linkId value="immunizationMother"></linkId>
+               <answer>
+                  <valueCoding>
+                     <system value="https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer"></system>
+                     <code value="yes"></code>
+                     <display value="Ja"></display>
+                  </valueCoding>
+                  <item>
+                     <linkId value="immunizationMotherRef"></linkId>
+                     <answer>
+                        <valueReference>
+                           <reference value="Immunization/ed0588e0-e9e4-382f-b5dd-b42ece6bef8b"></reference>
+                        </valueReference>
+                     </answer>
+                  </item>
+                  <item>
+                     <linkId value="immunizationMotherRef"></linkId>
+                     <answer>
+                        <valueReference>
+                           <reference value="Immunization/31d7c9f5-2659-3129-b1d5-755922566bc8"></reference>
+                        </valueReference>
+                     </answer>
+                  </item>
+                  <item>
+                     <linkId value="immunizationMotherRef"></linkId>
+                     <answer>
+                        <valueReference>
+                           <reference value="Immunization/ef826412-9be6-3ec1-86ab-6e290eebd88b"></reference>
+                        </valueReference>
+                     </answer>
+                  </item>
+                  <item>
+                     <linkId value="immunizationMotherRef"></linkId>
+                     <answer>
+                        <valueReference>
+                           <reference value="Immunization/1e1ec21c-50cc-390b-ae71-3af264f6f8e4"></reference>
+                        </valueReference>
+                     </answer>
+                  </item>
+                  <item>
+                     <linkId value="immunizationMotherRef"></linkId>
+                     <answer>
+                        <valueReference>
+                           <reference value="Immunization/a8fe7a2f-f38f-3154-a9a3-37b9b7517ede"></reference>
+                        </valueReference>
+                     </answer>
+                  </item>
+               </answer>
+            </item>
+            <item>
+               <linkId value="outbreak"></linkId>
+               <answer>
+                  <valueCoding>
+                     <system value="https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer"></system>
+                     <code value="no"></code>
+                     <display value="Nein"></display>
+                  </valueCoding>
+               </answer>
+            </item>
+         </QuestionnaireResponse>
+      </resource>
+   </entry>
+</Bundle>

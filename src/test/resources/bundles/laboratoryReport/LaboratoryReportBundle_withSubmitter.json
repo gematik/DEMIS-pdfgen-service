@@ -1,0 +1,230 @@
+{
+  "resourceType": "Bundle",
+  "meta": {
+    "lastUpdated": "2021-03-04T20:16:01.000+01:00",
+    "profile": [
+      "https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratory"
+    ],
+    "tag": [
+      {
+        "system": "https://demis.rki.de/fhir/CodeSystem/ResponsibleDepartment",
+        "code": "1.11.0.11.01."
+      }
+    ]
+  },
+  "identifier": {
+    "system": "https://demis.rki.de/fhir/NamingSystem/NotificationBundleId",
+    "value": "a5e00874-bb26-45ac-8eea-0bde76456703"
+  },
+  "type": "document",
+  "timestamp": "2021-03-04T20:16:01.000+01:00",
+  "entry": [
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Composition/bfa5c3e9-13e7-45b0-a845-f28b3e7afa6d",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "bfa5c3e9-13e7-45b0-a845-f28b3e7afa6d",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotificationLaboratory"
+          ]
+        },
+        "identifier": {
+          "system": "https://demis.rki.de/fhir/NamingSystem/NotificationId",
+          "value": "e8d8cc43-32c2-4f93-8eaf-b2f3e6deb2a9"
+        },
+        "status": "final",
+        "relatesTo": [
+          {
+            "code": "appends",
+            "targetIdentifier": {
+              "system": "http://example.org/fhir/NamingSystem/document-ids",
+              "value": "ABC123"
+            }
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "34782-3",
+              "display": "Infectious disease Note"
+            }
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "11502-2",
+                "display": "Laboratory report"
+              }
+            ]
+          }
+        ],
+        "subject": {
+          "reference": "Patient/c9201e8c-0425-4fb4-89c3-95f2405f290a"
+        },
+        "date": "2021-03-04T20:16:00+01:00",
+        "author": [
+          {
+            "reference": "PractitionerRole/318914e5-314b-4a6d-9044-e94a288fa795"
+          }
+        ],
+        "title": "Erregernachweismeldung",
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "11502-2",
+                  "display": "Laboratory report"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "DiagnosticReport/5d3a54e0-0af5-4e61-a917-c1e0f063af4b"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Patient/c9201e8c-0425-4fb4-89c3-95f2405f290a",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "c9201e8c-0425-4fb4-89c3-95f2405f290a",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifiedPerson"
+          ]
+        },
+        "name": [
+          {
+            "use": "official",
+            "family": "Mustermann",
+            "given": [
+              "Maxime"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1950-02-11",
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "030 555",
+            "use": "home"
+          }
+        ],
+        "address": [
+          {
+            "extension": [
+              {
+                "url": "https://demis.rki.de/fhir/StructureDefinition/AddressUse",
+                "valueCoding": {
+                  "system": "https://demis.rki.de/fhir/CodeSystem/addressUse",
+                  "code": "primary"
+                }
+              }
+            ],
+            "line": [
+              "Teststrasse 123"
+            ],
+            "city": "Berlin",
+            "postalCode": "13055",
+            "country": "20422",
+            "use": "home"
+          },
+          {
+            "extension": [
+              {
+                "url": "https://demis.rki.de/fhir/StructureDefinition/AddressUse",
+                "valueCoding": {
+                  "system": "https://demis.rki.de/fhir/CodeSystem/addressUse",
+                  "code": "current"
+                }
+              }
+            ],
+            "line": [
+              "Friedrichstraße 987"
+            ],
+            "city": "Berlin",
+            "postalCode": "66666",
+            "country": "20422",
+            "use": "work"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/PractitionerRole/c2063949-baae-4c60-a099-13b905d2f29f",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "c2063949-baae-4c60-a099-13b905d2f29f",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/SubmittingRole"
+          ]
+        },
+        "organization": {
+          "reference": "Organization/a8448a13-a425-4738-b837-acf6d06d4a5c"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Organization/a8448a13-a425-4738-b837-acf6d06d4a5c",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "a8448a13-a425-4738-b837-acf6d06d4a5c",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/SubmittingFacility"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR",
+            "value": "135896780"
+          }
+        ],
+        "name": "Einsendepraxis ABC",
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "030 1358967890",
+            "use": "work"
+          }
+        ],
+        "contact": {
+          "name": [
+            {
+              "use": "official",
+              "family": "Person @ Station",
+              "given": [
+                "Contact"
+              ]
+            }],
+          "address": [{
+            "line": ["Infirmary Ward"]
+          }]
+        },
+        "address": [
+          {
+            "line": [
+              "Teststr. 123"
+            ],
+            "city": "",
+            "postalCode": "",
+            "country": ""
+          }
+        ]
+      }
+    }
+  ]
+}
+

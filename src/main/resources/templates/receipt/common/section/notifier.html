@@ -2,8 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
 
+<!--/*@thymesVar id="notifier" type="de.gematik.demis.pdfgen.receipt.common.model.section.Notifier"*/-->
+<!--/*@thymesVar id="facility" type="de.gematik.demis.pdfgen.receipt.common.model.subsection.Facility"*/-->
 <th:block th:fragment="notifier(notifier)">
-    <!--/*@thymesVar id="notifier" type="de.gematik.demis.pdfgenmodels.model.notifier.Notifier"*/-->
 
     <th:block th:if="${notifier != null}">
         <th:block th:if="${notifier.hasPerson()}">
@@ -23,29 +24,23 @@
                         ${notifier.person.getTelecomsAsMultipleLines()})}'></tr>
         </th:block>
 
-        <th:block th:if="${notifier.hasFacility()}">
-
+        <th:block th:if="${notifier.hasFacility()}" th:with="facility=${notifier.facility}">
             <tr th:replace='~{fragment/rows :: titleRow(#{common.notifier.facility.header})}'></tr>
-
             <tr th:replace='~{fragment/rows :: paddedRow(
                         #{common.notifier.facility.name},
-                        ${notifier.facility.getNameAndType()})}'></tr>
-
+                        ${facility.getNameAndType()})}'></tr>
             <tr th:replace='~{fragment/rows :: paddedRow(
                         #{common.notifier.facility.identifier},
-                        ${notifier.facility.identifier?.getAsMultipleLines()})}'></tr>
-
+                        ${facility.getIdentifier()?.getAsMultipleLines()})}'></tr>
             <tr th:replace='~{fragment/rows :: paddedRow(
                         #{common.notifier.facility.address},
-                        ${notifier.facility.addressDTO?.getFullAddressAsSingleLine()})}'></tr>
-
+                        ${facility.getAddressDTO()?.getFullAddressAsSingleLine()})}'></tr>
             <tr th:replace='~{fragment/rows :: paddedRow(
                         #{common.notifier.facility.nameDTO},
-                        ${notifier.facility.getTelecomsAsMultipleLines()})}'></tr>
-
+                        ${facility.getTelecomsAsMultipleLines()})}'></tr>
             <tr th:replace='~{fragment/rows :: paddedRow(
                         #{common.notifier.facility.nameDTO.person},
-                        ${notifier.facility.nameDTO?.getFullName()})}'></tr>
+                        ${facility.getNameDTO()?.getFullName()})}'></tr>
         </th:block>
     </th:block>
 </th:block>

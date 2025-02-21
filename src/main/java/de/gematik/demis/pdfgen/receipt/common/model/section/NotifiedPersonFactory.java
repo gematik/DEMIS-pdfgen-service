@@ -18,13 +18,34 @@
 
 package de.gematik.demis.pdfgen.receipt.common.model.section;
 
+/*-
+ * #%L
+ * pdfgen-service
+ * %%
+ * Copyright (C) 2025 gematik GmbH
+ * %%
+ * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
+ * European Commission – subsequent versions of the EUPL (the "Licence").
+ * You may not use this work except in compliance with the Licence.
+ *
+ * You find a copy of the Licence in the "Licence" file or at
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied.
+ * In case of changes by gematik find details in the "Readme" file.
+ *
+ * See the Licence for the specific language governing permissions and limitations under the Licence.
+ * #L%
+ */
+
 import de.gematik.demis.pdfgen.fhir.extract.NotifiedFhirQueries;
 import de.gematik.demis.pdfgen.lib.profile.DemisExtensions;
 import de.gematik.demis.pdfgen.receipt.common.model.enums.GenderEnum;
 import de.gematik.demis.pdfgen.receipt.common.model.subsection.AddressDTO;
 import de.gematik.demis.pdfgen.receipt.common.model.subsection.AddressFactory;
 import de.gematik.demis.pdfgen.receipt.common.model.subsection.ContactFactory;
-import de.gematik.demis.pdfgen.receipt.common.model.subsection.DemisAddressUseService;
 import de.gematik.demis.pdfgen.receipt.common.model.subsection.OrganizationDTO;
 import de.gematik.demis.pdfgen.receipt.common.model.subsection.OrganizationFactory;
 import de.gematik.demis.pdfgen.receipt.common.model.subsection.TelecomFactory;
@@ -49,7 +70,6 @@ public class NotifiedPersonFactory {
   private final TelecomFactory telecomFactory;
   private final AddressFactory addressFactory;
   private final OrganizationFactory organizationFactory;
-  private final DemisAddressUseService demisAddressUseService;
 
   @Nullable
   public NotifiedPersonDTO create(final Bundle bundle) {
@@ -77,8 +97,14 @@ public class NotifiedPersonFactory {
 
   private static void setBirthdate(
       Patient patient, NotifiedPersonDTO.NotifiedPersonDTOBuilder notifiedPerson) {
+
+    /*
+     Use {@link org.hl7.fhir.r4.model.DateType} to get the birthdate and keep track of precision,
+     in cases where the Day and/or Month of birth are missing, {@link java.util.Date} will deliver
+     wrong values, when the birthdate is incomplete (§7.3/§7.4 Notifications).
+    */
     notifiedPerson.birthdate(
-        patient.hasBirthDate() ? new DateTimeHolder(patient.getBirthDate()) : null);
+        patient.hasBirthDate() ? new DateTimeHolder(patient.getBirthDateElement()) : null);
   }
 
   private void setTelecoms(
@@ -107,7 +133,11 @@ public class NotifiedPersonFactory {
   private void addAddressAndOrganizations(
       Address fhirAddress, List<AddressDTO> addresses, List<OrganizationDTO> organizations) {
     AddressDTO address = this.addressFactory.create(fhirAddress);
-    addresses.add(address);
+    if (getOrganizationExtensions(fhirAddress).isEmpty()) {
+      // addresses that are referencing other organisations will end up empty and are not helpful,
+      // so we filter them here
+      addresses.add(address);
+    }
     addOrganizations(fhirAddress, address, organizations);
   }
 
@@ -119,6 +149,9 @@ public class NotifiedPersonFactory {
         .forEach(organizations::add);
   }
 
+  /**
+   * @return a list of address references to organization addresses
+   */
   private static List<Extension> getOrganizationExtensions(Address fhirAddress) {
     return fhirAddress.getExtensionsByUrl(
         DemisExtensions.EXTENSION_URL_FACILTY_ADDRESS_NOTIFIED_PERSON);
@@ -130,6 +163,7 @@ public class NotifiedPersonFactory {
       AddressDTO organizationAddress = organization.getAddressDTO();
       if (organizationAddress != null) {
         organizationAddress.setUse(address.getUse());
+        organizationAddress.setUseEnum(address.getUseEnum());
       }
     }
     return organization;
