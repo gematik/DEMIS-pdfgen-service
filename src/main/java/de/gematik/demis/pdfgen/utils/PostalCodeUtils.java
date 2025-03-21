@@ -32,29 +32,31 @@ public final class PostalCodeUtils {
   private PostalCodeUtils() {}
 
   /**
-   * Creates an anonymized Postal Code, containing placeholders, if it is longer than 3 chars.
+   * Creates an anonymized Postal Code, containing placeholders, if it is shorter than 5 chars.
    *
    * @param postalCode the postal code to be anonymized
-   * @return the anonymized postal code, or as it is, if null or empty or shorter than 4 chars.
+   * @return the anonymized postal code, or as it is, if null or empty or shorter than 5 chars.
    */
   public static String anonymizeWithPlaceholders(final String postalCode) {
-    // Get the shortPostalCode form
-    final var shortPostalCode = shortPostalCode(postalCode);
-
     // Return as is if postal code is null or empty
-    if (Objects.isNull(shortPostalCode) || shortPostalCode.isBlank()) {
-      return shortPostalCode;
+    if (Objects.isNull(postalCode) || postalCode.isBlank()) {
+      return postalCode;
     }
 
-    // Return as is if postal code contains more than 3 chars
-    return shortPostalCode.concat(
-        POSTAL_CODE_PLACEHOLDER.repeat(POSTAL_CODE_STANDARD_LENGTH - shortPostalCode.length()));
+    // Add placeholders if postal code is shorter than 5 characters
+    if (postalCode.length() < POSTAL_CODE_STANDARD_LENGTH) {
+      return postalCode.concat(
+          POSTAL_CODE_PLACEHOLDER.repeat(POSTAL_CODE_STANDARD_LENGTH - postalCode.length()));
+    }
+
+    // Return as is
+    return postalCode;
   }
 
   /**
    * Returns the first three digits of the postal code for the Lifecycle Page in the report. In case
    * the postal code is not available, an empty string is returned. In case the postal code is
-   * shorter than 3 characters, the full postal code is returned, which contain masked characters.
+   * shorter than 3 characters, additional placeholders are added.
    *
    * @param postalCode the postal code to be shortened
    * @return the short postal code or null, if none set
@@ -65,8 +67,9 @@ public final class PostalCodeUtils {
       return postalCode;
     }
 
-    if (postalCode.length() <= ANONYMIZED_POSTAL_CODE_MAX_LENGTH) {
-      return postalCode;
+    if (postalCode.length() < ANONYMIZED_POSTAL_CODE_MAX_LENGTH) {
+      return postalCode.concat(
+          POSTAL_CODE_PLACEHOLDER.repeat(ANONYMIZED_POSTAL_CODE_MAX_LENGTH - postalCode.length()));
     }
 
     return postalCode.substring(0, ANONYMIZED_POSTAL_CODE_MAX_LENGTH);
