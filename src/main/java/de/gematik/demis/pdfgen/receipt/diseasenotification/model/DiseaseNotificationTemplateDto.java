@@ -19,6 +19,10 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification.model;
  * In case of changes by gematik find details in the "Readme" file.
  *
  * See the Licence for the specific language governing permissions and limitations under the Licence.
+ *
+ * *******
+ *
+ * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
  * #L%
  */
 
@@ -30,6 +34,7 @@ import de.gematik.demis.pdfgen.receipt.common.model.section.Notifier;
 import de.gematik.demis.pdfgen.receipt.common.model.section.Recipient;
 import de.gematik.demis.pdfgen.receipt.diseasenotification.model.condition.ConditionDTO;
 import de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.Questionnaire;
+import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -46,4 +51,5 @@ public class DiseaseNotificationTemplateDto {
   private Questionnaire commonQuestionnaire;
   private Questionnaire specificQuestionnaire;
   private Authentication authentication;
+  private Map<String, String> additionalConfig;
 }

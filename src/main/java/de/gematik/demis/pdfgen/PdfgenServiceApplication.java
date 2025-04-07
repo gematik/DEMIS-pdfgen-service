@@ -19,17 +19,23 @@ package de.gematik.demis.pdfgen;
  * In case of changes by gematik find details in the "Readme" file.
  *
  * See the Licence for the specific language governing permissions and limitations under the Licence.
+ *
+ * *******
+ *
+ * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
  * #L%
  */
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableFeignClients
 @EnableCaching
+@EnableConfigurationProperties(FeatureFlags.class)
 public class PdfgenServiceApplication {
   public static void main(String[] args) {
     SpringApplication.run(PdfgenServiceApplication.class, args);
