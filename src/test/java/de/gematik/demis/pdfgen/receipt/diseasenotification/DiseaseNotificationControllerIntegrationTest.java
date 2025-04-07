@@ -19,6 +19,10 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification;
  * In case of changes by gematik find details in the "Readme" file.
  *
  * See the Licence for the specific language governing permissions and limitations under the Licence.
+ *
+ * *******
+ *
+ * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
  * #L%
  */
 
@@ -27,10 +31,12 @@ import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATI
 import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_WITH_PARTIAL_POSTALCODE_BUNDLE_XML;
 import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_WITH_PROVENANCE_BUNDID_BUNDLE_JSON;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import de.gematik.demis.fhir_ui_data_model_translation_service.wiremockfuts.WireMockFuts;
 import de.gematik.demis.fhir_ui_data_model_translation_service.wiremockfuts.disease.DiseaseFeature;
+import de.gematik.demis.pdfgen.FeatureFlags;
 import de.gematik.demis.pdfgen.test.helper.PdfExtractorHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,6 +50,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.TestPropertySources;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureMockMvc
@@ -62,6 +69,8 @@ class DiseaseNotificationControllerIntegrationTest {
   private static final String DISEASE_NOTIFICATION_PATH = "/diseaseNotification";
 
   @Autowired private MockMvc mockMvc;
+
+  @MockitoSpyBean FeatureFlags featureFlags;
 
   @BeforeEach
   void configureWireMockFuts() {
@@ -103,6 +112,45 @@ class DiseaseNotificationControllerIntegrationTest {
         response,
         "Empfangsbestätigung Erkrankungsmeldung - Bertha-Luise Hanna Karin Betroffen.pdf");
     validateBodyDiseaseResponse(response, expectedProvenance);
+  }
+
+  @Test
+  void
+      generatePdfFromBundleXmlStringWithFeatureFlagHospitalizationFlag_shouldRespond200WithPdf_DiseaseNotificationWithProvenanceBundId()
+          throws Exception {
+
+    when(featureFlags.isHospitalizationOrder()).thenReturn(true);
+    final String expectedHospitalizationOrder =
+        """
+            Aufnahme in ein Krankenhaus Ja
+            Krankenhaus 1
+            Aufnahmedatum 05.01.2022
+            Entlassdatum 09.01.2022
+            Name der Einrichtung QuickHealing Hospital (Krankenhaus)
+            Adresse der Einrichtung Krankenhausstraße 1, 21481 Buchhorst, Deutschland
+            Telefon: 01234567
+            E-Mail: anna@ansprechpartner.de
+            Kontaktperson: Dr. Anna Beate Carolin Ansprechpartner
+            Hinweise zur Hospitalisierung wichtige Zusatzinformation
+            Krankenhaus 2
+            Station Intensivmedizin
+            Aufnahmedatum 07.01.2022
+            Name der Einrichtung QuickHealing Hospital (Krankenhaus)
+            Adresse der Einrichtung Krankenhausstraße 1, 21481 Buchhorst, Deutschland
+            Telefon: 01234567
+            E-Mail: anna@ansprechpartner.de
+            Kontaktperson: Dr. Anna Beate Carolin Ansprechpartner
+            """;
+
+    final var response =
+        generateAndValidateNotification(
+            DISEASE_NOTIFICATION_WITH_PROVENANCE_BUNDID_BUNDLE_JSON,
+            MediaType.APPLICATION_JSON_VALUE);
+
+    final String pdfText = PdfExtractorHelper.extractPdfText(response.getContentAsByteArray());
+    assertThat(pdfText)
+        .as("disease notification PDF text")
+        .contains(cleanupString(expectedHospitalizationOrder));
   }
 
   @Test

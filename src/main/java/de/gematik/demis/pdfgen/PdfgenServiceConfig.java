@@ -19,11 +19,16 @@ package de.gematik.demis.pdfgen;
  * In case of changes by gematik find details in the "Readme" file.
  *
  * See the Licence for the specific language governing permissions and limitations under the Licence.
+ *
+ * *******
+ *
+ * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
  * #L%
  */
 
 import ca.uhn.fhir.context.FhirContext;
 import de.gematik.demis.fhirparserlibrary.FhirParser;
+import de.gematik.demis.service.base.apidoc.EnableDefaultApiSpecConfig;
 import io.micrometer.observation.ObservationRegistry;
 import io.micrometer.observation.aop.ObservedAspect;
 import org.springframework.context.annotation.Bean;
@@ -35,6 +40,7 @@ import org.springframework.context.annotation.Configuration;
  * sub-packages for components to be registered for dependency injection.
  */
 @Configuration
+@EnableDefaultApiSpecConfig
 @ComponentScan()
 public class PdfgenServiceConfig {
 
