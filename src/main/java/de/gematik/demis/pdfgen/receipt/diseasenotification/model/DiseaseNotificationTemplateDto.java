@@ -52,4 +52,5 @@ public class DiseaseNotificationTemplateDto {
   private Questionnaire specificQuestionnaire;
   private Authentication authentication;
   private Map<String, String> additionalConfig;
+  private String watermarkBase64Image;
 }

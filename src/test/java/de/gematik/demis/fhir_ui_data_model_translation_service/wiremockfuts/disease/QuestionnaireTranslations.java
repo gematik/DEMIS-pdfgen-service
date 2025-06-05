@@ -66,7 +66,7 @@ final class QuestionnaireTranslations implements Feature {
   private void putCommon() {
     this.questionnaires.put(
         "common",
-        """
+"""
 {
     "title": "Meldetatbestandsübergreifende klinische und epidemiologische Angaben",
     "items": {
@@ -99,7 +99,7 @@ final class QuestionnaireTranslations implements Feature {
   private void putCvdd() {
     this.questionnaires.put(
         "cvdd",
-        """
+"""
 {
     "title": "Covid-19-spezifische klinische und epidemiologische Angaben",
     "items": {

@@ -41,6 +41,8 @@ class AuthenticationRoutingEnumTest {
         .isEqualTo(AuthenticationRoutingEnum.INTERFACE);
     assertThat(AuthenticationRoutingEnum.of(AuthenticationRoutingEnum.UNKNOWN.provenanceValue))
         .isEqualTo(AuthenticationRoutingEnum.UNKNOWN);
+    assertThat(AuthenticationRoutingEnum.of(AuthenticationRoutingEnum.INTERNET.provenanceValue))
+        .isEqualTo(AuthenticationRoutingEnum.INTERNET);
   }
 
   @Test
@@ -48,6 +50,7 @@ class AuthenticationRoutingEnumTest {
     assertThat(AuthenticationRoutingEnum.PORTAL).hasToString("Portal");
     assertThat(AuthenticationRoutingEnum.INTERFACE).hasToString("Schnittstelle");
     assertThat(AuthenticationRoutingEnum.UNKNOWN).hasToString("Unbekannt");
+    assertThat(AuthenticationRoutingEnum.INTERNET).hasToString("Portal");
   }
 
   @Test

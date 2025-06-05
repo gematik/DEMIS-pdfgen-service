@@ -123,17 +123,17 @@ public class LaboratoryFeature implements Feature {
   private static Feature createSnomed() {
     var snomed = new CodeSystemFeature("http://snomed.info/sct");
     snomed.add(
-        "s001",
+        "309164002",
         """
                                                                 {
-                                                                      "code": "s001",
+                                                                      "code": "309164002",
                                                                       "display": "Upper respiratory swab sample (specimen)"
                                                                   }""");
     snomed.add(
-        "s002",
+        "398545005",
         """
                                                             {
-                                                                  "code": "s002",
+                                                                  "code": "398545005",
                                                                   "display": "Nucleic acid assay (procedure)"
                                                               }""");
     snomed.add(

@@ -1,50 +1,34 @@
 {
   "resourceType": "Bundle",
   "meta": {
-    "lastUpdated": "2021-03-04T20:16:01.000+01:00",
-    "profile": [
+    "profile":  [
       "https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratory"
-    ],
-    "tag": [
-      {
-        "system": "https://demis.rki.de/fhir/CodeSystem/ResponsibleDepartment",
-        "code": "1.11.0.11.01."
-      }
     ]
   },
   "identifier": {
     "system": "https://demis.rki.de/fhir/NamingSystem/NotificationBundleId",
-    "value": "a5e00874-bb26-45ac-8eea-0bde76456703"
+    "value": "0de84a15-3f79-439a-a33c-a5989927cf7d"
   },
   "type": "document",
-  "timestamp": "2021-03-04T20:16:01.000+01:00",
-  "entry": [
+  "timestamp": "2020-05-10T05:37:44.000+01:00",
+  "entry":  [
     {
-      "fullUrl": "https://demis.rki.de/fhir/Composition/bfa5c3e9-13e7-45b0-a845-f28b3e7afa6d",
+      "fullUrl": "https://demis.rki.de/fhir/Composition/a194b5c3-a3c5-4ceb-9087-d7fd87e1ec4e",
       "resource": {
         "resourceType": "Composition",
-        "id": "bfa5c3e9-13e7-45b0-a845-f28b3e7afa6d",
+        "id": "a194b5c3-a3c5-4ceb-9087-d7fd87e1ec4e",
         "meta": {
-          "profile": [
+          "profile":  [
             "https://demis.rki.de/fhir/StructureDefinition/NotificationLaboratory"
           ]
         },
         "identifier": {
           "system": "https://demis.rki.de/fhir/NamingSystem/NotificationId",
-          "value": "e8d8cc43-32c2-4f93-8eaf-b2f3e6deb2a9"
+          "value": "bc6a490d-7221-5dbf-8d00-0617359b78fb"
         },
         "status": "final",
-        "relatesTo": [
-          {
-            "code": "appends",
-            "targetIdentifier": {
-              "system": "http://example.org/fhir/NamingSystem/document-ids",
-              "value": "ABC123"
-            }
-          }
-        ],
         "type": {
-          "coding": [
+          "coding":  [
             {
               "system": "http://loinc.org",
               "code": "34782-3",
@@ -52,9 +36,9 @@
             }
           ]
         },
-        "category": [
+        "category":  [
           {
-            "coding": [
+            "coding":  [
               {
                 "system": "http://loinc.org",
                 "code": "11502-2",
@@ -64,19 +48,31 @@
           }
         ],
         "subject": {
-          "reference": "Patient/c9201e8c-0425-4fb4-89c3-95f2405f290a"
+          "reference": "Patient/61ebe359-bfdc-4613-8bf2-c5e300945f0n17"
         },
-        "date": "2021-03-04T20:16:00+01:00",
-        "author": [
+        "date": "2020-04-16",
+        "author":  [
           {
-            "reference": "PractitionerRole/318914e5-314b-4a6d-9044-e94a288fa795"
+            "reference": "PractitionerRole/61ebe359-bfdc-4613-8bf2-c5e300945f0n18"
           }
         ],
-        "title": "Erregernachweismeldung",
-        "section": [
+        "title": "SARS-CoV-2-Erregernachweismeldung",
+        "relatesTo":  [
+          {
+            "code": "appends",
+            "targetReference": {
+              "type": "Composition",
+              "identifier": {
+                "system": "https://demis.rki.de/fhir/NamingSystem/NotificationId",
+                "value": "bc6a490d-7221-5dbf-8d00-0617359b78fb"
+              }
+            }
+          }
+        ],
+        "section":  [
           {
             "code": {
-              "coding": [
+              "coding":  [
                 {
                   "system": "http://loinc.org",
                   "code": "11502-2",
@@ -84,9 +80,9 @@
                 }
               ]
             },
-            "entry": [
+            "entry":  [
               {
-                "reference": "DiagnosticReport/5d3a54e0-0af5-4e61-a917-c1e0f063af4b"
+                "reference": "DiagnosticReport/61ebe359-bfdc-4613-8bf2-c5e300945f0n19"
               }
             ]
           }
@@ -94,314 +90,161 @@
       }
     },
     {
-      "fullUrl": "https://demis.rki.de/fhir/Patient/c9201e8c-0425-4fb4-89c3-95f2405f290a",
-      "resource": {
-        "resourceType": "Patient",
-        "id": "c9201e8c-0425-4fb4-89c3-95f2405f290a",
-        "meta": {
-          "profile": [
-            "https://demis.rki.de/fhir/StructureDefinition/NotifiedPerson"
-          ]
-        },
-        "name": [
-          {
-            "use": "official",
-            "family": "Mustermann",
-            "given": [
-              "Maxime"
-            ]
-          }
-        ],
-        "gender": "female",
-        "birthDate": "1950-02-11",
-        "telecom": [
-          {
-            "system": "phone",
-            "value": "030 555",
-            "use": "home"
-          }
-        ],
-        "address": [
-          {
-            "extension": [
-              {
-                "url": "https://demis.rki.de/fhir/StructureDefinition/AddressUse",
-                "valueCoding": {
-                  "system": "https://demis.rki.de/fhir/CodeSystem/addressUse",
-                  "code": "primary"
-                }
-              }
-            ],
-            "line": [
-              "Teststrasse 123"
-            ],
-            "city": "Berlin",
-            "postalCode": "13055",
-            "country": "20422",
-            "use": "home"
-          },
-          {
-            "extension": [
-              {
-                "url": "https://demis.rki.de/fhir/StructureDefinition/AddressUse",
-                "valueCoding": {
-                  "system": "https://demis.rki.de/fhir/CodeSystem/addressUse",
-                  "code": "current"
-                }
-              }
-            ],
-            "line": [
-              "Friedrichstraße 987"
-            ],
-            "city": "Berlin",
-            "postalCode": "66666",
-            "country": "20422",
-            "use": "work"
-          }
-        ]
-      }
-    },
-    {
-      "fullUrl": "https://demis.rki.de/fhir/PractitionerRole/318914e5-314b-4a6d-9044-e94a288fa795",
+      "fullUrl": "https://demis.rki.de/fhir/PractitionerRole/61ebe359-bfdc-4613-8bf2-c5e300945f0n18",
       "resource": {
         "resourceType": "PractitionerRole",
-        "id": "318914e5-314b-4a6d-9044-e94a288fa795",
+        "id": "61ebe359-bfdc-4613-8bf2-c5e300945f0n18",
         "meta": {
-          "profile": [
+          "profile":  [
             "https://demis.rki.de/fhir/StructureDefinition/NotifierRole"
           ]
         },
-        "organization": {
-          "reference": "Organization/ec6e6fc0-4b0f-4fc6-b638-eaf85d1308ef"
+        "practitioner": {
+          "reference": "Practitioner/61abc359-bfdc-4613-8bf2-c5e300945f0n18"
         }
       }
     },
     {
-      "fullUrl": "https://demis.rki.de/fhir/Practitioner/ec6e6fc0-4b0f-4fc6-b638-eaf85d1308ee",
+      "fullUrl": "https://demis.rki.de/fhir/Practitioner/61abc359-bfdc-4613-8bf2-c5e300945f0n18",
       "resource": {
         "resourceType": "Practitioner",
-        "id": "ec6e6fc0-4b0f-4fc6-b638-eaf85d1308ee",
+        "id": "61ebe359-bfdc-4613-8bf2-c5e300945f0n18",
         "meta": {
-          "profile": [
+          "profile":  [
             "https://demis.rki.de/fhir/StructureDefinition/Notifier"
           ]
         },
-        "identifier": [
+        "extension":  [
           {
-            "system": "http://www.acme.org/practitioners",
-            "value": "23"
+            "url": "https://demis.rki.de/fhir/StructureDefinition/Salutation",
+            "valueCoding": {
+              "system": "https://demis.rki.de/fhir/CodeSystem/salutation",
+              "code": "mrs"
+            }
           }
         ],
-        "active": true,
-        "name": [
+        "name":  [
           {
-            "family": "Careful",
-            "given": [
-              "Adam"
-            ],
-            "prefix": [
-              "Dr"
+            "use": "official",
+            "family": "Bonheure",
+            "given":  [
+              "Julie"
             ]
           }
         ],
-        "telecom": [
+        "telecom":  [
           {
-            "extension": [
+            "extension":  [
               {
                 "url": "https://demis.rki.de/fhir/StructureDefinition/Comment",
-                "valueString": "montag-freitag 8:00-16:00"
+                "valueString": "Ab 14 Uhr"
               }
             ],
             "system": "phone",
-            "value": "030 1234",
+            "value": "+49 (0)12345 - 123456",
             "use": "work"
-          }
-        ],
-        "address": [
-          {
-            "use": "home",
-            "line": [
-              "534 Erewhon St"
-            ],
-            "city": "PleasantVille",
-            "state": "Vic",
-            "postalCode": "3999"
           }
         ]
       }
     },
     {
-      "fullUrl": "https://demis.rki.de/fhir/Organization/ec6e6fc0-4b0f-4fc6-b638-eaf85d1308ef",
+      "fullUrl": "https://demis.rki.de/fhir/Patient/61ebe359-bfdc-4613-8bf2-c5e300945f0n17",
       "resource": {
-        "resourceType": "Organization",
-        "id": "ec6e6fc0-4b0f-4fc6-b638-eaf85d1308ef",
+        "resourceType": "Patient",
+        "id": "61ebe359-bfdc-4613-8bf2-c5e300945f0n17",
         "meta": {
-          "profile": [
-            "https://demis.rki.de/fhir/StructureDefinition/NotifierFacility"
+          "profile":  [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifiedPerson"
           ]
         },
-        "identifier": [
+        "name":  [
           {
-            "system": "https://demis.rki.de/fhir/NamingSystem/DemisLaboratoryId",
-            "value": "13589"
-          },
-          {
-            "system": "https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR",
-            "value": "98765430"
+            "use": "official",
+            "family": "Müller",
+            "given":  [
+              "Karl-Heinz"
+            ]
           }
         ],
-        "type": [
+        "telecom":  [
           {
-            "coding": [
+            "extension":  [
               {
-                "system": "https://demis.rki.de/fhir/CodeSystem/organizationType",
-                "code": "laboratory",
-                "display": "Erregerdiagnostische Untersuchungsstelle"
+                "url": "https://demis.rki.de/fhir/StructureDefinition/Comment",
+                "valueString": "Ab 14 Uhr"
+              }
+            ],
+            "system": "phone",
+            "value": "+49 (0)12345 - 123456",
+            "use": "work"
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1974-12-25",
+        "address":  [
+          {
+            "extension":  [
+              {
+                "url": "https://demis.rki.de/fhir/StructureDefinition/AddressUse",
+                "valueCoding": {
+                  "system": "https://demis.rki.de/fhir/CodeSystem/addressUse",
+                  "code": "ordinary"
+                }
+              },
+              {
+                "url": "https://demis.rki.de/fhir/StructureDefinition/FacilityAddressNotifiedPerson",
+                "valueReference": {
+                  "reference": "Organization/98cda07d-1fa7-47f6-ad79-e66de48d6078"
+                }
               }
             ]
           }
         ],
-        "name": "Primärlabor",
-        "telecom": [
+        "contact":  [
           {
-            "system": "phone",
-            "value": "0309876543210",
-            "use": "work"
-          }
-        ],
-        "address": [
-          {
-            "line": [
-              "Dingsweg 321"
+            "relationship":  [
+              {
+                "coding":  [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v2-0131",
+                    "code": "E"
+                  }
+                ]
+              }
             ],
-            "city": "Berlin",
-            "postalCode": "13055",
-            "country": "20422"
+            "name": {
+              "use": "official",
+              "family": "Meier",
+              "given":  [
+                "Joachim"
+              ]
+            }
           }
         ]
       }
     },
     {
-      "fullUrl": "https://demis.rki.de/fhir/PractitionerRole/c2063949-baae-4c60-a099-13b905d2f29f",
-      "resource": {
-        "resourceType": "PractitionerRole",
-        "id": "c2063949-baae-4c60-a099-13b905d2f29f",
-        "meta": {
-          "profile": [
-            "https://demis.rki.de/fhir/StructureDefinition/SubmittingRole"
-          ]
-        },
-        "organization": {
-          "reference": "Organization/a8448a13-a425-4738-b837-acf6d06d4a5c"
-        }
-      }
-    },
-    {
-      "fullUrl": "https://demis.rki.de/fhir/Practitioner/ec6e6fc0-4b0f-4fc6-b638-eaf85d1308ff",
-      "resource": {
-        "resourceType": "Practitioner",
-        "id": "ec6e6fc0-4b0f-4fc6-b638-eaf85d1308ff",
-        "meta": {
-          "profile": [
-            "https://demis.rki.de/fhir/StructureDefinition/SubmittingPerson"
-          ]
-        },
-        "identifier": [
-          {
-            "system": "http://www.acme.org/practitioners",
-            "value": "24"
-          }
-        ],
-        "active": true,
-        "name": [
-          {
-            "family": "Muster",
-            "given": [
-              "Otto"
-            ],
-            "prefix": [
-              "Dr. Dr."
-            ]
-          }
-        ],
-        "telecom": [
-          {
-            "system": "fax",
-            "value": "030 1111",
-            "use": "work"
-          }
-        ],
-        "address": [
-          {
-            "use": "home",
-            "line": [
-              "Strasse 123"
-            ],
-            "city": "Stuttgart",
-            "state": "BW",
-            "postalCode": "33445"
-          }
-        ]
-      }
-    },
-    {
-      "fullUrl": "https://demis.rki.de/fhir/Organization/a8448a13-a425-4738-b837-acf6d06d4a5c",
-      "resource": {
-        "resourceType": "Organization",
-        "id": "a8448a13-a425-4738-b837-acf6d06d4a5c",
-        "meta": {
-          "profile": [
-            "https://demis.rki.de/fhir/StructureDefinition/SubmittingFacility"
-          ]
-        },
-        "identifier": [
-          {
-            "system": "https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR",
-            "value": "135896780"
-          }
-        ],
-        "name": "Einsendepraxis ABC",
-        "telecom": [
-          {
-            "system": "phone",
-            "value": "030 1358967890",
-            "use": "work"
-          }
-        ],
-        "address": [
-          {
-            "line": [
-              "Teststr. 123"
-            ],
-            "city": "Berlin",
-            "postalCode": "13589",
-            "country": "20422"
-          }
-        ]
-      }
-    },
-    {
-      "fullUrl": "https://demis.rki.de/fhir/DiagnosticReport/5d3a54e0-0af5-4e61-a917-c1e0f063af4b",
+      "fullUrl": "https://demis.rki.de/fhir/DiagnosticReport/61ebe359-bfdc-4613-8bf2-c5e300945f0n19",
       "resource": {
         "resourceType": "DiagnosticReport",
-        "id": "5d3a54e0-0af5-4e61-a917-c1e0f063af4b",
+        "id": "61ebe359-bfdc-4613-8bf2-c5e300945f0n19",
         "meta": {
-          "profile": [
+          "profile":  [
             "https://demis.rki.de/fhir/StructureDefinition/LaboratoryReportCVDP"
           ]
         },
-        "basedOn": [
+        "basedOn":  [
           {
             "type": "ServiceRequest",
             "identifier": {
               "system": "https://demis.rki.de/fhir/NamingSystem/ServiceRequestId",
-              "value": "2021-000672922"
+              "value": "2020-0003456"
             }
           }
         ],
         "status": "final",
         "code": {
-          "coding": [
+          "coding":  [
             {
               "system": "https://demis.rki.de/fhir/CodeSystem/notificationCategory",
               "code": "cvdp",
@@ -410,22 +253,20 @@
           ]
         },
         "subject": {
-          "reference": "Patient/c9201e8c-0425-4fb4-89c3-95f2405f290a"
+          "reference": "Patient/61ebe359-bfdc-4613-8bf2-c5e300945f0n17"
         },
-        "issued": "2021-03-04T20:15:00.000+01:00",
-        "result": [
+        "issued": "2021-03-04T00:45:33+01:00",
+        "result":  [
           {
-            "reference": "Observation/4cf6dbcb-07b4-4794-bbd3-c052a1d67135"
+            "reference": "Observation/d3539a4c-9093-467a-a3e8-050594afbd59"
           }
         ],
-        "conclusion": "Ich bin die textuelle Conclusion ...",
-        "conclusionCode": [
+        "conclusionCode":  [
           {
-            "coding": [
+            "coding":  [
               {
                 "system": "https://demis.rki.de/fhir/CodeSystem/conclusionCode",
-                "code": "pathogenDetected",
-                "display": "Meldepflichtiger Erreger nachgewiesen"
+                "code": "pathogenDetected"
               }
             ]
           }
@@ -433,19 +274,60 @@
       }
     },
     {
-      "fullUrl": "https://demis.rki.de/fhir/Observation/4cf6dbcb-07b4-4794-bbd3-c052a1d67135",
+      "fullUrl": "https://demis.rki.de/fhir/Organization/98cda07d-1fa7-47f6-ad79-e66de48d6078",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "98cda07d-1fa7-47f6-ad79-e66de48d6078",
+        "meta": {
+          "profile":  [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifiedPersonFacility"
+          ]
+        },
+        "type":  [
+          {
+            "coding":  [
+              {
+                "system": "https://demis.rki.de/fhir/CodeSystem/organizationType",
+                "code": "hospital"
+              }
+            ]
+          }
+        ],
+        "name": "Krankenhaus am See",
+        "telecom":  [
+          {
+            "system": "phone",
+            "value": "+49 (0)12345 - 123456",
+            "use": "work"
+          }
+        ],
+        "address":  [
+          {
+            "line":  [
+              "Kurzer Weg 15"
+            ],
+            "city": "Berlin",
+            "state": "DE-BE",
+            "postalCode": "10117",
+            "country": "DE"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Observation/d3539a4c-9093-467a-a3e8-050594afbd59",
       "resource": {
         "resourceType": "Observation",
-        "id": "4cf6dbcb-07b4-4794-bbd3-c052a1d67135",
+        "id": "d3539a4c-9093-467a-a3e8-050594afbd59",
         "meta": {
-          "profile": [
+          "profile":  [
             "https://demis.rki.de/fhir/StructureDefinition/PathogenDetectionCVDP"
           ]
         },
         "status": "final",
-        "category": [
+        "category":  [
           {
-            "coding": [
+            "coding":  [
               {
                 "system": "http://terminology.hl7.org/CodeSystem/observation-category",
                 "code": "laboratory"
@@ -454,103 +336,153 @@
           }
         ],
         "code": {
-          "coding": [
+          "coding":  [
             {
               "system": "http://loinc.org",
-              "code": "94660-8",
-              "display": "SARS-CoV-2 (COVID-19) RNA [Presence] in Serum or Plasma by NAA with probe detection"
+              "code": "96741-4",
+              "display": "SARS-CoV-2 (COVID-19) variant Sequencing Nom (Specimen)"
             }
           ]
         },
         "subject": {
-          "reference": "Patient/c9201e8c-0425-4fb4-89c3-95f2405f290a"
+          "reference": "Patient/61ebe359-bfdc-4613-8bf2-c5e300945f0n17"
         },
-        "valueCodeableConcept": {
-          "coding": [
-            {
-              "system": "http://loinc.org",
-              "code": "LA11882-0",
-              "display": "Detected"
-            }
-          ]
-        },
-        "interpretation": [
+        "valueString": "#B.1.1.7",
+        "interpretation":  [
           {
-            "coding": [
+            "coding":  [
               {
                 "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
-                "code": "POS",
-                "display": "Positive"
+                "code": "POS"
               }
             ]
           }
         ],
-        "note": [
+        "note":  [
           {
-            "text": "Nette Zusatzinformation …"
+            "text": "Ich bin ein optionaler beschreibender Text ..."
           }
         ],
         "method": {
-          "coding": [
+          "coding":  [
             {
               "system": "http://snomed.info/sct",
-              "code": "s002",
-              "display": "Nucleic acid assay (procedure)"
+              "code": "1304162005",
+              "display": "Nucleic acid sequencing technique (qualifier value)"
             }
           ]
         },
         "specimen": {
-          "reference": "Specimen/5497b5f4-2994-4c8c-a94e-e37ad111e220"
+          "reference": "Specimen/47d61bca-9c53-4422-bb33-3621da084bf4"
         }
       }
     },
     {
-      "fullUrl": "https://demis.rki.de/fhir/Specimen/5497b5f4-2994-4c8c-a94e-e37ad111e220",
+      "fullUrl": "https://demis.rki.de/fhir/Specimen/47d61bca-9c53-4422-bb33-3621da084bf4",
       "resource": {
         "resourceType": "Specimen",
-        "id": "5497b5f4-2994-4c8c-a94e-e37ad111e220",
+        "id": "47d61bca-9c53-4422-bb33-3621da084bf4",
         "meta": {
-          "profile": [
+          "profile":  [
             "https://demis.rki.de/fhir/StructureDefinition/SpecimenCVDP"
           ]
         },
-        "status": "available",
         "type": {
-          "coding": [
+          "coding":  [
             {
               "system": "http://snomed.info/sct",
-              "code": "s001",
+              "code": "309164002",
               "display": "Upper respiratory swab sample (specimen)"
             }
           ]
         },
         "subject": {
-          "reference": "Patient/c9201e8c-0425-4fb4-89c3-95f2405f290a"
+          "reference": "Patient/61ebe359-bfdc-4613-8bf2-c5e300945f0n17"
         },
-        "receivedTime": "2021-03-04T15:40:00+01:00",
+        "receivedTime": "2020-09-27T20:01:38+02:00",
         "collection": {
           "collector": {
-            "reference": "PractitionerRole/c2063949-baae-4c60-a099-13b905d2f29f"
+            "reference": "PractitionerRole/xyz2f5-8384-4191-916b-10150c780453"
           },
-          "collectedDateTime": "2021-03-04T09:50:00+01:00"
+          "collectedDateTime": "2020-08-17T10:10:00+02:00"
         },
-        "processing": [
+        "processing":  [
           {
-            "extension": [
+            "extension":  [
               {
                 "url": "https://demis.rki.de/fhir/StructureDefinition/TransactionID",
-                "valueString": "IMS-12345-CVDP-00001"
+                "valueString": "IGS-10001-CVDP-be8131da-9024-41a4-a53c-3ce0d6f6fe37"
               }
+            ],
+            "timeDateTime": "2020-08-18T08:10:00+02:00"
+          }
+        ],
+        "note":  [
+          {
+            "text": "Die Probe gehört zu einem Ausbruch."
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/PractitionerRole/xyz2f5-8384-4191-916b-10150c780453",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "xyz2f5-8384-4191-916b-10150c780453",
+        "meta": {
+          "profile":  [
+            "https://demis.rki.de/fhir/StructureDefinition/SubmittingRole"
+          ]
+        },
+        "practitioner": {
+          "reference": "Practitioner/42cdf5-8384-4191-916b-10150c780453"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Practitioner/42cdf5-8384-4191-916b-10150c780453",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "42cdf5-8384-4191-916b-10150c780453",
+        "meta": {
+          "profile":  [
+            "https://demis.rki.de/fhir/StructureDefinition/SubmittingPerson"
+          ]
+        },
+        "name":  [
+          {
+            "use": "official",
+            "family": "Mantle",
+            "given":  [
+              "Karl-Heinz"
             ]
           }
         ],
-        "note": [
+        "telecom":  [
           {
-            "text": "Ich bin eine interessante Zusatzinformation ..."
+            "system": "phone",
+            "value": "+49 (0)12345 - 123456",
+            "use": "work"
+          },
+          {
+            "system": "phone",
+            "value": "+49 (0)12345 - 123567",
+            "use": "home"
+          }
+        ],
+        "address":  [
+          {
+            "use": "home",
+            "line":  [
+              "Erster Weg 1"
+            ],
+            "city": "Berlin",
+            "state": "DE-BE",
+            "postalCode": "10117",
+            "country": "DE"
           }
         ]
       }
     }
   ]
 }
-

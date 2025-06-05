@@ -49,6 +49,7 @@ public class BedOccupancy {
   private String numberOperableBedsGeneralWardAdults;
   private String numberOperableBedsGeneralWardChildren;
   private Authentication authentication;
+  private String watermarkBase64Image;
 
   public boolean hasOperableData() {
     return isNotBlank(numberOperableBedsGeneralWardAdults)

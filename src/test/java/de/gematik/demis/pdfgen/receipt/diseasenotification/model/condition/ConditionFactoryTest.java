@@ -36,6 +36,7 @@ import de.gematik.demis.pdfgen.translation.TranslationService;
 import java.util.List;
 import java.util.Optional;
 import org.hl7.fhir.r4.model.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -45,16 +46,27 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class ConditionFactoryTest {
 
-  private final Bundle bundle =
-      new NotificationBundleLaboratoryDataBuilder()
-          .setNotifiedPerson(new Patient())
-          .setLaboratoryReport(new DiagnosticReport())
-          .setSpecimen(List.of(new Specimen()))
-          .build(); // .buildExampleLaboratoryBundle();
+  private Bundle bundle;
 
   @Mock private ConditionQueries conditionQueries;
   @Mock private TranslationService translationService;
   @InjectMocks private ConditionFactory conditionFactory;
+
+  @BeforeEach
+  void setUp() {
+    final Patient patient = new Patient();
+    patient.setId("Patient/123");
+    final DiagnosticReport diagnosticReport = new DiagnosticReport();
+    diagnosticReport.setId("Diagnostic/123");
+    final Specimen specimen = new Specimen();
+    specimen.setId("Specimen/123");
+    bundle =
+        new NotificationBundleLaboratoryDataBuilder()
+            .setNotifiedPerson(patient)
+            .setLaboratoryReport(diagnosticReport)
+            .setSpecimen(List.of(specimen))
+            .build(); // .buildExampleLaboratoryBundle();
+  }
 
   @Test
   void create_shouldHandleNullGracefully() {

@@ -33,6 +33,7 @@ import de.gematik.demis.pdfgen.receipt.common.model.section.MetadataFactory;
 import de.gematik.demis.pdfgen.receipt.common.model.section.Notification;
 import de.gematik.demis.pdfgen.receipt.common.model.section.NotificationFactory;
 import de.gematik.demis.pdfgen.receipt.common.model.subsection.OrganizationFactory;
+import de.gematik.demis.pdfgen.receipt.common.service.watermark.WatermarkService;
 import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +50,11 @@ public class BedOccupancyFactory {
   private final NotifierFhirQueries notifierFhirQueries;
   private final OrganizationFactory organizationFactory;
   private final AuthenticationFactory authenticationFactory;
+  private final WatermarkService watermarkService;
+
+  private static void setMetaData(Bundle bundle, BedOccupancy.BedOccupancyBuilder bedOccupancy) {
+    bedOccupancy.metadata(MetadataFactory.create(bundle));
+  }
 
   /**
    * Create bed occupancy report data object
@@ -66,6 +72,7 @@ public class BedOccupancyFactory {
     setOrganization(bundle, bedOccupancy);
     setBedStatistics(bundle, bedOccupancy);
     setAuthentication(bundle, bedOccupancy);
+    setWatermark(bedOccupancy);
     return bedOccupancy.build();
   }
 
@@ -93,10 +100,6 @@ public class BedOccupancyFactory {
     }
   }
 
-  private static void setMetaData(Bundle bundle, BedOccupancy.BedOccupancyBuilder bedOccupancy) {
-    bedOccupancy.metadata(MetadataFactory.create(bundle));
-  }
-
   private void setAuthentication(Bundle bundle, BedOccupancy.BedOccupancyBuilder bedOccupancy) {
     bedOccupancy.authentication(this.authenticationFactory.create(bundle));
   }
@@ -105,5 +108,9 @@ public class BedOccupancyFactory {
     Optional<QuestionnaireResponse> responseOptional =
         this.questionnaireFhirQueries.getBedOccupancyQuestionnaireResponse(bundle);
     return this.questionnaireFhirQueries.getQuestionnaireAnswers(responseOptional);
+  }
+
+  private void setWatermark(BedOccupancy.BedOccupancyBuilder bedOccupancy) {
+    watermarkService.getWatermarkBase64Image().ifPresent(bedOccupancy::watermarkBase64Image);
   }
 }

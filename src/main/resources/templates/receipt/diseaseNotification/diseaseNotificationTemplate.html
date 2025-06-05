@@ -2,6 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <link rel="stylesheet" th:href="@{~/styles/main.css}"/>
+    <th:block th:if="${diseaseNotificationTemplateDto.watermarkBase64Image != null}">
+        <style th:inline="text">
+            body {
+                background: none;
+            }
+            @page {
+                background-image: url('data:image/png;base64,[[${diseaseNotificationTemplateDto.watermarkBase64Image}]]');
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: contain;
+            }
+        </style>
+    </th:block>
     <title th:text="#{disease-notification.title}"></title>
 </head>
 <body>

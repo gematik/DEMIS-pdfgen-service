@@ -43,7 +43,7 @@ public class ConditionCodes implements Feature {
   private void addVerificationStatus() {
     this.conditionStatus.add(
         "unconfirmed",
-        """
+"""
 {
             "extension": [
               {
@@ -57,7 +57,7 @@ public class ConditionCodes implements Feature {
 """);
     this.conditionStatus.add(
         "provisional",
-        """
+"""
 {
             "extension": [
               {
@@ -71,7 +71,7 @@ public class ConditionCodes implements Feature {
 """);
     this.conditionStatus.add(
         "differential",
-        """
+"""
 {
                        "extension": [
                          {
@@ -86,7 +86,7 @@ public class ConditionCodes implements Feature {
 """);
     this.conditionStatus.add(
         "confirmed",
-        """
+"""
  {
             "extension": [
               {
@@ -100,7 +100,7 @@ public class ConditionCodes implements Feature {
 """);
     this.conditionStatus.add(
         "refuted",
-        """
+"""
 {
                        "extension": [
                          {
@@ -114,7 +114,7 @@ public class ConditionCodes implements Feature {
 """);
     this.conditionStatus.add(
         "entered-in-error",
-        """
+"""
 {
             "extension": [
               {
@@ -131,7 +131,7 @@ public class ConditionCodes implements Feature {
   private void addClinicalStatus() {
     this.conditionStatus.add(
         "active",
-        """
+"""
 {
             "extension": [
               {
@@ -145,7 +145,7 @@ public class ConditionCodes implements Feature {
 """);
     this.conditionStatus.add(
         "active",
-        """
+"""
 {
             "extension": [
               {
@@ -159,7 +159,7 @@ public class ConditionCodes implements Feature {
 """);
     this.conditionStatus.add(
         "active",
-        """
+"""
 {
             "extension": [
               {
@@ -173,7 +173,7 @@ public class ConditionCodes implements Feature {
 """);
     this.conditionStatus.add(
         "active",
-        """
+"""
 {
             "extension": [
               {
@@ -187,7 +187,7 @@ public class ConditionCodes implements Feature {
 """);
     this.conditionStatus.add(
         "active",
-        """
+"""
 {
             "extension": [
               {
@@ -201,7 +201,7 @@ public class ConditionCodes implements Feature {
 """);
     this.conditionStatus.add(
         "active",
-        """
+"""
 {
             "extension": [
               {

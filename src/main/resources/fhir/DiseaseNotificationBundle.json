@@ -1,50 +1,37 @@
 {
   "resourceType": "Bundle",
+  "id": "535e98aa-98b9-3f00-b2fb-227847090fa7",
   "meta": {
-    "lastUpdated": "2022-03-10T14:57:51.377+01:00",
-    "profile": [
+    "lastUpdated": "2022-12-07T08:50:00+01:00",
+    "profile":  [
       "https://demis.rki.de/fhir/StructureDefinition/NotificationBundleDisease"
-    ],
-    "tag": [
-      {
-        "system": "https://demis.rki.de/fhir/CodeSystem/ResponsibleDepartment",
-        "code": "1.01.0.53."
-      }
     ]
   },
   "identifier": {
     "system": "https://demis.rki.de/fhir/NamingSystem/NotificationBundleId",
-    "value": "2d66a331-102a-4047-b666-1b2f18ee955e"
+    "value": "c56e7d18-cdf5-3601-b97c-1edafb2ae212"
   },
   "type": "document",
-  "timestamp": "2022-03-10T14:57:51.377+01:00",
-  "entry": [
+  "timestamp": "2022-12-07T08:50:00+01:00",
+  "entry":  [
     {
-      "fullUrl": "https://demis.rki.de/fhir/Composition/9bb7aeba-581a-47ce-8791-5cdb319d6267",
+      "fullUrl": "https://demis.rki.de/fhir/Composition/1a85d273-e199-3a3e-8001-2eb93900798b",
       "resource": {
         "resourceType": "Composition",
-        "id": "9bb7aeba-581a-47ce-8791-5cdb319d6267",
+        "id": "1a85d273-e199-3a3e-8001-2eb93900798b",
         "meta": {
-          "profile": [
-            "https://demis.rki.de/fhir/StructureDefinition/NotificationDiseaseCVDD"
+          "lastUpdated": "2022-12-07T08:50:00+01:00",
+          "profile":  [
+            "https://demis.rki.de/fhir/StructureDefinition/NotificationDiseaseBAND"
           ]
         },
         "identifier": {
           "system": "https://demis.rki.de/fhir/NamingSystem/NotificationId",
-          "value": "7f562b87-f2c2-4e9d-b3fc-37f6b5dca3a5"
+          "value": "07eebd38-0f25-4926-87fb-b3e339ab3d7e"
         },
         "status": "final",
-        "relatesTo": [
-          {
-            "code": "appends",
-            "targetIdentifier": {
-              "system": "http://example.org/fhir/NamingSystem/document-ids",
-              "value": "ABC123"
-            }
-          }
-        ],
         "type": {
-          "coding": [
+          "coding":  [
             {
               "system": "http://loinc.org",
               "code": "34782-3",
@@ -52,32 +39,32 @@
             }
           ]
         },
-        "category": [
+        "category":  [
           {
-            "coding": [
+            "coding":  [
               {
                 "system": "https://demis.rki.de/fhir/CodeSystem/notificationType",
                 "code": "6.1_2",
-                "display": "Meldung gemäß IfSG §6 Absatz 1, 2"
+                "display": "Meldung gemäß §6 Absatz 1, 2"
               }
             ]
           }
         ],
         "subject": {
-          "reference": "Patient/458a9cb4-1e94-424e-bfd2-64cbd3efa41e"
+          "reference": "Patient/ae2582e3-8376-3b7a-b4ae-4390b6a45ae8"
         },
-        "date": "2022-03-10T14:57:52+01:00",
-        "author": [
+        "date": "2022-12-07T00:00:00+01:00",
+        "author":  [
           {
-            "reference": "PractitionerRole/dec9b121-b3fa-4815-8825-ca5c06a4c22d"
+            "reference": "PractitionerRole/99b7f072-6b8a-3fc2-a7a6-c1aa0b28c14f"
           }
         ],
         "title": "Meldung gemäß §6 Absatz 1, 2 IfSG",
-        "section": [
+        "section":  [
           {
             "title": "Diagnose",
             "code": {
-              "coding": [
+              "coding":  [
                 {
                   "system": "https://demis.rki.de/fhir/CodeSystem/sectionCode",
                   "code": "diagnosis",
@@ -85,16 +72,16 @@
                 }
               ]
             },
-            "entry": [
+            "entry":  [
               {
-                "reference": "Condition/0b435ebe-a544-4a70-ada0-90bc5c9777df"
+                "reference": "Condition/e9633360-0083-31fe-ac90-6735de3a4cc2"
               }
             ]
           },
           {
             "title": "Meldetatbestandsübergreifende klinische und epidemiologische Angaben",
             "code": {
-              "coding": [
+              "coding":  [
                 {
                   "system": "https://demis.rki.de/fhir/CodeSystem/sectionCode",
                   "code": "generalClinAndEpiInformation",
@@ -102,16 +89,16 @@
                 }
               ]
             },
-            "entry": [
+            "entry":  [
               {
-                "reference": "QuestionnaireResponse/6352a61f-d1d6-45d1-a15a-604b1c4b04f4"
+                "reference": "QuestionnaireResponse/332fb5d4-5f53-3092-8c01-d4eb3e81cfd8"
               }
             ]
           },
           {
             "title": "Meldetatbestandsspezifische klinische und epidemiologische Angaben",
             "code": {
-              "coding": [
+              "coding":  [
                 {
                   "system": "https://demis.rki.de/fhir/CodeSystem/sectionCode",
                   "code": "specificClinAndEpiInformation",
@@ -119,9 +106,9 @@
                 }
               ]
             },
-            "entry": [
+            "entry":  [
               {
-                "reference": "QuestionnaireResponse/f9605664-9301-4588-9cf5-a4ec796c57db"
+                "reference": "QuestionnaireResponse/5b500d63-513f-3af2-9c7d-c5d23ee55a20"
               }
             ]
           }
@@ -129,79 +116,33 @@
       }
     },
     {
-      "fullUrl": "https://demis.rki.de/fhir/Organization/0ec30241-eabc-4529-9060-2a93f2732cd0",
+      "fullUrl": "https://demis.rki.de/fhir/Organization/caea6c7b-a29c-33a3-8f91-a0f78847f041",
       "resource": {
         "resourceType": "Organization",
-        "id": "0ec30241-eabc-4529-9060-2a93f2732cd0",
+        "id": "caea6c7b-a29c-33a3-8f91-a0f78847f041",
         "meta": {
-          "profile": [
+          "profile":  [
             "https://demis.rki.de/fhir/StructureDefinition/NotifiedPersonFacility"
           ]
         },
-        "identifier": [
+        "name": "Sankt Gertrauden Krankenhaus (ganz anderer Standort)",
+        "address":  [
           {
-            "system": "https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR",
-            "value": "123456789"
-          }
-        ],
-        "type": [
-          {
-            "coding": [
-              {
-                "system": "https://demis.rki.de/fhir/CodeSystem/organizationType",
-                "code": "hospital",
-                "display": "Krankenhaus"
-              }
-            ]
-          }
-        ],
-        "name": "TEST Organisation",
-        "telecom": [
-          {
-            "system": "phone",
-            "value": "01234567"
-          },
-          {
-            "system": "email",
-            "value": "anna@ansprechpartner.de"
-          }
-        ],
-        "address": [
-          {
-            "line": [
-              "Krankenhausstraße 1"
+            "line":  [
+              "Harztr. 11"
             ],
-            "_line": [
-              {
-                "extension": [
-                  {
-                    "url": "http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-streetName",
-                    "valueString": "Krankenhausstraße"
-                  },
-                  {
-                    "url": "http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-houseNumber",
-                    "valueString": "1"
-                  }
-                ]
-              }
-            ],
-            "city": "Buchhorst",
-            "postalCode": "21481",
-            "country": "20422"
+            "city": "Berlin",
+            "postalCode": "12623",
+            "country": "DE"
           }
         ],
-        "contact": [
+        "contact":  [
           {
             "name": {
-              "text": "Frau Dr. Anna Beate Carolin Ansprechpartner",
-              "family": "Ansprechpartner",
-              "given": [
-                "Anna",
-                "Beate",
-                "Carolin"
-              ],
-              "prefix": [
-                "Dr."
+              "use": "official",
+              "family": "Schüler",
+              "given":  [
+                "Andreas"
               ]
             }
           }
@@ -209,104 +150,86 @@
       }
     },
     {
-      "fullUrl": "https://demis.rki.de/fhir/Patient/458a9cb4-1e94-424e-bfd2-64cbd3efa41e",
+      "fullUrl": "https://demis.rki.de/fhir/Patient/ae2582e3-8376-3b7a-b4ae-4390b6a45ae8",
       "resource": {
         "resourceType": "Patient",
-        "id": "458a9cb4-1e94-424e-bfd2-64cbd3efa41e",
+        "id": "ae2582e3-8376-3b7a-b4ae-4390b6a45ae8",
         "meta": {
-          "profile": [
+          "profile":  [
             "https://demis.rki.de/fhir/StructureDefinition/NotifiedPerson"
           ]
         },
-        "name": [
+        "name":  [
           {
             "use": "official",
-            "family": "Betroffen",
-            "given": [
-              "Bertha-Luise",
-              "Hanna",
-              "Karin"
+            "family": "Jägersmann",
+            "given":  [
+              "Bertolt"
             ]
           }
         ],
-        "telecom": [
+        "telecom":  [
           {
             "system": "phone",
-            "value": "01234567"
+            "value": "030 123456789"
           },
           {
             "system": "email",
-            "value": "bertha@betroffen.de"
+            "value": "jagen@domain.de"
           }
         ],
-        "gender": "female",
-        "birthDate": "1999-06-09",
-        "address": [
+        "gender": "male",
+        "birthDate": "1977-08-14",
+        "address":  [
           {
-            "extension": [
+            "extension":  [
               {
                 "url": "https://demis.rki.de/fhir/StructureDefinition/AddressUse",
                 "valueCoding": {
                   "system": "https://demis.rki.de/fhir/CodeSystem/addressUse",
-                  "code": "primary",
-                  "display": "Hauptwohnsitz"
-                }
-              }
-            ],
-            "line": [
-              "Berthastraße 123"
-            ],
-            "_line": [
-              {
-                "extension": [
-                  {
-                    "url": "http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-streetName",
-                    "valueString": "Berthastraße"
-                  },
-                  {
-                    "url": "http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-houseNumber",
-                    "valueString": "123"
-                  }
-                ]
-              }
-            ],
-            "city": "Betroffenenstadt",
-            "postalCode": "12345",
-            "country": "20422"
-          },
-          {
-            "extension": [
-              {
-                "url": "https://demis.rki.de/fhir/StructureDefinition/AddressUse",
-                "valueCoding": {
-                  "system": "https://demis.rki.de/fhir/CodeSystem/addressUse",
-                  "code": "current",
-                  "display": "Derzeitiger Aufenthaltsort"
+                  "code": "current"
                 }
               },
               {
                 "url": "https://demis.rki.de/fhir/StructureDefinition/FacilityAddressNotifiedPerson",
                 "valueReference": {
-                  "reference": "Organization/0ec30241-eabc-4529-9060-2a93f2732cd0"
+                  "reference": "Organization/caea6c7b-a29c-33a3-8f91-a0f78847f041"
                 }
               }
             ]
+          },
+          {
+            "extension":  [
+              {
+                "url": "https://demis.rki.de/fhir/StructureDefinition/AddressUse",
+                "valueCoding": {
+                  "system": "https://demis.rki.de/fhir/CodeSystem/addressUse",
+                  "code": "primary"
+                }
+              }
+            ],
+            "line":  [
+              "Krakower Str. 112"
+            ],
+            "city": "Berlin",
+            "postalCode": "12863",
+            "country": "DE"
           }
         ]
       }
     },
     {
-      "fullUrl": "https://demis.rki.de/fhir/Condition/0b435ebe-a544-4a70-ada0-90bc5c9777df",
+      "fullUrl": "https://demis.rki.de/fhir/Condition/e9633360-0083-31fe-ac90-6735de3a4cc2",
       "resource": {
         "resourceType": "Condition",
-        "id": "0b435ebe-a544-4a70-ada0-90bc5c9777df",
+        "id": "e9633360-0083-31fe-ac90-6735de3a4cc2",
         "meta": {
-          "profile": [
-            "https://demis.rki.de/fhir/StructureDefinition/DiseaseCVDD"
+          "profile":  [
+            "https://demis.rki.de/fhir/StructureDefinition/DiseaseBAND"
           ]
         },
         "verificationStatus": {
-          "coding": [
+          "coding":  [
             {
               "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
               "code": "confirmed"
@@ -314,100 +237,48 @@
           ]
         },
         "code": {
-          "coding": [
+          "coding":  [
             {
               "system": "https://demis.rki.de/fhir/CodeSystem/notificationDiseaseCategory",
-              "code": "cvdd",
-              "display": "Coronavirus-Krankheit-2019 (COVID-19)"
+              "code": "band",
+              "display": "Milzbrand"
             }
           ]
         },
         "subject": {
-          "reference": "Patient/458a9cb4-1e94-424e-bfd2-64cbd3efa41e"
+          "reference": "Patient/ae2582e3-8376-3b7a-b4ae-4390b6a45ae8"
         },
-        "onsetDateTime": "2022-01-01",
-        "recordedDate": "2022-01-02",
-        "evidence": [
+        "onsetDateTime": "2022-12-05",
+        "recordedDate": "2022-12-07",
+        "evidence":  [
           {
-            "code": [
+            "code":  [
               {
-                "coding": [
+                "coding":  [
                   {
                     "system": "http://snomed.info/sct",
-                    "code": "386661006",
-                    "display": "Fever (finding)"
+                    "code": "95324001:{116676008=53788007}",
+                    "display": "Hautläsion, vesikulös"
                   }
                 ]
               }
             ]
           },
           {
-            "code": [
+            "code":  [
               {
-                "coding": [
+                "coding":  [
                   {
                     "system": "http://snomed.info/sct",
-                    "code": "267102003",
-                    "display": "Sore throat symptom (finding)"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "code": [
-              {
-                "coding": [
-                  {
-                    "system": "http://snomed.info/sct",
-                    "code": "49727002",
-                    "display": "Cough (finding)"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "code": [
-              {
-                "coding": [
-                  {
-                    "system": "http://snomed.info/sct",
-                    "code": "233604007",
-                    "display": "Pneumonia (disorder)"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "code": [
-              {
-                "coding": [
-                  {
-                    "system": "http://snomed.info/sct",
-                    "code": "275280004",
-                    "display": "Sniffles (finding)"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "code": [
-              {
-                "coding": [
-                  {
-                    "system": "http://snomed.info/sct",
-                    "code": "67782005",
-                    "display": "Acute respiratory distress syndrome (disorder)"
+                    "code": "416893007:{246075003=21927003}",
+                    "display": "Milzbrandkarbunkel"
                   }
                 ]
               }
             ]
           }
         ],
-        "note": [
+        "note":  [
           {
             "text": "Textueller Hinweis"
           }
@@ -415,144 +286,121 @@
       }
     },
     {
-      "fullUrl": "https://demis.rki.de/fhir/Organization/2ac04fbc-e807-4eb1-a07e-8a941ae1b7d7",
+      "fullUrl": "https://demis.rki.de/fhir/Organization/431e89ce-3a44-4ec1-801c-0f988992e8fd",
       "resource": {
         "resourceType": "Organization",
-        "id": "2ac04fbc-e807-4eb1-a07e-8a941ae1b7d7",
+        "id": "431e89ce-3a44-4ec1-801c-0f988992e8fd",
         "meta": {
-          "profile": [
+          "profile":  [
             "https://demis.rki.de/fhir/StructureDefinition/NotifierFacility"
           ]
         },
-        "identifier": [
+        "identifier":  [
           {
-            "system": "https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR",
-            "value": "123456789"
+            "system": "http://fhir.de/sid/arge-ik/iknr"
           }
         ],
-        "type": [
+        "type":  [
           {
-            "coding": [
+            "coding":  [
               {
                 "system": "https://demis.rki.de/fhir/CodeSystem/organizationType",
-                "code": "hospital",
-                "display": "Krankenhaus"
+                "code": "hospital"
               }
             ]
           }
         ],
-        "name": "TEST Organisation",
-        "telecom": [
+        "name": "Sankt Gertrauden Krankenhaus",
+        "telecom":  [
           {
             "system": "phone",
-            "value": "01234567"
-          },
-          {
-            "system": "email",
-            "value": "anna@ansprechpartner.de"
+            "value": "0309876543210",
+            "use": "work"
           }
         ],
-        "address": [
+        "address":  [
           {
-            "line": [
-              "Krankenhausstraße 1"
+            "line":  [
+              "Dingsweg 321"
             ],
-            "_line": [
-              {
-                "extension": [
-                  {
-                    "url": "http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-streetName",
-                    "valueString": "Krankenhausstraße"
-                  },
-                  {
-                    "url": "http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-houseNumber",
-                    "valueString": "1"
-                  }
-                ]
-              }
-            ],
-            "city": "Buchhorst",
-            "postalCode": "21481",
-            "country": "20422"
-          }
-        ],
-        "contact": [
-          {
-            "name": {
-              "text": "Frau Dr. Anna Beate Carolin Ansprechpartner",
-              "family": "Ansprechpartner",
-              "given": [
-                "Anna",
-                "Beate",
-                "Carolin"
-              ],
-              "prefix": [
-                "Dr."
-              ]
-            }
+            "city": "Berlin",
+            "postalCode": "13055",
+            "country": "DE"
           }
         ]
       }
     },
     {
-      "fullUrl": "https://demis.rki.de/fhir/PractitionerRole/dec9b121-b3fa-4815-8825-ca5c06a4c22d",
+      "fullUrl": "https://demis.rki.de/fhir/PractitionerRole/99b7f072-6b8a-3fc2-a7a6-c1aa0b28c14f",
       "resource": {
         "resourceType": "PractitionerRole",
-        "id": "dec9b121-b3fa-4815-8825-ca5c06a4c22d",
+        "id": "99b7f072-6b8a-3fc2-a7a6-c1aa0b28c14f",
         "meta": {
-          "profile": [
+          "profile":  [
             "https://demis.rki.de/fhir/StructureDefinition/NotifierRole"
           ]
         },
         "organization": {
-          "reference": "Organization/2ac04fbc-e807-4eb1-a07e-8a941ae1b7d7"
+          "reference": "Organization/431e89ce-3a44-4ec1-801c-0f988992e8fd"
         }
       }
     },
     {
-      "fullUrl": "https://demis.rki.de/fhir/Encounter/5931672c-8ad9-44d0-8849-70dee8b2741f",
+      "fullUrl": "https://demis.rki.de/fhir/Organization/379d2b03-85c1-4b14-aae3-cc2a5975a90e",
       "resource": {
-        "resourceType": "Encounter",
-        "id": "5931672c-8ad9-44d0-8849-70dee8b2741f",
+        "resourceType": "Organization",
+        "id": "379d2b03-85c1-4b14-aae3-cc2a5975a90e",
         "meta": {
-          "profile": [
-            "https://demis.rki.de/fhir/StructureDefinition/Hospitalization"
+          "profile":  [
+            "http://hl7.org/fhir/StructureDefinition/Organization"
           ]
         },
-        "extension": [
+        "type":  [
           {
-            "url": "https://demis.rki.de/fhir/StructureDefinition/HospitalizationNote",
-            "valueString": "wichtige Zusatzinformation"
+            "coding":  [
+              {
+                "system": "https://demis.rki.de/fhir/CodeSystem/organizationType",
+                "code": "hospitalLab"
+              }
+            ]
           }
         ],
-        "status": "in-progress",
-        "class": {
-          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
-          "code": "IMP",
-          "display": "inpatient encounter"
-        },
-        "subject": {
-          "reference": "Patient/458a9cb4-1e94-424e-bfd2-64cbd3efa41e"
-        },
-        "period": {
-          "start": "2022-01-05T00:00:00+01:00",
-          "end": "2022-01-09T00:00:00+01:00"
-        },
-        "serviceProvider": {
-          "reference": "Organization/0ec30241-eabc-4529-9060-2a93f2732cd0"
-        }
+        "name": "Sankt Gertrauden Krankenhaus - Krankenhauslabor",
+        "telecom":  [
+          {
+            "system": "phone",
+            "value": "0309876543211",
+            "use": "work"
+          }
+        ],
+        "address":  [
+          {
+            "line":  [
+              "Dingsweg 321"
+            ],
+            "city": "Berlin",
+            "postalCode": "13055",
+            "country": "DE"
+          }
+        ]
       }
     },
     {
-      "fullUrl": "https://demis.rki.de/fhir/Encounter/b70e195a-b696-4868-a188-a8ecab14d6da",
+      "fullUrl": "https://demis.rki.de/fhir/Encounter/8bcdeaf7-50cb-33b4-990a-1cecda2e99f8",
       "resource": {
         "resourceType": "Encounter",
-        "id": "b70e195a-b696-4868-a188-a8ecab14d6da",
+        "id": "8bcdeaf7-50cb-33b4-990a-1cecda2e99f8",
         "meta": {
-          "profile": [
+          "profile":  [
             "https://demis.rki.de/fhir/StructureDefinition/Hospitalization"
           ]
         },
+        "extension":  [
+          {
+            "url": "https://demis.rki.de/fhir/StructureDefinition/HospitalizationNote",
+            "valueString": "Stabiler Zustand."
+          }
+        ],
         "status": "in-progress",
         "class": {
           "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
@@ -560,91 +408,81 @@
           "display": "inpatient encounter"
         },
         "serviceType": {
-          "coding": [
+          "coding":  [
             {
               "system": "https://demis.rki.de/fhir/CodeSystem/hospitalizationServiceType",
-              "code": "3600",
-              "display": "Intensivmedizin"
+              "code": "0152",
+              "display": "Schwerpunkt Infektionskrankheiten"
             }
           ]
         },
         "subject": {
-          "reference": "Patient/458a9cb4-1e94-424e-bfd2-64cbd3efa41e"
+          "reference": "Patient/ae2582e3-8376-3b7a-b4ae-4390b6a45ae8"
         },
         "period": {
-          "start": "2022-01-07T00:00:00+01:00"
+          "start": "2022-12-07"
         },
         "serviceProvider": {
-          "reference": "Organization/0ec30241-eabc-4529-9060-2a93f2732cd0"
+          "reference": "Organization/caea6c7b-a29c-33a3-8f91-a0f78847f041"
         }
       }
     },
     {
-      "fullUrl": "https://demis.rki.de/fhir/QuestionnaireResponse/6352a61f-d1d6-45d1-a15a-604b1c4b04f4",
+      "fullUrl": "https://demis.rki.de/fhir/QuestionnaireResponse/332fb5d4-5f53-3092-8c01-d4eb3e81cfd8",
       "resource": {
         "resourceType": "QuestionnaireResponse",
-        "id": "6352a61f-d1d6-45d1-a15a-604b1c4b04f4",
+        "id": "332fb5d4-5f53-3092-8c01-d4eb3e81cfd8",
         "meta": {
-          "profile": [
+          "profile":  [
             "https://demis.rki.de/fhir/StructureDefinition/DiseaseInformationCommon"
           ]
         },
         "questionnaire": "https://demis.rki.de/fhir/Questionnaire/DiseaseQuestionsCommon",
         "status": "completed",
         "subject": {
-          "reference": "Patient/458a9cb4-1e94-424e-bfd2-64cbd3efa41e"
+          "reference": "Patient/ae2582e3-8376-3b7a-b4ae-4390b6a45ae8"
         },
-        "item": [
+        "item":  [
           {
             "linkId": "isDead",
-            "answer": [
+            "answer":  [
               {
                 "valueCoding": {
                   "system": "https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer",
-                  "code": "yes",
-                  "display": "Ja"
-                },
-                "item": [
-                  {
-                    "linkId": "deathDate",
-                    "answer": [
-                      {
-                        "valueDate": "2022-01-22"
-                      }
-                    ]
-                  }
-                ]
+                  "code": "no",
+                  "display": "Nein"
+                }
               }
             ]
           },
           {
             "linkId": "militaryAffiliation",
-            "answer": [
+            "answer":  [
               {
                 "valueCoding": {
                   "system": "https://demis.rki.de/fhir/CodeSystem/militaryAffiliation",
-                  "code": "memberOfBundeswehr",
-                  "display": "Soldat/BW-Angehöriger"
+                  "code": "noReferenceToBundeswehr",
+                  "display": "Kein Bezug zur BW"
                 }
               }
             ]
           },
           {
             "linkId": "labSpecimenTaken",
-            "answer": [
+            "answer":  [
               {
                 "valueCoding": {
                   "system": "https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer",
                   "code": "yes",
                   "display": "Ja"
                 },
-                "item": [
+                "item":  [
                   {
                     "linkId": "labSpecimenLab",
-                    "answer": [
+                    "answer":  [
                       {
                         "valueReference": {
-                          "reference": "Organization/38da54d4-03b4-4cc3-be8a-f9c54e12d4a2"
+                          "reference": "Organization/379d2b03-85c1-4b14-aae3-cc2a5975a90e"
                         }
                       }
                     ]
@@ -655,38 +493,23 @@
           },
           {
             "linkId": "hospitalized",
-            "answer": [
+            "answer":  [
               {
                 "valueCoding": {
                   "system": "https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer",
                   "code": "yes",
                   "display": "Ja"
                 },
-                "item": [
+                "item":  [
                   {
                     "linkId": "hospitalizedGroup",
-                    "item": [
+                    "item":  [
                       {
                         "linkId": "hospitalizedEncounter",
-                        "answer": [
+                        "answer":  [
                           {
                             "valueReference": {
-                              "reference": "Encounter/5931672c-8ad9-44d0-8849-70dee8b2741f"
-                            }
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "linkId": "hospitalizedGroup",
-                    "item": [
-                      {
-                        "linkId": "hospitalizedEncounter",
-                        "answer": [
-                          {
-                            "valueReference": {
-                              "reference": "Encounter/b70e195a-b696-4868-a188-a8ecab14d6da"
+                              "reference": "Encounter/8bcdeaf7-50cb-33b4-990a-1cecda2e99f8"
                             }
                           }
                         ]
@@ -699,107 +522,62 @@
           },
           {
             "linkId": "infectProtectFacility",
-            "answer": [
+            "answer":  [
               {
                 "valueCoding": {
                   "system": "https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer",
-                  "code": "yes",
-                  "display": "Ja"
-                },
-                "item": [
-                  {
-                    "linkId": "infectProtectFacilityGroup",
-                    "item": [
-                      {
-                        "linkId": "infectProtectFacilityBegin",
-                        "answer": [
-                          {
-                            "valueDate": "2021-12-01"
-                          }
-                        ]
-                      },
-                      {
-                        "linkId": "infectProtectFacilityEnd",
-                        "answer": [
-                          {
-                            "valueDate": "2022-01-05"
-                          }
-                        ]
-                      },
-                      {
-                        "linkId": "infectProtectFacilityRole",
-                        "answer": [
-                          {
-                            "valueCoding": {
-                              "system": "https://demis.rki.de/fhir/CodeSystem/organizationAssociation",
-                              "code": "employment",
-                              "display": "Tätigkeit"
-                            }
-                          }
-                        ]
-                      },
-                      {
-                        "linkId": "infectProtectFacilityOrganization",
-                        "answer": [
-                          {
-                            "valueReference": {
-                              "reference": "Organization/26d231c9-f6f0-4186-97b6-787d885801b0"
-                            }
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
+                  "code": "no",
+                  "display": "Nein"
+                }
               }
             ]
           },
           {
             "linkId": "placeExposure",
-            "answer": [
+            "answer":  [
               {
                 "valueCoding": {
                   "system": "https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer",
                   "code": "yes",
                   "display": "Ja"
                 },
-                "item": [
+                "item":  [
                   {
                     "linkId": "placeExposureGroup",
-                    "item": [
+                    "item":  [
                       {
                         "linkId": "placeExposureBegin",
-                        "answer": [
+                        "answer":  [
                           {
-                            "valueDate": "2021-12-20"
+                            "valueDate": "2022-12-01"
                           }
                         ]
                       },
                       {
                         "linkId": "placeExposureEnd",
-                        "answer": [
+                        "answer":  [
                           {
-                            "valueDate": "2021-12-28"
+                            "valueDate": "2022-12-05"
                           }
                         ]
                       },
                       {
                         "linkId": "placeExposureRegion",
-                        "answer": [
+                        "answer":  [
                           {
                             "valueCoding": {
                               "system": "https://demis.rki.de/fhir/CodeSystem/geographicRegion",
-                              "code": "21000316",
-                              "display": "Libyen"
+                              "code": "13000009",
+                              "display": "Bayern"
                             }
                           }
                         ]
                       },
                       {
                         "linkId": "placeExposureHint",
-                        "answer": [
+                        "answer":  [
                           {
-                            "valueString": "Anmerkung"
+                            "valueString": "Bayerischer Wald"
                           }
                         ]
                       }
@@ -811,7 +589,7 @@
           },
           {
             "linkId": "organDonation",
-            "answer": [
+            "answer":  [
               {
                 "valueCoding": {
                   "system": "https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer",
@@ -823,9 +601,9 @@
           },
           {
             "linkId": "additionalInformation",
-            "answer": [
+            "answer":  [
               {
-                "valueString": "Zusatzinformationen zu den meldetatbestandsübergreifenden klinischen und epidemiologischen Angaben"
+                "valueString": "Die betroffene Person ist Jäger."
               }
             ]
           }
@@ -833,351 +611,56 @@
       }
     },
     {
-      "fullUrl": "https://demis.rki.de/fhir/Organization/38da54d4-03b4-4cc3-be8a-f9c54e12d4a2",
-      "resource": {
-        "resourceType": "Organization",
-        "id": "38da54d4-03b4-4cc3-be8a-f9c54e12d4a2",
-        "meta": {
-          "profile": [
-            "http://hl7.org/fhir/StructureDefinition/Organization"
-          ]
-        },
-        "name": "Labor",
-        "telecom": [
-          {
-            "system": "phone",
-            "value": "666555444"
-          },
-          {
-            "system": "email",
-            "value": "mail@labor.de"
-          }
-        ],
-        "address": [
-          {
-            "line": [
-              "Laborstraße 345"
-            ],
-            "_line": [
-              {
-                "extension": [
-                  {
-                    "url": "http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-streetName",
-                    "valueString": "Laborstraße"
-                  },
-                  {
-                    "url": "http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-houseNumber",
-                    "valueString": "345"
-                  }
-                ]
-              }
-            ],
-            "city": "Buchhorst",
-            "postalCode": "21481",
-            "country": "20422"
-          }
-        ]
-      }
-    },
-    {
-      "fullUrl": "https://demis.rki.de/fhir/Organization/26d231c9-f6f0-4186-97b6-787d885801b0",
-      "resource": {
-        "resourceType": "Organization",
-        "id": "26d231c9-f6f0-4186-97b6-787d885801b0",
-        "meta": {
-          "profile": [
-            "http://hl7.org/fhir/StructureDefinition/Organization"
-          ]
-        },
-        "name": "Einrichtungsname",
-        "telecom": [
-          {
-            "system": "phone",
-            "value": "0123456789"
-          },
-          {
-            "system": "email",
-            "value": "mail@einrichtung.de"
-          }
-        ],
-        "address": [
-          {
-            "line": [
-              "Straße 123"
-            ],
-            "_line": [
-              {
-                "extension": [
-                  {
-                    "url": "http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-streetName",
-                    "valueString": "Straße"
-                  },
-                  {
-                    "url": "http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-houseNumber",
-                    "valueString": "123"
-                  }
-                ]
-              }
-            ],
-            "city": "Buchhorst",
-            "postalCode": "21481",
-            "country": "20422"
-          }
-        ]
-      }
-    },
-    {
-      "fullUrl": "https://demis.rki.de/fhir/QuestionnaireResponse/f9605664-9301-4588-9cf5-a4ec796c57db",
+      "fullUrl": "https://demis.rki.de/fhir/QuestionnaireResponse/5b500d63-513f-3af2-9c7d-c5d23ee55a20",
       "resource": {
         "resourceType": "QuestionnaireResponse",
-        "id": "f9605664-9301-4588-9cf5-a4ec796c57db",
+        "id": "5b500d63-513f-3af2-9c7d-c5d23ee55a20",
         "meta": {
-          "profile": [
-            "https://demis.rki.de/fhir/StructureDefinition/DiseaseInformationCVDD"
+          "profile":  [
+            "https://demis.rki.de/fhir/StructureDefinition/DiseaseInformationBAND"
           ]
         },
-        "questionnaire": "https://demis.rki.de/fhir/Questionnaire/DiseaseQuestionsCVDD",
+        "questionnaire": "https://demis.rki.de/fhir/Questionnaire/DiseaseQuestionsBAND",
         "status": "completed",
         "subject": {
-          "reference": "Patient/458a9cb4-1e94-424e-bfd2-64cbd3efa41e"
+          "reference": "Patient/ae2582e3-8376-3b7a-b4ae-4390b6a45ae8"
         },
-        "item": [
+        "item":  [
           {
-            "linkId": "infectionSource",
-            "answer": [
+            "linkId": "form",
+            "answer":  [
               {
                 "valueCoding": {
-                  "system": "https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer",
-                  "code": "yes",
-                  "display": "Ja"
+                  "system": "http://snomed.info/sct",
+                  "code": "84980006",
+                  "display": "Hautmilzbrand"
                 }
               }
             ]
           },
           {
-            "linkId": "infectionEnvironmentSetting",
-            "answer": [
+            "linkId": "immunization",
+            "answer":  [
               {
                 "valueCoding": {
                   "system": "https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer",
-                  "code": "yes",
-                  "display": "Ja"
-                },
-                "item": [
-                  {
-                    "linkId": "infectionEnvironmentSettingGroup",
-                    "item": [
-                      {
-                        "linkId": "infectionEnvironmentSettingKind",
-                        "answer": [
-                          {
-                            "valueCoding": {
-                              "system": "https://demis.rki.de/fhir/CodeSystem/infectionEnvironmentSetting",
-                              "code": "3",
-                              "display": "Gesundheitseinrichtung"
-                            }
-                          }
-                        ]
-                      },
-                      {
-                        "linkId": "infectionEnvironmentSettingBegin",
-                        "answer": [
-                          {
-                            "valueDate": "2021-12-28"
-                          }
-                        ]
-                      },
-                      {
-                        "linkId": "infectionEnvironmentSettingEnd",
-                        "answer": [
-                          {
-                            "valueDate": "2021-12-30"
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
+                  "code": "no",
+                  "display": "Nein"
+                }
               }
             ]
           },
           {
-            "linkId": "immunization",
-            "answer": [
+            "linkId": "outbreak",
+            "answer":  [
               {
                 "valueCoding": {
                   "system": "https://demis.rki.de/fhir/CodeSystem/yesOrNoAnswer",
-                  "code": "yes",
-                  "display": "Ja"
-                },
-                "item": [
-                  {
-                    "linkId": "immunizationRef",
-                    "answer": [
-                      {
-                        "valueReference": {
-                          "reference": "Immunization/9ac976ff-cd37-4328-b4ec-afba82bf430b"
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    "linkId": "immunizationRef",
-                    "answer": [
-                      {
-                        "valueReference": {
-                          "reference": "Immunization/188c91bd-90c9-411e-813a-a2928e76edc6"
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    "linkId": "immunizationRef",
-                    "answer": [
-                      {
-                        "valueReference": {
-                          "reference": "Immunization/1d92e482-6b95-4da9-b734-c3976a155195"
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    "linkId": "immunizationRef",
-                    "answer": [
-                      {
-                        "valueReference": {
-                          "reference": "Immunization/825e1a39-379c-4b1c-bae7-f28504c49149"
-                        }
-                      }
-                    ]
-                  }
-                ]
+                  "code": "no",
+                  "display": "Nein"
+                }
               }
             ]
-          }
-        ]
-      }
-    },
-    {
-      "fullUrl": "https://demis.rki.de/fhir/Immunization/9ac976ff-cd37-4328-b4ec-afba82bf430b",
-      "resource": {
-        "resourceType": "Immunization",
-        "id": "9ac976ff-cd37-4328-b4ec-afba82bf430b",
-        "meta": {
-          "profile": [
-            "https://demis.rki.de/fhir/StructureDefinition/ImmunizationInformationCVDD"
-          ]
-        },
-        "status": "completed",
-        "vaccineCode": {
-          "coding": [
-            {
-              "system": "https://ec.europa.eu/health/documents/community-register/html/",
-              "code": "EU/1/20/1528",
-              "display": "Comirnaty"
-            }
-          ]
-        },
-        "patient": {
-          "reference": "Patient/458a9cb4-1e94-424e-bfd2-64cbd3efa41e"
-        },
-        "occurrenceDateTime": "2021",
-        "note": [
-          {
-            "text": "Zusatzinfo1"
-          }
-        ]
-      }
-    },
-    {
-      "fullUrl": "https://demis.rki.de/fhir/Immunization/188c91bd-90c9-411e-813a-a2928e76edc6",
-      "resource": {
-        "resourceType": "Immunization",
-        "id": "188c91bd-90c9-411e-813a-a2928e76edc6",
-        "meta": {
-          "profile": [
-            "https://demis.rki.de/fhir/StructureDefinition/ImmunizationInformationCVDD"
-          ]
-        },
-        "status": "completed",
-        "vaccineCode": {
-          "coding": [
-            {
-              "system": "https://ec.europa.eu/health/documents/community-register/html/",
-              "code": "EU/1/20/1528",
-              "display": "Comirnaty"
-            }
-          ]
-        },
-        "patient": {
-          "reference": "Patient/458a9cb4-1e94-424e-bfd2-64cbd3efa41e"
-        },
-        "occurrenceDateTime": "2021-07",
-        "note": [
-          {
-            "text": "Zusatzinfo2"
-          }
-        ]
-      }
-    },
-    {
-      "fullUrl": "https://demis.rki.de/fhir/Immunization/1d92e482-6b95-4da9-b734-c3976a155195",
-      "resource": {
-        "resourceType": "Immunization",
-        "id": "1d92e482-6b95-4da9-b734-c3976a155195",
-        "meta": {
-          "profile": [
-            "https://demis.rki.de/fhir/StructureDefinition/ImmunizationInformationCVDD"
-          ]
-        },
-        "status": "completed",
-        "vaccineCode": {
-          "coding": [
-            {
-              "system": "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-              "code": "ASKU",
-              "display": "asked but unknown"
-            }
-          ]
-        },
-        "patient": {
-          "reference": "Patient/458a9cb4-1e94-424e-bfd2-64cbd3efa41e"
-        },
-        "occurrenceDateTime": "2021-11-30",
-        "note": [
-          {
-            "text": "Zusatzinfo3"
-          }
-        ]
-      }
-    },
-    {
-      "fullUrl": "https://demis.rki.de/fhir/Immunization/825e1a39-379c-4b1c-bae7-f28504c49149",
-      "resource": {
-        "resourceType": "Immunization",
-        "id": "825e1a39-379c-4b1c-bae7-f28504c49149",
-        "meta": {
-          "profile": [
-            "https://demis.rki.de/fhir/StructureDefinition/ImmunizationInformationCVDD"
-          ]
-        },
-        "status": "completed",
-        "vaccineCode": {
-          "coding": [
-            {
-              "system": "https://demis.rki.de/fhir/CodeSystem/vaccine",
-              "code": "otherVaccine",
-              "display": "Anderer Impfstoff"
-            }
-          ]
-        },
-        "patient": {
-          "reference": "Patient/458a9cb4-1e94-424e-bfd2-64cbd3efa41e"
-        },
-        "occurrenceDateTime": "2021-12-25",
-        "note": [
-          {
-            "text": "Zusatzinfo4"
           }
         ]
       }

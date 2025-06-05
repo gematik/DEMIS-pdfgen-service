@@ -67,6 +67,7 @@ import org.springframework.test.web.servlet.MockMvc;
 class LaboratoryReportControllerIntegrationTest {
 
   private static final String LABORATORY_REPORT_PATH = "/laboratoryReport";
+  private static final int QR_CODE_WIDTH = 295;
 
   @Autowired private MockMvc mockMvc;
 
@@ -257,16 +258,19 @@ class LaboratoryReportControllerIntegrationTest {
   private void validatePdfHasQrCode(byte[] pdfBytes) {
     try {
       List<RenderedImage> imagesFromPdf = PdfExtractorHelper.getAllImagesFromPdfData(pdfBytes);
-      assertThat(imagesFromPdf).as("logo and repeated QR code").hasSize(3);
-      RenderedImage secondImage = imagesFromPdf.get(1);
-      RenderedImage thirdImage = imagesFromPdf.get(2);
-      for (RenderedImage qrCode : List.of(secondImage, thirdImage)) {
-        assertThat(qrCode.getHeight()).isEqualTo(295);
-        assertThat(qrCode.getWidth()).isEqualTo(295);
-      }
+      assertThat(imagesFromPdf).as("logo and repeated QR code").hasSizeGreaterThanOrEqualTo(3);
+      List<RenderedImage> qrCodes =
+          imagesFromPdf.stream()
+              .filter(LaboratoryReportControllerIntegrationTest::isQsCode)
+              .toList();
+      assertThat(qrCodes).as("repeated QR code").hasSize(2);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  private static boolean isQsCode(RenderedImage image) {
+    return image.getWidth() == QR_CODE_WIDTH && image.getHeight() == QR_CODE_WIDTH;
   }
 
   private String cleanupString(final String input) {

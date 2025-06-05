@@ -35,6 +35,7 @@ customEnvVars:
   DEMIS_NETWORK_FHIR_UI_DATA_MODEL_TRANSLATION_SERVICE_ADDRESS: http://futs.demis.svc.cluster.local
   FEATURE_FLAG_PDFGEN_WARMUP: true
   FEATURE_FLAG_HOSPITALIZATION_ORDER: false
+  CONFIG_OPTION_PDF_WATERMARK:
 
 # Define custom Container Entrypoint and Arguments (e.g. JVM Tuning)
 # If not given, the Entrypoint defined in Dockerfile will be used
@@ -111,11 +112,10 @@ service:
 # Resources
 resources:
   limits:
-    cpu: "1000m"
-    memory: "1Gi"
+    memory: "650Mi"
   requests:
-    cpu: "200m"
-    memory: "1Gi"
+    cpu: "300m"
+    memory: "650Mi"
 
 autoscaling:
   enabled: false
