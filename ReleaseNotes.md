@@ -2,7 +2,22 @@
 
 # Release pdfgen-Service
 
-## Release 2.6.3 (205-02-21)
+## Release 2.7.1
+- Updated ospo-resources for adding additional notes and disclaimer
+- setting new ressources in helm chart
+- setting new timeouts and retries in helm chart
+- change base chart to istio hostnames
+- updating dependencies
+- Fix provenance in PDF receipt for notifications sent over meldung.demis.rki.de
+
+## Release 2.7.0
+- Add service API documentation
+- Align order of hospitalization information in UI and PDF
+
+## Release 2.6.4
+- Fix handling of PostalCodes
+
+## Release 2.6.3
 - Updates:
   - Dependency-Updates (CVEs et al.)
   - Introducing resistances after §7.1 
@@ -18,42 +33,32 @@
   - Address order updated
   - Update reason for hospitalization
 
-## Release 2.1.5 (2023-12-14)
+## Release 2.1.5
 - first official GitHub-Release
 
-## Release 2.1.0 (2023-06-27)
-
+## Release 2.1.0
 ### changed
 - Supporting multiple observations in laboratory reports for §7.1 notifications
 
-## Release 2.0.2 (2023-06-05)
-
+## Release 2.0.2
 ### changed
 - Notification ID as QR Code
 
-## Release 2.0.1 (2023-05-15)
-
+## Release 2.0.1
 ### fixed
 - Bugfix Notification-ID OccupancyBed missing in PDF
 
-## Release 2.0.0 (2023-04-24)
-
+## Release 2.0.0
 ### changed
 - Implemented Hospital Notifications PDFs, logging
 
-## Release 1.1.1 (2023-03-07)
-
+## Release 1.1.1
 ### changed
 - Implemented PDF-Generator Functionalities
 
-## Release 1.1.0 (2023-01-31)
-
+## Release 1.1.0
 ### changed
 - fix Apache Tomcat CVE-2022-45143, upgrade SpringBoot
 
-## Release 1.0.2 (2022-11-11)
-
-## Release 1.0.1 (2022-09-19)
-
-## Release 1.0.0 (2022-09-14)
+## Release 1.0.0
 - Initial release

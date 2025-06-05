@@ -393,7 +393,7 @@
                 <method>
                     <coding>
                         <system value="http://snomed.info/sct"></system>
-                        <code value="s002"></code>
+                        <code value="398545005"></code>
                         <display value="Nucleic acid assay (procedure)"></display>
                     </coding>
                 </method>
@@ -415,7 +415,7 @@
                 <type>
                     <coding>
                         <system value="http://snomed.info/sct"></system>
-                        <code value="s001"></code>
+                        <code value="309164002"></code>
                         <display value="Upper respiratory swab sample (specimen)"></display>
                     </coding>
                 </type>

@@ -511,7 +511,7 @@
           "coding": [
             {
               "system": "http://snomed.info/sct",
-              "code": "s002",
+              "code": "398545005",
               "display": "Nucleic acid assay (procedure)"
             }
           ]
@@ -583,7 +583,7 @@
           "coding": [
             {
               "system": "http://snomed.info/sct",
-              "code": "s002",
+              "code": "398545005",
               "display": "Nucleic acid assay (procedure)"
             }
           ]
@@ -608,7 +608,7 @@
           "coding": [
             {
               "system": "http://snomed.info/sct",
-              "code": "s001",
+              "code": "309164002",
               "display": "Upper respiratory swab sample (specimen)"
             }
           ]

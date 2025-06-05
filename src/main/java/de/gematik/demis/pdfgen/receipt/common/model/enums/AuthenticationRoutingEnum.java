@@ -41,6 +41,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public enum AuthenticationRoutingEnum {
+  INTERNET("enum.authentication.routing.portal", "meldeportal-internet"),
   PORTAL("enum.authentication.routing.portal", "meldeportal"),
   INTERFACE("enum.authentication.routing.interface", "anything-else"),
   UNKNOWN("enum.authentication.routing.unknown", "");

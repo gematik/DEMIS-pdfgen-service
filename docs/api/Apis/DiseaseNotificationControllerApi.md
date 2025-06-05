@@ -29,6 +29,6 @@ No authorization required
 
 ### HTTP request headers
 
-- **Content-Type**: application/xml, application/json
+- **Content-Type**: application/json, application/xml
 - **Accept**: application/pdf
 

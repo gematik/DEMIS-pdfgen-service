@@ -44,12 +44,13 @@ import org.hl7.fhir.r4.model.Organization;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.PractitionerRole;
 import org.hl7.fhir.r4.model.Reference;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class NotifiedPersonFactoryAddressHandlingTest {
+class NotifiedPersonFactoryAddressHandlingTest {
 
   @Autowired private NotifiedPersonFactory notifiedPersonFactory;
 
@@ -69,6 +70,7 @@ public class NotifiedPersonFactoryAddressHandlingTest {
     // AND the address doesn't contain the organization's name
     final Organization organization =
         new OrganizationBuilder()
+            .setDefaults()
             .addNotifiedPersonFacilityProfile()
             .setFacilityName("Company Name")
             .setAddress(whereabouts)
@@ -99,12 +101,19 @@ public class NotifiedPersonFactoryAddressHandlingTest {
             .setDefaults()
             .withOrganization(organization)
             .build();
+
+    final DiagnosticReport diagnosticReport = new DiagnosticReport();
+    diagnosticReport.setId("Diagnostic/123");
+
+    final Composition composition = new Composition();
+    composition.setId("Composition/123");
+    composition.setSubject(new Reference((notifiedPerson)));
+
     final Bundle diseaseNotificationBundle =
         new NotificationBundleLaboratoryDataBuilder()
             .setDefaults()
-            .setNotificationLaboratory(
-                new Composition().setSubject(new Reference((notifiedPerson))))
-            .setLaboratoryReport(new DiagnosticReport())
+            .setNotificationLaboratory(composition)
+            .setLaboratoryReport(diagnosticReport)
             .setNotifiedPerson(notifiedPerson)
             .setSubmitterRole(submittingRole)
             .setSpecimen(Collections.emptyList())
@@ -114,6 +123,7 @@ public class NotifiedPersonFactoryAddressHandlingTest {
         notifiedPersonFactory.create(diseaseNotificationBundle);
 
     // THEN the address referencing the organization is found
+    Assertions.assertNotNull(notifiedPersonDTO);
     assertThat(notifiedPersonDTO.getOrganizationDTOs()).hasSize(1);
     AddressDTO actual = notifiedPersonDTO.getOrganizationDTOs().getFirst().getAddressDTO();
     assertThat(actual.getUseEnum()).isEqualTo(AddressUseEnum.CURRENT);

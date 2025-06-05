@@ -33,6 +33,7 @@ import de.gematik.demis.pdfgen.receipt.common.model.section.NotifiedPersonFactor
 import de.gematik.demis.pdfgen.receipt.common.model.section.NotifierFactory;
 import de.gematik.demis.pdfgen.receipt.common.model.section.RecipientFactory;
 import de.gematik.demis.pdfgen.receipt.common.service.qr.QrGenerator;
+import de.gematik.demis.pdfgen.receipt.common.service.watermark.WatermarkService;
 import de.gematik.demis.pdfgen.receipt.laboratoryreport.model.labreport.LabReportFactory;
 import de.gematik.demis.pdfgen.receipt.laboratoryreport.model.submitter.SubmitterFactory;
 import java.util.Optional;
@@ -56,6 +57,7 @@ public class LaboratoryReportTemplateDtoFactory {
   private final LabReportFactory labReportFactory;
   private final AuthenticationFactory authenticationFactory;
   private final QrGenerator qrGenerator;
+  private final WatermarkService watermarkService;
 
   public LaboratoryReportTemplateDto create(final Bundle bundle, final boolean qrCodeOnLastPage) {
     Optional<String> notificationIdOptional =
@@ -75,17 +77,19 @@ public class LaboratoryReportTemplateDtoFactory {
         qrGenerator.generateQrCodeAsBase64(
             notificationIdOptional.orElseGet(() -> "Keine NotificationId vorhanden"));
 
-    return LaboratoryReportTemplateDto.builder()
-        .metadata(MetadataFactory.create(bundle))
-        .notification(notificationFactory.create(bundle))
-        .qrCode(qrCode)
-        .recipient(recipientFactory.create(bundle))
-        .notifier(notifierFactory.create(bundle))
-        .notifiedPersonDTO(notifiedPersonFactory.create(bundle))
-        .submitter(submitterFactory.create(bundle))
-        .labReport(labReportFactory.create(bundle))
-        .authentication(authenticationFactory.create(bundle))
-        .qrCodeOnLastPage(qrCodeOnLastPage)
-        .build();
+    LaboratoryReportTemplateDto.LaboratoryReportTemplateDtoBuilder builder =
+        LaboratoryReportTemplateDto.builder()
+            .metadata(MetadataFactory.create(bundle))
+            .notification(notificationFactory.create(bundle))
+            .qrCode(qrCode)
+            .recipient(recipientFactory.create(bundle))
+            .notifier(notifierFactory.create(bundle))
+            .notifiedPersonDTO(notifiedPersonFactory.create(bundle))
+            .submitter(submitterFactory.create(bundle))
+            .labReport(labReportFactory.create(bundle))
+            .authentication(authenticationFactory.create(bundle))
+            .qrCodeOnLastPage(qrCodeOnLastPage);
+    watermarkService.getWatermarkBase64Image().ifPresent(builder::watermarkBase64Image);
+    return builder.build();
   }
 }

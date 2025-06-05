@@ -2,6 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <link rel="stylesheet" th:href="@{~/styles/main.css}"/>
+    <th:block th:if="${laboratoryReportTemplateDto.watermarkBase64Image != null}">
+        <style th:inline="text">
+            body {
+                background: none;
+            }
+            @page {
+                background-image: url('data:image/png;base64,[[${laboratoryReportTemplateDto.watermarkBase64Image}]]');
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: contain;
+            }
+        </style>
+    </th:block>
     <title th:text="#{laboratory-report.title}"></title>
 </head>
 <body>

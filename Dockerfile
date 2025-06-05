@@ -1,10 +1,27 @@
 # Declare Source Digest for the Base Image
-ARG SOURCE_DIGEST=774e11e01fc289479c0f26f525c816ebdc7582cb7bd69a7467707a991dff7095
-FROM gematik1/osadl-alpine-openjdk21-jre:1.0.0@sha256:${SOURCE_DIGEST}
+ARG SOURCE_DIGEST=4b6e35eec1b78aec2491692eb6622362563d3408a181144ce5e21e91939b4921
+FROM gematik1/osadl-alpine-openjdk21-jre:1.0.1@sha256:${SOURCE_DIGEST}
+
+# As root: install OpenJDK and necessary native libraries for watermark image rendering
+USER root
+RUN apk add --no-cache \
+    openjdk21 \
+    fontconfig \
+    freetype \
+    libxrender \
+    libxext \
+    libx11 \
+    ttf-dejavu
+
+# Back to non-root user
+# Default USERID and GROUPID
+ARG USERID=10000
+ARG GROUPID=10000
+USER $USERID:$USERID
 
 # Redeclare Source Digest to be used in the build context
 # https://docs.docker.com/engine/reference/builder/#understand-how-arg-and-from-interact
-ARG SOURCE_DIGEST=774e11e01fc289479c0f26f525c816ebdc7582cb7bd69a7467707a991dff7095
+ARG SOURCE_DIGEST=4b6e35eec1b78aec2491692eb6622362563d3408a181144ce5e21e91939b4921
 
 # The STOPSIGNAL instruction sets the system call signal that will be sent to the container to exit
 # SIGTERM = 15 - https://de.wikipedia.org/wiki/Signal_(Unix)
@@ -19,10 +36,6 @@ HEALTHCHECK --interval=15s \
             --start-period=30s \
             --retries=3 \
             CMD ["/usr/bin/wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/actuator/health"]
-
-# Default USERID and GROUPID
-ARG USERID=10000
-ARG GROUPID=10000
 
 COPY --chown=$USERID:$GROUPID ./target/pdfgen-service.jar /app.jar
 

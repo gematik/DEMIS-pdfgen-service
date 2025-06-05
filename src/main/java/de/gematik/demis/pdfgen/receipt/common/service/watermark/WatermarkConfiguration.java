@@ -1,4 +1,4 @@
-package de.gematik.demis.pdfgen;
+package de.gematik.demis.pdfgen.receipt.common.service.watermark;
 
 /*-
  * #%L
@@ -26,19 +26,9 @@ package de.gematik.demis.pdfgen;
  * #L%
  */
 
-import de.gematik.demis.pdfgen.receipt.common.service.watermark.WatermarkConfiguration;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@SpringBootApplication
-@EnableFeignClients
-@EnableCaching
-@EnableConfigurationProperties({FeatureFlags.class, WatermarkConfiguration.class})
-public class PdfgenServiceApplication {
-  public static void main(String[] args) {
-    SpringApplication.run(PdfgenServiceApplication.class, args);
-  }
+@ConfigurationProperties(prefix = "pdfgen.watermark")
+public record WatermarkConfiguration(String text) {
+  // empty
 }

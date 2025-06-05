@@ -33,6 +33,7 @@ import de.gematik.demis.pdfgen.receipt.common.model.section.NotificationFactory;
 import de.gematik.demis.pdfgen.receipt.common.model.section.NotifiedPersonFactory;
 import de.gematik.demis.pdfgen.receipt.common.model.section.NotifierFactory;
 import de.gematik.demis.pdfgen.receipt.common.model.section.RecipientFactory;
+import de.gematik.demis.pdfgen.receipt.common.service.watermark.WatermarkService;
 import de.gematik.demis.pdfgen.receipt.diseasenotification.model.condition.ConditionFactory;
 import de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.Questionnaire;
 import de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.QuestionnaireService;
@@ -54,6 +55,7 @@ public class DiseaseNotificationTemplateDtoFactory {
   private final QuestionnaireService questionnaireService;
   private final AuthenticationFactory authenticationFactory;
   private final FeatureFlags featureFlags;
+  private final WatermarkService watermarkService;
 
   @Nullable
   public DiseaseNotificationTemplateDto create(final Bundle bundle) {
@@ -78,6 +80,7 @@ public class DiseaseNotificationTemplateDtoFactory {
     if (specific != null) {
       builder.specificQuestionnaire(specific);
     }
+    watermarkService.getWatermarkBase64Image().ifPresent(builder::watermarkBase64Image);
     return builder.build();
   }
 }

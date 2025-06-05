@@ -216,7 +216,7 @@ public class DefaultTranslationFeature extends FeatureCollection {
         new CodeSystemFeature("https://demis.rki.de/fhir/CodeSystem/hospitalizationServiceType");
     hospitalizationServiceTypeCodeSystem.add(
         "3600",
-        """
+"""
     {
       "code": "3600",
       "display": "Intensivmedizin",
