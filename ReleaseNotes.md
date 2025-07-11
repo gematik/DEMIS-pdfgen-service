@@ -2,6 +2,13 @@
 
 # Release pdfgen-Service
 
+## Release 2.7.2
+- updated dependencies
+- updated base image
+- python script to clean up TransmittingSiteSearchText.xml 
+- Update TransmittingSiteSearchText
+- Add script to minimize TransmittingSiteSearchText
+
 ## Release 2.7.1
 - Updated ospo-resources for adding additional notes and disclaimer
 - setting new ressources in helm chart
