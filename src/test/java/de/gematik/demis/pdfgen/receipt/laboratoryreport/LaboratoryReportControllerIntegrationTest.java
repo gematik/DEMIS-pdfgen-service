@@ -62,7 +62,7 @@ import org.springframework.test.web.servlet.MockMvc;
   @TestPropertySource(
       locations = "classpath:application-test.properties",
       properties =
-          "demis.network.fhir-ui-data-model-translation-address=http://localhost:${wiremock.server.port}"),
+          "demis.network.fhir-ui-data-model-translation.address=http://localhost:${wiremock.server.port}"),
 })
 class LaboratoryReportControllerIntegrationTest {
 

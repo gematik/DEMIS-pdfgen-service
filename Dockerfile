@@ -1,10 +1,10 @@
 # Declare Source Digest for the Base Image
-ARG SOURCE_DIGEST=b7771460aba4079c91c0cb19e6a358451edeed8a1a84b09dc51b59cca9e47bdf
-FROM gematik1/osadl-alpine-openjdk21-jre:1.0.2@sha256:${SOURCE_DIGEST}
+ARG SOURCE_DIGEST=608029954f768552be36a8fe31d318aca64f23ea06e68b7b2a1cccdfa809e942
+FROM gematik1/osadl-alpine-openjdk21-jre:1.0.3@sha256:${SOURCE_DIGEST}
 
 # Redeclare Source Digest to be used in the build context
 # https://docs.docker.com/engine/reference/builder/#understand-how-arg-and-from-interact
-ARG SOURCE_DIGEST=b7771460aba4079c91c0cb19e6a358451edeed8a1a84b09dc51b59cca9e47bdf
+ARG SOURCE_DIGEST=608029954f768552be36a8fe31d318aca64f23ea06e68b7b2a1cccdfa809e942
 
 # As root: install OpenJDK and necessary native libraries for watermark image rendering
 USER root

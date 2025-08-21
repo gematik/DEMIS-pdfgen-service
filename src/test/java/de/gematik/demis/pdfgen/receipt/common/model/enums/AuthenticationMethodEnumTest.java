@@ -48,7 +48,8 @@ class AuthenticationMethodEnumTest {
   @Test
   void toString_evaluatesToCapitalizedName() {
     assertThat(AuthenticationMethodEnum.BUNDID).hasToString("BundID");
-    assertThat(AuthenticationMethodEnum.AUTHENTICATOR).hasToString("Authenticator");
+    assertThat(AuthenticationMethodEnum.AUTHENTICATOR)
+        .hasToString("Telematik Infrastruktur: SMC-B");
     assertThat(AuthenticationMethodEnum.CERTIFICATE).hasToString("DEMIS-Zertifikat");
     assertThat(AuthenticationMethodEnum.UNKNOWN).hasToString("Unbekannt");
   }

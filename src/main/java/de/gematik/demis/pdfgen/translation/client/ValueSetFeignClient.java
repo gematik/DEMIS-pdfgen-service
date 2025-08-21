@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(
     value = "valueSetFeignClient",
-    url = "${demis.network.fhir-ui-data-model-translation-address}")
+    url = "${demis.network.fhir-ui-data-model-translation.address}")
 public interface ValueSetFeignClient {
 
   /*
@@ -43,6 +43,6 @@ public interface ValueSetFeignClient {
    * We keep this feature for now for backward compatibility.
    */
 
-  @GetMapping("/fhir-ui-data-model-translation/ValueSet")
+  @GetMapping("${demis.network.fhir-ui-data-model-translation.context-path}ValueSet")
   CodeDisplay getInfoForCodeFromValueSet(@RequestParam String system, @RequestParam String code);
 }

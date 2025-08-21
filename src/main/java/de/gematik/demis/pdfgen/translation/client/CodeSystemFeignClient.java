@@ -34,10 +34,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(
     value = "codeSystemFeignClient",
-    url = "${demis.network.fhir-ui-data-model-translation-address}")
+    url = "${demis.network.fhir-ui-data-model-translation.address}")
 public interface CodeSystemFeignClient {
 
-  @GetMapping("/fhir-ui-data-model-translation/CodeSystem")
+  @GetMapping("${demis.network.fhir-ui-data-model-translation.context-path}CodeSystem")
   @Cacheable("futs-code-systems")
   CodeDisplay getInfoForCodeFromCodeSystem(@RequestParam String system, @RequestParam String code);
 }
