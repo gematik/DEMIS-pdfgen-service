@@ -70,6 +70,10 @@ spec:
               value: "8080"
             - name: "TZ"
               value: "Europe/Berlin"
+            {{- if eq (.Values.customEnvVars.FEATURE_FLAG_NEW_API_ENDPOINTS | toString) "true" }}
+            - name: "DEMIS_NETWORK_FHIR_UI_DATA_MODEL_TRANSLATION_SERVICE_CONTEXT_PATH"
+              value: "/"
+            {{- end }}
             {{- if .Values.debug.enable }}
             - name: "JAVA_TOOL_OPTIONS"
               value: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:9000"

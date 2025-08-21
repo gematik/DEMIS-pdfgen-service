@@ -33,9 +33,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient(
     value = "diseaseQuestionnaireFeignClient",
-    url = "${demis.network.fhir-ui-data-model-translation-address}")
+    url = "${demis.network.fhir-ui-data-model-translation.address}")
 interface QuestionnaireTranslationsFeignClient {
-  @GetMapping("/fhir-ui-data-model-translation/disease/questionnaire/{code}/items")
+  @GetMapping(
+      "${demis.network.fhir-ui-data-model-translation.context-path}disease/questionnaire/{code}/items")
   @Cacheable("futs-disease-questionnaires")
   QuestionnaireTranslationDto getQuestionnaireTranslations(@PathVariable String code);
 }

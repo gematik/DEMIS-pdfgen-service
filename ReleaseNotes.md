@@ -2,6 +2,10 @@
 
 # Release pdfgen-Service
 
+## Release 2.8.0
+- Add support for new Futs API endpoints
+- Edit authentication method output for authenticator and token-exchange
+
 ## Release 2.7.2
 - updated dependencies
 - updated base image

@@ -50,7 +50,7 @@ import org.springframework.test.context.TestPropertySource;
         """
         pdfgen.warmup=false
         wiremock.server.baseUrl=http://localhost:${wiremock.server.port}
-        demis.network.fhir-ui-data-model-translation-address=http://localhost:${wiremock.server.port}
+        demis.network.fhir-ui-data-model-translation.address=http://localhost:${wiremock.server.port}
     """)
 public class CodeSystemTranslationCacheIntegrationTest {
 
