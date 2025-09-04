@@ -2,8 +2,12 @@
 
 # Release pdfgen-Service
 
+## Release 2.8.1
+- Edit text for authentication method output for authentication via SMC-B
+- Adding extra header for requests to FUTS new APIs
+
 ## Release 2.8.0
-- Add support for new Futs API endpoints
+- Add support for new FUTS API endpoints
 - Edit authentication method output for authenticator and token-exchange
 
 ## Release 2.7.2
@@ -15,7 +19,7 @@
 
 ## Release 2.7.1
 - Updated ospo-resources for adding additional notes and disclaimer
-- setting new ressources in helm chart
+- setting new resources in helm chart
 - setting new timeouts and retries in helm chart
 - change base chart to istio hostnames
 - updating dependencies

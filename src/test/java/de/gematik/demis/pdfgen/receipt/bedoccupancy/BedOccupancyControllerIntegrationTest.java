@@ -83,7 +83,7 @@ class BedOccupancyControllerIntegrationTest {
 
     Authentifizierung
     Meldeweg Portal
-    Authentifizierungsmethode Telematik Infrastruktur: SMC-B
+    Authentifizierungsmethode Telematikinfrastruktur via SMC-B
     Vertrauensniveau substanziell""";
 
     createAndValidateBedOccupancyPdf(BED_OCCUPANCY_WITH_PROVENANCE_BUNDLE_JSON, expectedProvenance);

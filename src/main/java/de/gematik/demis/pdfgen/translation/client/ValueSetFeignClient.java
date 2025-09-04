@@ -27,6 +27,7 @@ package de.gematik.demis.pdfgen.translation.client;
  */
 
 import de.gematik.demis.pdfgen.translation.model.CodeDisplay;
+import feign.Headers;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,5 +45,6 @@ public interface ValueSetFeignClient {
    */
 
   @GetMapping("${demis.network.fhir-ui-data-model-translation.context-path}ValueSet")
+  @Headers("x-fhir-profile: fhir-profile-snapshots")
   CodeDisplay getInfoForCodeFromValueSet(@RequestParam String system, @RequestParam String code);
 }

@@ -27,6 +27,7 @@ package de.gematik.demis.pdfgen.translation.client;
  */
 
 import de.gematik.demis.pdfgen.translation.model.CodeDisplay;
+import feign.Headers;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,5 +40,6 @@ public interface CodeSystemFeignClient {
 
   @GetMapping("${demis.network.fhir-ui-data-model-translation.context-path}CodeSystem")
   @Cacheable("futs-code-systems")
+  @Headers("x-fhir-profile: fhir-profile-snapshots")
   CodeDisplay getInfoForCodeFromCodeSystem(@RequestParam String system, @RequestParam String code);
 }
