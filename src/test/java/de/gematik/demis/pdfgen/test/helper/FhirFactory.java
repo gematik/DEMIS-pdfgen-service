@@ -69,9 +69,11 @@ public final class FhirFactory {
       readResourceFile("bundles/laboratoryReport/LaboratoryReportBundle_withSubmitter.json");
   public static final String LABORATORY_REPORT_BUNDLE_DV2_WITH_REASON_FOR_TESTING =
       readResourceFile("bundles/laboratoryReport/LaboratoryReportBundle_withReasonForTesting.json");
-  public static final String LABORATORY_REPORT_BUNDLE_DV2_WITH_PROVENANCE =
+  public static final String LABORATORY_REPORT_BUNDLE_DV2_WITH_PROVENANCE_BUNDID =
       readResourceFile(
           "bundles/laboratoryReport/LaboratoryReportBundleDv2WithProvenanceBundId.json");
+  public static final String LABORATORY_REPORT_BUNDLE_DV2_WITH_PROVENANCE_MUK =
+      readResourceFile("bundles/laboratoryReport/LaboratoryReportBundleDv2WithProvenanceMuk.json");
   public static final String LABORATORY_REPORT_BUNDLE_DV2_WITH_MULTIPLE_SPECIMEN =
       readResourceFile("bundles/laboratoryReport/LaboratoryReportDv2_multipleSpecimen.json");
   public static final String LABORATORY_REPORT_BUNDLE_DV2TRANSACTION_ID_JSON =
@@ -86,8 +88,10 @@ public final class FhirFactory {
       readResourceFile("bundles/specialTestCases/DiseaseNotificationWithMissingPostalCode.xml");
   public static final String DISEASE_NOTIFICATION_WITH_PARTIAL_POSTALCODE_BUNDLE_XML =
       readResourceFile("bundles/specialTestCases/DiseaseNotificationWithPartialPostalCode.xml");
-  public static final String DISEASE_NOTIFICATION_WITH_PROVENANCE_BUNDID_BUNDLE_JSON =
+  public static final String DISEASE_NOTIFICATION_WITH_PROVENANCE_CERTIFICATE_JSON =
       readResourceFile("bundles/disease/DiseaseNotificationBundleWithProvenanceCertificate.json");
+  public static final String DISEASE_NOTIFICATION_WITH_PROVENANCE_MUK_BUNDLE_JSON =
+      readResourceFile("bundles/disease/DiseaseNotificationBundleWithProvenanceMuk.json");
   public static final String LABORATORY_NOTIFICATION_WITH_MISSING_BIRTHDAY =
       readResourceFile("bundles/specialTestCases/LaboratoryNotificationWithMissingBirthday.json");
   public static final String LABORATORY_NOTIFICATION_WITHOUT_SPECIMEN_STATUS =
@@ -130,7 +134,7 @@ public final class FhirFactory {
   public static Bundle createProvenanceBundle() {
     try {
       return (Bundle)
-          FHIR_PARSER.parseFromJson(DISEASE_NOTIFICATION_WITH_PROVENANCE_BUNDID_BUNDLE_JSON);
+          FHIR_PARSER.parseFromJson(DISEASE_NOTIFICATION_WITH_PROVENANCE_CERTIFICATE_JSON);
     } catch (Exception e) {
       throw new IllegalStateException("Could not instantiate provenance bundle for tests", e);
     }

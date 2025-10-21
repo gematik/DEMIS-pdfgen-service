@@ -75,7 +75,7 @@ class LaboratoryReportServiceIntegrationTest {
     String pdfText =
         generateAndValidateLaboratoryReportPdf(
             laboratoryReportService.generatePdfFromBundleJsonString(
-                LABORATORY_REPORT_BUNDLE_DV2_WITH_PROVENANCE));
+                LABORATORY_REPORT_BUNDLE_DV2_WITH_PROVENANCE_BUNDID));
     assertThat(pdfText)
         .containsAnyOf(
             "Meldeweg", "Portal",

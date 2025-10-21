@@ -2,6 +2,10 @@
 
 # Release pdfgen-Service
 
+## Release 2.8.2
+- Added support for MeinUnternehmenskonto
+- Remove feature flag PDFGEN.WARMUP
+
 ## Release 2.8.1
 - Edit text for authentication method output for authentication via SMC-B
 - Adding extra header for requests to FUTS new APIs

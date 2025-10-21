@@ -596,7 +596,7 @@
             ],
             "onBehalfOf": {
               "identifier": {
-                "system": "https://demis.rki.de/fhir/sid/BundIdBPK2",
+                "system": "https://demis.rki.de/fhir/NamingSystem/MUK",
                 "type": {
                   "coding": [
                     {
@@ -605,7 +605,7 @@
                     }
                   ]
                 },
-                "value": "7B24F15R01UiarY-d_Wdg8dm77q8GU7NIOOOSAjGRG0"
+                "value": "du-9e1dc3bd51520fb95a1b3a335f981d666cdfafbc"
               },
               "type": "Organization"
             },

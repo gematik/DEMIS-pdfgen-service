@@ -29,7 +29,8 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification;
 import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_BUNDLE_JSON;
 import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_WITH_MISSING_POSTALCODE_BUNDLE_XML;
 import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_WITH_PARTIAL_POSTALCODE_BUNDLE_XML;
-import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_WITH_PROVENANCE_BUNDID_BUNDLE_JSON;
+import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_WITH_PROVENANCE_CERTIFICATE_JSON;
+import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_WITH_PROVENANCE_MUK_BUNDLE_JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -38,8 +39,12 @@ import de.gematik.demis.fhir_ui_data_model_translation_service.wiremockfuts.Wire
 import de.gematik.demis.fhir_ui_data_model_translation_service.wiremockfuts.disease.DiseaseFeature;
 import de.gematik.demis.pdfgen.FeatureFlags;
 import de.gematik.demis.pdfgen.test.helper.PdfExtractorHelper;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -91,22 +96,35 @@ class DiseaseNotificationControllerIntegrationTest {
     validateBodyDiseaseResponse(response, "");
   }
 
-  @Test
-  void
-      generatePdfFromBundleXmlString_shouldRespond200WithPdf_DiseaseNotificationWithProvenanceBundId()
-          throws Exception {
-    final String expectedProvenance =
+  private static Stream<Arguments> inputValuesProvenance() {
+    return Stream.of(
+        Arguments.of(
+            "Schnittstelle",
+            "DEMIS-Zertifikat",
+            DISEASE_NOTIFICATION_WITH_PROVENANCE_CERTIFICATE_JSON),
+        Arguments.of(
+            "Portal",
+            "MeinUnternehmenskonto",
+            DISEASE_NOTIFICATION_WITH_PROVENANCE_MUK_BUNDLE_JSON));
+  }
+
+  @ParameterizedTest
+  @MethodSource("inputValuesProvenance")
+  void generatePdfFromBundleXmlString_shouldRespond200WithPdf_DiseaseNotificationWithProvenanceOzg(
+      String notificationMethod, String authenticationMethod, String pathToInputBundle)
+      throws Exception {
+    String expectedProvenance =
         """
         Authentifizierung
-        Meldeweg Schnittstelle
-        Authentifizierungsmethode DEMIS-Zertifikat
+        Meldeweg {notificationMethod}
+        Authentifizierungsmethode {authenticationMethod}
         Vertrauensniveau substanziell
         """;
+    expectedProvenance = expectedProvenance.replace("{notificationMethod}", notificationMethod);
+    expectedProvenance = expectedProvenance.replace("{authenticationMethod}", authenticationMethod);
 
     final var response =
-        generateAndValidateNotification(
-            DISEASE_NOTIFICATION_WITH_PROVENANCE_BUNDID_BUNDLE_JSON,
-            MediaType.APPLICATION_JSON_VALUE);
+        generateAndValidateNotification(pathToInputBundle, MediaType.APPLICATION_JSON_VALUE);
 
     validateOkResponseDiseaseNotification(
         response,
@@ -144,7 +162,7 @@ class DiseaseNotificationControllerIntegrationTest {
 
     final var response =
         generateAndValidateNotification(
-            DISEASE_NOTIFICATION_WITH_PROVENANCE_BUNDID_BUNDLE_JSON,
+            DISEASE_NOTIFICATION_WITH_PROVENANCE_CERTIFICATE_JSON,
             MediaType.APPLICATION_JSON_VALUE);
 
     final String pdfText = PdfExtractorHelper.extractPdfText(response.getContentAsByteArray());

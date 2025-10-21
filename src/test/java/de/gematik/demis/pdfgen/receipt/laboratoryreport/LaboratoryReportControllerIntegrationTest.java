@@ -36,11 +36,15 @@ import de.gematik.demis.pdfgen.test.helper.PdfExtractorHelper;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Stream;
 import org.assertj.core.api.Assertions;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -106,18 +110,26 @@ class LaboratoryReportControllerIntegrationTest {
     validateLabReportDv2Body(response, expected);
   }
 
-  @Test
+  private static Stream<Arguments> inputValuesProvenanceOzg() {
+    return Stream.of(
+        Arguments.of("BundID", LABORATORY_REPORT_BUNDLE_DV2_WITH_PROVENANCE_BUNDID),
+        Arguments.of("MeinUnternehmenskonto", LABORATORY_REPORT_BUNDLE_DV2_WITH_PROVENANCE_MUK));
+  }
+
+  @ParameterizedTest
+  @MethodSource("inputValuesProvenanceOzg")
   @DisplayName("valid laboratory notification with provenance should respond 200 with pdf")
-  void generatePdfFromDv2BundleWithProvenanceJsonString_shouldRespond200WithPdf() throws Exception {
+  void generatePdfFromDv2BundleWithProvenanceJsonString_shouldRespond200WithPdf(
+      String authenticationMethod, String pathToInputBundle) throws Exception {
     String expectedProvenance =
         """
       Authentifizierung
       Meldeweg Portal
-      Authentifizierungsmethode BundID
-      Vertrauensniveau niedrig
+      Authentifizierungsmethode {authenticationMethod}
+      Vertrauensniveau substanziell
       """;
-    final MockHttpServletResponse response =
-        generateLaboratoryPdf(LABORATORY_REPORT_BUNDLE_DV2_WITH_PROVENANCE);
+    expectedProvenance = expectedProvenance.replace("{authenticationMethod}", authenticationMethod);
+    final MockHttpServletResponse response = generateLaboratoryPdf(pathToInputBundle);
 
     validateOkResponse(response, "Empfangsbestätigung Labormeldung - Maxime Mustermann.pdf");
     validateLabReportDv2Body(response, getReportDv2PdfText(expectedProvenance));

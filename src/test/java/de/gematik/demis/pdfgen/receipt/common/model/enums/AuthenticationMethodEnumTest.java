@@ -37,6 +37,10 @@ class AuthenticationMethodEnumTest {
   void shouldCreateEnumCorrectly() {
     assertThat(AuthenticationMethodEnum.of(AuthenticationMethodEnum.BUNDID.provenanceValue))
         .isEqualTo(AuthenticationMethodEnum.BUNDID);
+    assertThat(
+            AuthenticationMethodEnum.of(
+                AuthenticationMethodEnum.MEIN_UNTERNEHMENSKONTO.provenanceValue))
+        .isEqualTo(AuthenticationMethodEnum.MEIN_UNTERNEHMENSKONTO);
     assertThat(AuthenticationMethodEnum.of(AuthenticationMethodEnum.AUTHENTICATOR.provenanceValue))
         .isEqualTo(AuthenticationMethodEnum.AUTHENTICATOR);
     assertThat(AuthenticationMethodEnum.of(AuthenticationMethodEnum.CERTIFICATE.provenanceValue))
