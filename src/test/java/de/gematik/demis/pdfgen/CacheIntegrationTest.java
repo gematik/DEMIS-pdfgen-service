@@ -42,12 +42,7 @@ import org.springframework.test.context.TestPropertySource;
 
 /** Use production application.properties for testing */
 @SpringBootTest
-@TestPropertySource(
-    locations = "classpath:application.properties",
-    properties =
-        """
-        pdfgen.warmup=false
-    """)
+@TestPropertySource(locations = "classpath:application.properties")
 class CacheIntegrationTest {
 
   private static final String QUESTIONNAIRES =

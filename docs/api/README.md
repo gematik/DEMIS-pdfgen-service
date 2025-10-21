@@ -7,9 +7,9 @@ All URIs are relative to *http://localhost*
 
 | Class | Method | HTTP request | Description |
 |------------ | ------------- | ------------- | -------------|
-| *BedOccupancyControllerApi* | [**createBedOccupancyPdfFromXml**](Apis/BedOccupancyControllerApi.md#createbedoccupancypdffromxml) | **POST** /bedOccupancy |  |
-| *DiseaseNotificationControllerApi* | [**generatePdfFromBundleXmlString1**](Apis/DiseaseNotificationControllerApi.md#generatepdffrombundlexmlstring1) | **POST** /diseaseNotification |  |
-| *LaboratoryReportControllerApi* | [**generatePdfFromBundleXmlString**](Apis/LaboratoryReportControllerApi.md#generatepdffrombundlexmlstring) | **POST** /laboratoryReport |  |
+| *BedOccupancyControllerApi* | [**createBedOccupancyPdfFromXml**](Apis/BedOccupancyControllerApi.md#createBedOccupancyPdfFromXml) | **POST** /bedOccupancy |  |
+| *DiseaseNotificationControllerApi* | [**generatePdfFromBundleXmlString1**](Apis/DiseaseNotificationControllerApi.md#generatePdfFromBundleXmlString1) | **POST** /diseaseNotification |  |
+| *LaboratoryReportControllerApi* | [**generatePdfFromBundleXmlString**](Apis/LaboratoryReportControllerApi.md#generatePdfFromBundleXmlString) | **POST** /laboratoryReport |  |
 
 
 <a name="documentation-for-models"></a>

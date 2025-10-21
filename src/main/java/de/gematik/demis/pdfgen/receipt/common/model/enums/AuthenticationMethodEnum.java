@@ -42,6 +42,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public enum AuthenticationMethodEnum {
   BUNDID("enum.authentication.method.bundid", "https://demis.rki.de/fhir/sid/BundIdBPK2"),
+  MEIN_UNTERNEHMENSKONTO(
+      "enum.authentication.method.muk", "https://demis.rki.de/fhir/NamingSystem/MUK"),
   AUTHENTICATOR(
       "enum.authentication.method.authenticator", "https://gematik.de/fhir/sid/telematik-id"),
   CERTIFICATE(
