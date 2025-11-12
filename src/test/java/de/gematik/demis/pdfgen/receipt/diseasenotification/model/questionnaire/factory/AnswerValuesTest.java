@@ -26,13 +26,14 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.
  * #L%
  */
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import java.math.BigDecimal;
 import org.assertj.core.api.Assertions;
 import org.hl7.fhir.r4.model.DateType;
+import org.hl7.fhir.r4.model.Quantity;
 import org.hl7.fhir.r4.model.QuestionnaireResponse;
 import org.hl7.fhir.r4.model.TimeType;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -91,5 +92,64 @@ class AnswerValuesTest {
     answer.setValue(second);
     String text = this.answerValues.apply(answer);
     Assertions.assertThat(text).as("valueTime with minute precision").isEqualTo("12:53");
+  }
+
+  @Nested
+  class QuantityTests {
+    @InjectMocks AnswerValues answerValues;
+
+    @Test
+    @DisplayName("valueQuantity with unit and code")
+    void quantityTest() {
+      Quantity quantity = new Quantity();
+      quantity.setCode("mg");
+      quantity.setUnit("Milligramm");
+      quantity.setValue(BigDecimal.valueOf(100));
+      quantity.setSystem("http://unitsofmeasure.org");
+      var answer = new QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent();
+      answer.setValue(quantity);
+      String text = this.answerValues.apply(answer);
+      Assertions.assertThat(text)
+          .as("valueQuantity with unit and code")
+          .isEqualTo("100 Milligramm");
+    }
+
+    @Test
+    @DisplayName("valueQuantity without unit")
+    void quantityTest1() {
+      Quantity quantity = new Quantity();
+      quantity.setCode("mg");
+      quantity.setValue(BigDecimal.valueOf(100));
+      quantity.setSystem("http://unitsofmeasure.org");
+      var answer = new QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent();
+      answer.setValue(quantity);
+      String text = this.answerValues.apply(answer);
+      Assertions.assertThat(text).as("valueQuantity without unit").isEqualTo("100 mg");
+    }
+
+    @Test
+    @DisplayName("valueQuantity without unit and code")
+    void quantityTest2() {
+      Quantity quantity = new Quantity();
+      quantity.setValue(BigDecimal.valueOf(100));
+      quantity.setSystem("http://unitsofmeasure.org");
+      var answer = new QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent();
+      answer.setValue(quantity);
+      String text = this.answerValues.apply(answer);
+      Assertions.assertThat(text).as("valueQuantity without unit and code").isEqualTo("100");
+    }
+
+    @Test
+    @DisplayName("valueQuantity with comparator")
+    void quantityTest3() {
+      Quantity quantity = new Quantity();
+      quantity.setComparator(Quantity.QuantityComparator.LESS_THAN);
+      quantity.setValue(BigDecimal.valueOf(100));
+      quantity.setSystem("http://unitsofmeasure.org");
+      var answer = new QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent();
+      answer.setValue(quantity);
+      String text = this.answerValues.apply(answer);
+      Assertions.assertThat(text).as("valueQuantity with comparator").isEqualTo("< 100");
+    }
   }
 }

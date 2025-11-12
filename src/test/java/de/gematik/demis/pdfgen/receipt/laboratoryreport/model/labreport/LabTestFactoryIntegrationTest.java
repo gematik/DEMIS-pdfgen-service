@@ -27,6 +27,7 @@ package de.gematik.demis.pdfgen.receipt.laboratoryreport.model.labreport;
  */
 
 import static de.gematik.demis.pdfgen.test.helper.FhirFactory.createLaboratoryReportBundle;
+import static de.gematik.demis.pdfgen.test.helper.FhirFactory.createLaboratoryReportQuantitiesBundle;
 import static de.gematik.demis.pdfgen.test.helper.FhirFactory.createLaboratoryReportTransactionIdBundle;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -83,5 +84,19 @@ class LabTestFactoryIntegrationTest {
     assertThat(labTest.getSpecimen()).isNotNull();
     assertThat(labTest.getSpecimen().getTransactionId())
         .isEqualToIgnoringCase("IMS-12345-CVDP-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX");
+  }
+
+  @Test
+  void createLabTests_createLabTestsWithQuantitiesAsExpected() {
+    // given
+    Bundle bundle = createLaboratoryReportQuantitiesBundle();
+
+    // when
+    List<LabTest> labTests = labTestFactory.createLabTests(bundle);
+
+    // then
+    assertThat(labTests).hasSize(2);
+    assertThat(labTests.get(0).getValue()).isEqualTo("6.0 [IU]/mL");
+    assertThat(labTests.get(1).getValue()).isEqualTo("8.0 U/mL");
   }
 }

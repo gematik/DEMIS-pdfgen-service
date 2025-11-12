@@ -1,0 +1,622 @@
+{
+  "resourceType": "Bundle",
+  "id": "004f1d55-dcce-4825-a238-ca91b57670de",
+  "meta": {
+    "profile": [
+      "https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratory"
+    ]
+  },
+  "identifier": {
+    "system": "https://demis.rki.de/fhir/NamingSystem/NotificationBundleId",
+    "value": "d7072ba8-ca51-4f5c-979d-45174e0be6c1"
+  },
+  "type": "document",
+  "timestamp": "2025-11-06T15:27:08.449+01:00",
+  "entry": [
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Composition/5eae5055-0dca-49ae-bc53-8c035d60700b",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "5eae5055-0dca-49ae-bc53-8c035d60700b",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotificationLaboratory"
+          ]
+        },
+        "identifier": {
+          "system": "https://demis.rki.de/fhir/NamingSystem/NotificationId",
+          "value": "b93d0abf-ac41-41ff-a1bd-77978a84e287"
+        },
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "34782-3",
+              "display": "Infectious disease Note"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/3bba1b9c-8947-4931-bb13-a4f968744198"
+        },
+        "date": "2025-11-06T15:27:08+01:00",
+        "author": [
+          {
+            "reference": "PractitionerRole/541465a1-6312-48c9-b914-295ffebc7be4"
+          }
+        ],
+        "title": "Meldung gemäß §7 Absatz 1 IfSG",
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "11502-2",
+                  "display": "Laboratory report"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "DiagnosticReport/f15c459a-8cce-4749-aa5d-33b5f9dd49a9"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Patient/3bba1b9c-8947-4931-bb13-a4f968744198",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "3bba1b9c-8947-4931-bb13-a4f968744198",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifiedPerson"
+          ]
+        },
+        "name": [
+          {
+            "text": "Max Power",
+            "family": "Power",
+            "given": [
+              "Max"
+            ]
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "012345767"
+          },
+          {
+            "system": "email",
+            "value": "testerino@test.de"
+          }
+        ],
+        "gender": "male",
+        "birthDate": "2025-11-06",
+        "address": [
+          {
+            "extension": [
+              {
+                "url": "https://demis.rki.de/fhir/StructureDefinition/AddressUse",
+                "valueCoding": {
+                  "system": "https://demis.rki.de/fhir/CodeSystem/addressUse",
+                  "code": "current",
+                  "display": "Derzeitiger Aufenthaltsort"
+                }
+              }
+            ],
+            "line": [
+              "Wohnsitzstraße 1"
+            ],
+            "city": "Berlin",
+            "postalCode": "21481",
+            "country": "DE"
+          },
+          {
+            "extension": [
+              {
+                "url": "https://demis.rki.de/fhir/StructureDefinition/AddressUse",
+                "valueCoding": {
+                  "system": "https://demis.rki.de/fhir/CodeSystem/addressUse",
+                  "code": "primary",
+                  "display": "Hauptwohnsitz"
+                }
+              }
+            ],
+            "line": [
+              "Wohnsitzstraße 1"
+            ],
+            "city": "Berlin",
+            "postalCode": "21481",
+            "country": "DE"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/PractitionerRole/541465a1-6312-48c9-b914-295ffebc7be4",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "541465a1-6312-48c9-b914-295ffebc7be4",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifierRole"
+          ]
+        },
+        "organization": {
+          "reference": "Organization/99a0e3b2-5ddd-48c0-983c-d4f0e340d32c"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Organization/99a0e3b2-5ddd-48c0-983c-d4f0e340d32c",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "99a0e3b2-5ddd-48c0-983c-d4f0e340d32c",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifierFacility"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR",
+            "value": "248123512"
+          }
+        ],
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "https://demis.rki.de/fhir/CodeSystem/organizationType",
+                "code": "othPrivatLab",
+                "display": "Sonstige private Untersuchungsstelle"
+              }
+            ]
+          }
+        ],
+        "name": "TEST Organisation",
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "0182736912388889",
+            "use": "work"
+          },
+          {
+            "system": "email",
+            "value": "testerino@test.de"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Im Himmelreich 1"
+            ],
+            "city": "Frühling",
+            "postalCode": "21481",
+            "country": "DE"
+          }
+        ],
+        "contact": [
+          {
+            "name": {
+              "text": "Herr Dr Melderina Melderson",
+              "family": "Melderson",
+              "given": [
+                "Melderina"
+              ],
+              "prefix": [
+                "Dr"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/PractitionerRole/9c50df5b-476d-4f44-8d16-be7e31c977c0",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "9c50df5b-476d-4f44-8d16-be7e31c977c0",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/SubmittingRole"
+          ]
+        },
+        "organization": {
+          "reference": "Organization/a5940cb9-0c7d-48b0-a8e9-52bfbd4a3b8c"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Organization/a5940cb9-0c7d-48b0-a8e9-52bfbd4a3b8c",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "a5940cb9-0c7d-48b0-a8e9-52bfbd4a3b8c",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/SubmittingFacility"
+          ]
+        },
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "https://demis.rki.de/fhir/CodeSystem/organizationType",
+                "code": "othPrivatLab",
+                "display": "Sonstige private Untersuchungsstelle"
+              }
+            ]
+          }
+        ],
+        "name": "Das Einsenderinstitut",
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "012345678",
+            "use": "work"
+          },
+          {
+            "system": "email",
+            "value": "einsender@einsenderinstitut.de"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Am Einsenderdamm 1"
+            ],
+            "city": "Einsendercity",
+            "postalCode": "21481",
+            "country": "DE"
+          }
+        ],
+        "contact": [
+          {
+            "name": {
+              "text": "Frau Dr Einsenderina Einsenderson",
+              "family": "Einsenderson",
+              "given": [
+                "Einsenderina"
+              ],
+              "prefix": [
+                "Dr"
+              ]
+            },
+            "address": {
+              "line": [
+                "Station 9a"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Specimen/0127a6dc-3132-4b09-b49a-1cbd88aeeb80",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "0127a6dc-3132-4b09-b49a-1cbd88aeeb80",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/SpecimenINVP"
+          ]
+        },
+        "type": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "http://snomed.info/sct/11000274103/version/20241115",
+              "code": "418564007",
+              "display": "Pleuraflüssigkeitprobe"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/3bba1b9c-8947-4931-bb13-a4f968744198"
+        },
+        "receivedTime": "2025-11-04T00:00:00+01:00",
+        "collection": {
+          "collector": {
+            "reference": "PractitionerRole/9c50df5b-476d-4f44-8d16-be7e31c977c0"
+          }
+        }
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Specimen/e1b229d7-408b-49d7-983c-13081758feed",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "e1b229d7-408b-49d7-983c-13081758feed",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/SpecimenINVP"
+          ]
+        },
+        "type": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "http://snomed.info/sct/11000274103/version/20241115",
+              "code": "258529004",
+              "display": "Rachenabstrich"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/3bba1b9c-8947-4931-bb13-a4f968744198"
+        },
+        "receivedTime": "2025-11-06T00:00:00+01:00",
+        "collection": {
+          "collector": {
+            "reference": "PractitionerRole/9c50df5b-476d-4f44-8d16-be7e31c977c0"
+          },
+          "collectedDateTime": "2025-11-06T00:00:00+01:00"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Observation/9225f878-5e53-4d98-a0d7-5bd16a3d82dc",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "9225f878-5e53-4d98-a0d7-5bd16a3d82dc",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/PathogenDetectionINVP"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "version": "2.79",
+              "code": "41852-5",
+              "display": "Microorganism or agent identified in Specimen"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/3bba1b9c-8947-4931-bb13-a4f968744198"
+        },
+        "valueCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "http://snomed.info/sct/11000274103/version/20241115",
+              "code": "407479009",
+              "display": "Influenza A-Virus"
+            }
+          ]
+        },
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "code": "POS"
+              }
+            ]
+          }
+        ],
+        "method": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "http://snomed.info/sct/11000274103/version/20241115",
+              "code": "702658000",
+              "display": "Microbial culture technique (qualifier value)"
+            }
+          ]
+        },
+        "specimen": {
+          "reference": "Specimen/0127a6dc-3132-4b09-b49a-1cbd88aeeb80"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Observation/77c94dce-0e41-4053-b6f3-c29ceb270a30",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "77c94dce-0e41-4053-b6f3-c29ceb270a30",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/PathogenDetectionINVP"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "version": "2.79",
+              "code": "41852-5",
+              "display": "Microorganism or agent identified in Specimen"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/3bba1b9c-8947-4931-bb13-a4f968744198"
+        },
+        "valueCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "http://snomed.info/sct/11000274103/version/20241115",
+              "code": "407479009",
+              "display": "Influenza A-Virus"
+            }
+          ]
+        },
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "code": "POS"
+              }
+            ]
+          }
+        ],
+        "method": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "http://snomed.info/sct/11000274103/version/20241115",
+              "code": "121276004",
+              "display": "Antigen assay (procedure)"
+            }
+          ]
+        },
+        "specimen": {
+          "reference": "Specimen/e1b229d7-408b-49d7-983c-13081758feed"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Observation/058401bb-c618-48d6-aa29-b951692e7b0f",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "058401bb-c618-48d6-aa29-b951692e7b0f",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/PathogenDetectionINVP"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "version": "2.79",
+              "code": "41852-5",
+              "display": "Microorganism or agent identified in Specimen"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/3bba1b9c-8947-4931-bb13-a4f968744198"
+        },
+        "valueCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "http://snomed.info/sct/11000274103/version/20241115",
+              "code": "407479009",
+              "display": "Influenza A-Virus"
+            }
+          ]
+        },
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "code": "POS"
+              }
+            ]
+          }
+        ],
+        "method": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "http://snomed.info/sct/11000274103/version/20241115",
+              "code": "264896000",
+              "display": "Nucleic acid analysis (qualifier value)"
+            }
+          ]
+        },
+        "specimen": {
+          "reference": "Specimen/e1b229d7-408b-49d7-983c-13081758feed"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/DiagnosticReport/f15c459a-8cce-4749-aa5d-33b5f9dd49a9",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "f15c459a-8cce-4749-aa5d-33b5f9dd49a9",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/LaboratoryReportINVP"
+          ]
+        },
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "https://demis.rki.de/fhir/CodeSystem/notificationCategory",
+              "version": "2.0.0",
+              "code": "invp",
+              "display": "Influenzavirus; Meldepflicht nur für den direkten Nachweis"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/3bba1b9c-8947-4931-bb13-a4f968744198"
+        },
+        "issued": "2025-11-06T15:27:08.450+01:00",
+        "result": [
+          {
+            "reference": "Observation/9225f878-5e53-4d98-a0d7-5bd16a3d82dc"
+          },
+          {
+            "reference": "Observation/77c94dce-0e41-4053-b6f3-c29ceb270a30"
+          },
+          {
+            "reference": "Observation/058401bb-c618-48d6-aa29-b951692e7b0f"
+          }
+        ],
+        "conclusionCode": [
+          {
+            "coding": [
+              {
+                "system": "https://demis.rki.de/fhir/CodeSystem/conclusionCode",
+                "code": "pathogenDetected"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

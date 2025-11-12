@@ -110,22 +110,24 @@ public class LabTestFactory {
       return resolveQuantityValues(quantity);
 
     } else if (type instanceof CodeableConcept codeableConcept) {
-      return displayTranslationService.resolveCodeableConceptValues(codeableConcept);
+      String resolvedCoding =
+          displayTranslationService.resolveCodeableConceptValues(codeableConcept);
+      String text =
+          codeableConcept.getText() != null
+              ? System.lineSeparator() + codeableConcept.getText()
+              : "";
+      // StringBuilder durch einfache String-Konkatenation ersetzt
+      return resolvedCoding + text;
     }
     return null;
   }
 
   private String resolveQuantityValues(Quantity quantity) {
-    String value = "";
-
-    if (quantity != null) {
-      value += quantity.getSystem() != null ? quantity.getSystem() + " " : "";
-      value += quantity.getCode() != null ? quantity.getCode() + " " : "";
-      value += quantity.getUnit() != null ? quantity.getUnit() + " " : "";
-      value += quantity.getComparator() != null ? quantity.getComparator().toCode() : "";
-      value += quantity.getValue() != null ? quantity.getValue() : "";
-    }
-
-    return value;
+    String comparator =
+        quantity.getComparator() != null ? quantity.getComparator().toCode() + " " : "";
+    String value = quantity.getValue() + " ";
+    String code = quantity.getCode();
+    String unitOrCode = quantity.getUnit() != null ? quantity.getUnit() : code;
+    return String.format("%s%s%s", comparator, value, unitOrCode).trim();
   }
 }

@@ -1,0 +1,580 @@
+{
+  "resourceType": "Bundle",
+  "meta": {
+    "lastUpdated": "2025-06-18T03:56:01.000+01:00",
+    "profile": [
+      "https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratory"
+    ]
+  },
+  "identifier": {
+    "system": "https://demis.rki.de/fhir/NamingSystem/NotificationBundleId",
+    "value": "f8f0b13c-6057-3a44-8cf3-080c197cdcf4"
+  },
+  "type": "document",
+  "timestamp": "2025-06-18T03:56:01.000+01:00",
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:175d624f-5cdd-3abc-846f-d99e0ad31120",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "175d624f-5cdd-3abc-846f-d99e0ad31120",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotificationLaboratory"
+          ]
+        },
+        "identifier": {
+          "system": "https://demis.rki.de/fhir/NamingSystem/NotificationId",
+          "value": "3df60127-bdac-4493-9bbb-aba574233199"
+        },
+        "status": "amended",
+        "type": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "version": "2.79",
+              "code": "34782-3",
+              "display": "Infectious disease Note"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:47298088-a04e-31eb-bdfa-ed168784471e"
+        },
+        "date": "2025-06-18T03:56:00.000+01:00",
+        "author": [
+          {
+            "reference": "urn:uuid:ec9ca636-20c6-382a-a627-149b6d1a1b0d"
+          }
+        ],
+        "title": "Erregernachweismeldung",
+        "relatesTo": [
+          {
+            "code": "appends",
+            "targetReference": {
+              "type": "Composition",
+              "identifier": {
+                "system": "https://demis.rki.de/fhir/NamingSystem/NotificationId",
+                "value": "b04bf2d7-1bb3-40c5-ade4-789a29353b16"
+              }
+            }
+          }
+        ],
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "version": "2.79",
+                  "code": "11502-2",
+                  "display": "Laboratory report"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:e0b3cf20-9467-362a-9247-8f2aa73bea4f"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:47298088-a04e-31eb-bdfa-ed168784471e",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "47298088-a04e-31eb-bdfa-ed168784471e",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifiedPerson"
+          ]
+        },
+        "name": [
+          {
+            "use": "official",
+            "family": "Testerin",
+            "given": [
+              "Testina"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1992-12-13",
+        "address": [
+          {
+            "extension": [
+              {
+                "url": "https://demis.rki.de/fhir/StructureDefinition/AddressUse",
+                "valueCoding": {
+                  "system": "https://demis.rki.de/fhir/CodeSystem/addressUse",
+                  "code": "primary"
+                }
+              }
+            ],
+            "line": [
+              "Teststr. 124"
+            ],
+            "city": "Berlin",
+            "postalCode": "13055",
+            "country": "DE"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ec9ca636-20c6-382a-a627-149b6d1a1b0d",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "ec9ca636-20c6-382a-a627-149b6d1a1b0d",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifierRole"
+          ]
+        },
+        "organization": {
+          "reference": "urn:uuid:de25b826-46dc-3034-a6ea-192a861f32ad"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:de25b826-46dc-3034-a6ea-192a861f32ad",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "de25b826-46dc-3034-a6ea-192a861f32ad",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifierFacility"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "https://demis.rki.de/fhir/NamingSystem/DemisParticipantId",
+            "value": "10101"
+          },
+          {
+            "system": "https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR",
+            "value": "998877100"
+          }
+        ],
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "https://demis.rki.de/fhir/CodeSystem/organizationType",
+                "code": "laboratory",
+                "display": "Bayerisches Landesamt für Gesundheit und Lebensmittelsicherheit (LGL)"
+              }
+            ]
+          }
+        ],
+        "name": "Sekundärlabor",
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "09131 6808 - 5814",
+            "use": "work"
+          },
+          {
+            "system": "fax",
+            "value": "09131 6808 - 5197",
+            "use": "work"
+          },
+          {
+            "system": "email",
+            "value": "andreas.sing@lgl.bayern.de",
+            "use": "work"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Veterinärstraße 2"
+            ],
+            "city": "Oberschleißheim",
+            "postalCode": "85764",
+            "country": "DE"
+          }
+        ],
+        "contact": [
+          {
+            "name": {
+              "use": "official",
+              "family": "Sing",
+              "given": [
+                "Andreas"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6bbf6166-b90e-33e0-8771-e7d417fa9a1e",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "6bbf6166-b90e-33e0-8771-e7d417fa9a1e",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/SubmittingRole"
+          ]
+        },
+        "practitioner": {
+          "reference": "urn:uuid:33ac86ce-8b56-3693-a53c-b9653c00265b"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:33ac86ce-8b56-3693-a53c-b9653c00265b",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "33ac86ce-8b56-3693-a53c-b9653c00265b",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/SubmittingPerson"
+          ]
+        },
+        "name": [
+          {
+            "use": "official",
+            "family": "Behandler-Eckert",
+            "given": [
+              "Medicus"
+            ]
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "0309876543354"
+          },
+          {
+            "system": "email",
+            "value": "Medicus.Behandler-Eckert@EinsendepraxisABC.de"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Dingsweg 321"
+            ],
+            "city": "Berlin",
+            "postalCode": "13055",
+            "country": "DE"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e0b3cf20-9467-362a-9247-8f2aa73bea4f",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "e0b3cf20-9467-362a-9247-8f2aa73bea4f",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/LaboratoryReportMYTP"
+          ]
+        },
+        "basedOn": [
+          {
+            "type": "ServiceRequest",
+            "identifier": {
+              "type": {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                    "code": "FILL"
+                  }
+                ]
+              },
+              "system": "http://www.SekLab.de/identifiers/diagnosticReport/accessionIdentifier",
+              "value": "LaborauftragsNr_9876"
+            }
+          }
+        ],
+        "status": "amended",
+        "code": {
+          "coding": [
+            {
+              "system": "https://demis.rki.de/fhir/CodeSystem/notificationCategory",
+              "code": "mytp",
+              "display": "Mycobacterium tuberculosis/africanum, Mycobacterium bovis; Meldepflicht für den direkten Erregernachweis sowie nachfolgend für das Ergebnis der Resistenzbestimmung; vorab auch für den Nachweis säurefester Stäbchen im Sputum"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:47298088-a04e-31eb-bdfa-ed168784471e"
+        },
+        "issued": "2025-06-18T03:55:00.000+01:00",
+        "result": [
+          {
+            "reference": "urn:uuid:d7abecd6-1e5c-3c64-b868-9f18a9733588"
+          },
+          {
+            "reference": "urn:uuid:660babf8-ec87-39f4-bc25-ff0d888e2582"
+          },
+          {
+            "reference": "urn:uuid:be7a6155-4d16-3b9c-ac02-dc93f90f4be2"
+          }
+        ],
+        "conclusion": "Mit folgender Textueller Zusammenfassung: Zur Ausprägung einer phänotypischen Resistenz gegenüber Isoniazid ist entweder eine Mutation im katG-Gen oder eine Mutation in der Promotor-Region des InhA-Gens ausreichend. Eine katG-Mutation bewirkt in der Regel eine high-level Resistenz. Wenn beide Mutationen vorliegen, ist das Isolat gegenüber Isoniazid high-level resistent. ",
+        "conclusionCode": [
+          {
+            "coding": [
+              {
+                "system": "https://demis.rki.de/fhir/CodeSystem/conclusionCode",
+                "code": "pathogenDetected",
+                "display": "Meldepflichtiger Erreger nachgewiesen"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d7abecd6-1e5c-3c64-b868-9f18a9733588",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "d7abecd6-1e5c-3c64-b868-9f18a9733588",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/PathogenDetectionMYTP"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "version": "2.79",
+              "code": "89372-7",
+              "display": "Mycobacterium tuberculosis complex rpoB gene rifAMPin resistance mutation [Presence] by Molecular method"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:47298088-a04e-31eb-bdfa-ed168784471e"
+        },
+        "valueCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "version": "2.79",
+              "code": "LA11883-8",
+              "display": "Nicht nachgewiesen"
+            }
+          ]
+        },
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "code": "S",
+                "display": "Susceptible"
+              }
+            ]
+          }
+        ],
+        "method": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "http://snomed.info/sct/11000274103/version/20241115",
+              "code": "702675006",
+              "display": "Nukleinsäuresondentest mit Zielsequenz-Amplifikation"
+            }
+          ]
+        },
+        "specimen": {
+          "reference": "urn:uuid:3ab5fa90-8148-33b4-8568-c9a52c66e6dd"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:660babf8-ec87-39f4-bc25-ff0d888e2582",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "660babf8-ec87-39f4-bc25-ff0d888e2582",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/PathogenDetectionMYTP"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "version": "2.79",
+              "code": "46246-5",
+              "display": "Mycobacterium tuberculosis katG gene isoniazid high level resistance mutation [Identifier] by Molecular method"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:47298088-a04e-31eb-bdfa-ed168784471e"
+        },
+        "valueCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "version": "2.79",
+              "code": "LA11883-8",
+              "display": "Nicht nachgewiesen"
+            }
+          ]
+        },
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "code": "S",
+                "display": "Susceptible"
+              }
+            ]
+          }
+        ],
+        "method": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "http://snomed.info/sct/11000274103/version/20241115",
+              "code": "702675006",
+              "display": "Nukleinsäuresondentest mit Zielsequenz-Amplifikation"
+            }
+          ]
+        },
+        "specimen": {
+          "reference": "urn:uuid:3ab5fa90-8148-33b4-8568-c9a52c66e6dd"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:be7a6155-4d16-3b9c-ac02-dc93f90f4be2",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "be7a6155-4d16-3b9c-ac02-dc93f90f4be2",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/PathogenDetectionMYTP"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "version": "2.79",
+              "code": "94055-1",
+              "display": "Bacterial inhA gene drug resistance mutation [Identifier] by Molecular method"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:47298088-a04e-31eb-bdfa-ed168784471e"
+        },
+        "valueCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "http://snomed.info/sct/11000274103/version/20241115",
+              "code": "55446002",
+              "display": "Genetic mutation (finding)"
+            }
+          ],
+          "text": "C-15T"
+        },
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "code": "R",
+                "display": "Resistent"
+              }
+            ]
+          }
+        ],
+        "method": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "http://snomed.info/sct/11000274103/version/20241115",
+              "code": "702675006",
+              "display": "Nukleinsäuresondentest mit Zielsequenz-Amplifikation"
+            }
+          ]
+        },
+        "specimen": {
+          "reference": "urn:uuid:3ab5fa90-8148-33b4-8568-c9a52c66e6dd"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3ab5fa90-8148-33b4-8568-c9a52c66e6dd",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "3ab5fa90-8148-33b4-8568-c9a52c66e6dd",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/SpecimenMYTP"
+          ]
+        },
+        "status": "available",
+        "type": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "http://snomed.info/sct/11000274103/version/20241115",
+              "code": "119303007",
+              "display": "Probenmaterial von mikrobiellem Isolat"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:47298088-a04e-31eb-bdfa-ed168784471e"
+        },
+        "receivedTime": "2025-06-17T23:20:00.000+01:00",
+        "collection": {
+          "collector": {
+            "reference": "urn:uuid:6bbf6166-b90e-33e0-8771-e7d417fa9a1e"
+          },
+          "collectedDateTime": "2025-06-17T17:30:00.000+01:00"
+        }
+      }
+    }
+  ]
+}

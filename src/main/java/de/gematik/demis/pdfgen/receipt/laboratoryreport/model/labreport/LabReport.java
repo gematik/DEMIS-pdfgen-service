@@ -28,7 +28,9 @@ package de.gematik.demis.pdfgen.receipt.laboratoryreport.model.labreport;
 
 import de.gematik.demis.pdfgen.receipt.laboratoryreport.model.labreport.enums.LabReportStatusEnum;
 import de.gematik.demis.pdfgen.utils.DateTimeHolder;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -55,5 +57,14 @@ public class LabReport {
 
   public boolean hasLabTest() {
     return labTests != null && !labTests.isEmpty();
+  }
+
+  public List<LabTest> getLabTestWithUniqueSpecimen() {
+    HashSet<String> uniqueSpecimenIds = new HashSet<>();
+    return labTests.stream()
+        .filter(Objects::nonNull)
+        .filter(
+            t -> uniqueSpecimenIds.add(t.getSpecimen() != null ? t.getSpecimen().getId() : null))
+        .toList();
   }
 }

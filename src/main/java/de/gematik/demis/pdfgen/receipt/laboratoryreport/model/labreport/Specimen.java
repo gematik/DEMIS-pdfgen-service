@@ -42,4 +42,5 @@ public class Specimen extends NotesHolder {
   private String material;
   private List<String> notes;
   private String transactionId;
+  private String id;
 }
