@@ -76,10 +76,15 @@ public final class FhirFactory {
       readResourceFile("bundles/laboratoryReport/LaboratoryReportBundleDv2WithProvenanceMuk.json");
   public static final String LABORATORY_REPORT_BUNDLE_DV2_WITH_MULTIPLE_SPECIMEN =
       readResourceFile("bundles/laboratoryReport/LaboratoryReportDv2_multipleSpecimen.json");
+  public static final String LABORATORY_REPORT_BUNDLE_WITH_MULTIPLE_SPECIMEN_AND_METHODS =
+      readResourceFile(
+          "bundles/laboratoryReport/LaboratoryReportBundle_MultipleSpecimenAndMethods.json");
   public static final String LABORATORY_REPORT_BUNDLE_DV2TRANSACTION_ID_JSON =
       readResourceFile("bundles/laboratoryReport/LaboratoryReportBundleDv2_transactionId.json");
   public static final String LABORATORY_REPORT_BUNDLE_DV2_XML =
       readResourceFile("bundles/laboratoryReport/LaboratoryReportBundleDv2.xml");
+  public static final String LABORATORY_REPORT_BUNDLE_SPECIAL_CASE_TEXT_IN_VALUE_OBSERV =
+      readResourceFile("bundles/ValueTextExample.json");
   public static final String DISEASE_NOTIFICATION_BUNDLE_JSON =
       readResourceFile("bundles/disease/DiseaseNotificationBundle.json");
   public static final String DISEASE_NOTIFICATION_BUNDLE_XML =
@@ -99,6 +104,8 @@ public final class FhirFactory {
   public static final String LABORATORY_NOTIFICATION_WITHOUT_SPECIMEN_COLLECTION_TIME =
       readResourceFile(
           "bundles/specialTestCases/LaboratoryReportBundleDv2_pathogens_without_collectionTime.json");
+  public static final String LABORATORY_NOTIFICATION_BUNDLE_QUANTITIES_JSON =
+      readResourceFile("bundles/laboratoryReport/LaboratoryNotificationBundleQuantities.json");
   public static final String EMPTY_BUNDLE_JSON = readResourceFile("bundles/EmptyBundle.json");
 
   private static final FhirParser FHIR_PARSER = new FhirParser(FhirContext.forR4());
@@ -158,13 +165,12 @@ public final class FhirFactory {
     }
   }
 
-  public static Bundle createLaboratoryReportReasonForTestingBundle() {
+  public static Bundle createLaboratoryReportQuantitiesBundle() {
     try {
-      return (Bundle)
-          FHIR_PARSER.parseFromJson(LABORATORY_REPORT_BUNDLE_DV2_WITH_REASON_FOR_TESTING);
+      return (Bundle) FHIR_PARSER.parseFromJson(LABORATORY_NOTIFICATION_BUNDLE_QUANTITIES_JSON);
     } catch (Exception e) {
       throw new IllegalStateException(
-          "Could not instantiate laboratory report bundle for tests", e);
+          "Could not instantiate laboratory report bundle for quantities", e);
     }
   }
 

@@ -2,6 +2,13 @@
 
 # Release pdfgen-Service
 
+## Release 2.8.3
+- use unit for printed quantities and code in case that there is no unit available
+- update parent to 2.14.1
+- add text from observation value if codeable concept and text field is filled
+- format quantities correctly for laboratory
+- show only one specimen material per specimen on laboratory page 2
+ 
 ## Release 2.8.2
 - Added support for MeinUnternehmenskonto
 - Remove feature flag PDFGEN.WARMUP

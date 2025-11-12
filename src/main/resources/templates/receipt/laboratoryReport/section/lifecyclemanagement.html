@@ -74,7 +74,7 @@
                         <span class="blue-font small-font" th:text='#{laboratory-report.lab-report.notification-reason}'></span>
                         <span class="small-font" th:text='${#strings.toUpperCase(laboratoryReportTemplateDto.labReport.notificationCategoryShortCode)}'></span>
                     </div>
-                    <th:block th:each="test : ${laboratoryReportTemplateDto.labReport.labTests}">
+                    <th:block th:each="test : ${laboratoryReportTemplateDto.labReport.getLabTestWithUniqueSpecimen()}">
                         <div class="specimen-wrapper">
                         <th:block th:unless="${test.specimen.collectionTime.toStringWithoutTime.isBlank()}">
                             <span class="blue-font small-font" th:text='#{laboratory-report.lab-test.specimen.collection}'></span>

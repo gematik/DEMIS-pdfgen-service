@@ -62,6 +62,13 @@ class LaboratoryReportServiceIntegrationTest {
   }
 
   @Test
+  void generatePdfRomBundleSpecialCaseExample() throws Exception {
+    generateAndValidateLaboratoryReportPdf(
+        laboratoryReportService.generatePdfFromBundleJsonString(
+            LABORATORY_REPORT_BUNDLE_SPECIAL_CASE_TEXT_IN_VALUE_OBSERV));
+  }
+
+  @Test
   void generateSubmitterInformation() throws Exception {
     String pdfText =
         generateAndValidateLaboratoryReportPdf(
@@ -81,6 +88,16 @@ class LaboratoryReportServiceIntegrationTest {
             "Meldeweg", "Portal",
             "Authentifizierungsmethode", "BundID",
             "Vertrauensniveau", "niedrig");
+  }
+
+  @Test
+  void generatePdfWithQuantities() throws Exception {
+    PdfData pdfData =
+        laboratoryReportService.generatePdfFromBundleJsonString(
+            LABORATORY_NOTIFICATION_BUNDLE_QUANTITIES_JSON);
+    assertThat(pdfData.bytes()).isNotNull();
+    String pdfText = extractPdfText(pdfData);
+    assertThat(pdfText).contains("Ergebniswert 6.0 [IU]/mL").contains("Ergebniswert 8.0 U/mL");
   }
 
   private @NotNull String generateAndValidateLaboratoryReportPdf(PdfData laboratoryReportService)
@@ -112,26 +129,17 @@ class LaboratoryReportServiceIntegrationTest {
             """
                 Meldetatbestand CVDP
                 Probenentnahme 04.03.2021\s
-                Probenmaterial Upper respiratory swab sample (specimen)
-                Probenentnahme 04.03.2021\s
                 Probenmaterial Upper respiratory swab sample (specimen)""");
   }
 
   @Test
   void canHandleMultipleSpecimen() throws Exception {
-    // GIVEN we have a bundle with observation and specimen
-    // WHEN we generate a PDF
     PdfData pdfData =
         laboratoryReportService.generatePdfFromBundleJsonString(
             LABORATORY_REPORT_BUNDLE_DV2_WITH_MULTIPLE_SPECIMEN);
 
-    // THEN we add some key details to the lifecycle page
     String pdfText = extractPdfText(pdfData);
     pdfText = skipToLifecyclePage(pdfText);
-    // extractPdfText() occasionally generates trailing whitespace characters. We explicitly use a
-    // whitespace(\s) here
-    // to match the full block of text that we expect. We assume that testing the full block is more
-    // robust.
     assertThat(pdfText)
         .contains(
             """
@@ -141,6 +149,22 @@ class LaboratoryReportServiceIntegrationTest {
             Probenentnahme 04.03.2023\s
             Probenmaterial Nucleic acid assay (procedure)
             Probenmaterial Specimen from throat (specimen)""");
+  }
+
+  @Test
+  void canHandleMultipleSpecimenAndMethods() throws Exception {
+    PdfData pdfData =
+        laboratoryReportService.generatePdfFromBundleJsonString(
+            LABORATORY_REPORT_BUNDLE_WITH_MULTIPLE_SPECIMEN_AND_METHODS);
+    String pdfText = extractPdfText(pdfData);
+    pdfText = skipToLifecyclePage(pdfText);
+    assertThat(pdfText)
+        .contains(
+            """
+                    Meldetatbestand INVP
+                    Probenmaterial Pleuraflüssigkeitprobe
+                    Probenentnahme 06.11.2025\s
+                    Probenmaterial Rachenabstrich""");
   }
 
   @Test
@@ -158,7 +182,6 @@ class LaboratoryReportServiceIntegrationTest {
         .contains(
             """
         Meldetatbestand CVDP
-        Probenmaterial Upper respiratory swab sample (specimen)
         Probenmaterial Upper respiratory swab sample (specimen)""");
   }
 

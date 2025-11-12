@@ -119,22 +119,19 @@ public class AnswerValues
 
   private static String print(Quantity quantity) {
     StringBuilder text = new StringBuilder();
+
     if (quantity.hasComparator()) {
-      text.append(quantity.getComparator().getDisplay());
+      text.append(quantity.getComparator().toCode()).append(BLANK);
     }
     if (quantity.hasValue()) {
-      if (!text.isEmpty()) {
-        text.append(BLANK);
-      }
-      text.append(quantity.getValue());
+      text.append(quantity.getValue()).append(BLANK);
     }
     if (quantity.hasUnit()) {
-      if (!text.isEmpty()) {
-        text.append(BLANK);
-      }
       text.append(quantity.getUnit());
+    } else if (quantity.hasCode()) {
+      text.append(quantity.getCode());
     }
-    return text.toString();
+    return text.toString().trim();
   }
 
   private static String printSimpleValues(

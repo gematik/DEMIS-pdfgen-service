@@ -91,6 +91,7 @@ public class SpecimenFactory {
     String material = extractMaterialWithDV1Fallback(fhirSpecimen);
     List<String> notes = getNotes(fhirSpecimen);
     String transactionId = getTransactionId(fhirSpecimen);
+    String id = fhirSpecimen.getId();
 
     return Specimen.builder()
         .receivedTime(receivedTime)
@@ -99,6 +100,7 @@ public class SpecimenFactory {
         .notes(notes)
         .material(material)
         .transactionId(transactionId)
+        .id(id)
         .build();
   }
 
