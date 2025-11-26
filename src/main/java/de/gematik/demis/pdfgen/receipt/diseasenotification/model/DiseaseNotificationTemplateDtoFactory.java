@@ -26,7 +26,6 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification.model;
  * #L%
  */
 
-import de.gematik.demis.pdfgen.FeatureFlags;
 import de.gematik.demis.pdfgen.receipt.common.model.section.AuthenticationFactory;
 import de.gematik.demis.pdfgen.receipt.common.model.section.MetadataFactory;
 import de.gematik.demis.pdfgen.receipt.common.model.section.NotificationFactory;
@@ -37,7 +36,6 @@ import de.gematik.demis.pdfgen.receipt.common.service.watermark.WatermarkService
 import de.gematik.demis.pdfgen.receipt.diseasenotification.model.condition.ConditionFactory;
 import de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.Questionnaire;
 import de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.QuestionnaireService;
-import java.util.Map;
 import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.hl7.fhir.r4.model.Bundle;
@@ -54,7 +52,6 @@ public class DiseaseNotificationTemplateDtoFactory {
   private final ConditionFactory conditionFactory;
   private final QuestionnaireService questionnaireService;
   private final AuthenticationFactory authenticationFactory;
-  private final FeatureFlags featureFlags;
   private final WatermarkService watermarkService;
 
   @Nullable
@@ -71,11 +68,7 @@ public class DiseaseNotificationTemplateDtoFactory {
             .notifiedPersonDTO(notifiedPersonFactory.create(bundle))
             .conditionDTO(conditionFactory.create(bundle))
             .commonQuestionnaire(questionnaireService.createCommonQuestionnaire(bundle))
-            .authentication(authenticationFactory.create(bundle))
-            .additionalConfig(
-                Map.of(
-                    "FEATURE_FLAG_HOSPITALIZATION_ORDER",
-                    String.valueOf(featureFlags.isHospitalizationOrder())));
+            .authentication(authenticationFactory.create(bundle));
     Questionnaire specific = questionnaireService.createSpecificQuestionnaire(bundle);
     if (specific != null) {
       builder.specificQuestionnaire(specific);

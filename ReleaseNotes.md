@@ -2,12 +2,18 @@
 
 # Release pdfgen-Service
 
+## Release 2.8.4
+- update spring-parent to 2.14.2
+- remove feature flag FEATURE_FLAG_HOSPITALIZATION_ORDER
+- fixed the display of the hospitalization station in the Disease PDF receipt based on the strict profile (from version 7.x.x)
+
 ## Release 2.8.3
 - use unit for printed quantities and code in case that there is no unit available
 - update parent to 2.14.1
 - add text from observation value if codeable concept and text field is filled
 - format quantities correctly for laboratory
 - show only one specimen material per specimen on laboratory page 2
+- fix patient finding for bundles with broken patient id
  
 ## Release 2.8.2
 - Added support for MeinUnternehmenskonto

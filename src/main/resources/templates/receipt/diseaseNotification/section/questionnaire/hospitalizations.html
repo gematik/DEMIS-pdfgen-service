@@ -20,42 +20,10 @@
                 <tr th:replace='~{fragment/rows :: paddedTitleRow(${heading+" "+(iter.index+1)})}'></tr>
             </th:block>
             <!-- hospitalization -->
-            <th:block th:if="${diseaseNotificationTemplateDto.additionalConfig.get('FEATURE_FLAG_HOSPITALIZATION_ORDER')}"
-                    th:with="hospitalization=${subitem.getResource().getHospitalization()}">
+            <th:block th:with="hospitalization=${subitem.getResource().getHospitalization()}">
                 <tr th:replace="~{fragment/rows :: paddedRow(
                         #{disease-notification.common-questions.hospitalization.department},
                         ${hospitalization.serviceType})}"></tr>
-                <tr th:replace="~{fragment/rows :: paddedRow(
-                        #{disease-notification.common-questions.hospitalization.begin.feature.flag.hospitalizationOrder},
-                        ${hospitalization.start.dateWithoutTime})}"></tr>
-                <tr th:replace="~{fragment/rows :: paddedRow(
-                        #{disease-notification.common-questions.hospitalization.end.feature.flag.hospitalizationOrder},
-                        ${hospitalization.end.dateWithoutTime})}"></tr>
-                <tr th:replace="~{fragment/rows :: paddedRow(
-                        #{disease-notification.common-questions.hospitalization.reason},
-                        ${hospitalization.reason})}"></tr>
-                <tr th:replace="~{fragment/rows :: paddedRow(
-                        #{disease-notification.common-questions.hospitalization.name.feature.flag.hospitalizationOrder},
-                        ${hospitalization.organization().getNameAndType()})}"></tr>
-                <tr th:replace="~{fragment/rows :: paddedRow(
-                        #{disease-notification.section.organizationDTO.description.feature.flag.hospitalizationOrder},
-                        ${hospitalization.organization?.getOrganizationInfo()})}"></tr>
-                <tr th:replace="~{fragment/rows :: paddedRow(
-                        #{disease-notification.common-questions.hospitalization.note},
-                        ${hospitalization.note})}"></tr>
-            </th:block>
-
-            <th:block th:unless="${diseaseNotificationTemplateDto.additionalConfig.get('FEATURE_FLAG_HOSPITALIZATION_ORDER')}"
-                      th:with="hospitalization=${subitem.getResource().getHospitalization()}">
-                <tr th:replace="~{fragment/rows :: paddedRow(
-                        #{disease-notification.common-questions.hospitalization.name},
-                        ${hospitalization.organization().getNameAndType()})}"></tr>
-                <tr th:replace="~{fragment/rows :: paddedRow(
-                        #{disease-notification.common-questions.hospitalization.department},
-                        ${hospitalization.serviceType})}"></tr>
-                <tr th:replace="~{fragment/rows :: paddedRow(
-                        #{disease-notification.section.organizationDTO.description},
-                        ${hospitalization.organization?.getOrganizationInfo()})}"></tr>
                 <tr th:replace="~{fragment/rows :: paddedRow(
                         #{disease-notification.common-questions.hospitalization.begin},
                         ${hospitalization.start.dateWithoutTime})}"></tr>
@@ -66,10 +34,15 @@
                         #{disease-notification.common-questions.hospitalization.reason},
                         ${hospitalization.reason})}"></tr>
                 <tr th:replace="~{fragment/rows :: paddedRow(
+                        #{disease-notification.common-questions.hospitalization.name},
+                        ${hospitalization.organization().getNameAndType()})}"></tr>
+                <tr th:replace="~{fragment/rows :: paddedRow(
+                        #{disease-notification.section.organizationDTO.description},
+                        ${hospitalization.organization?.getOrganizationInfo()})}"></tr>
+                <tr th:replace="~{fragment/rows :: paddedRow(
                         #{disease-notification.common-questions.hospitalization.note},
                         ${hospitalization.note})}"></tr>
             </th:block>
-
         </th:block>
     </th:block>
 </th:block>
