@@ -292,22 +292,22 @@ class DiseaseNotificationControllerIntegrationTest {
         Kontaktperson Herr Laslo Labora
         Aufnahme in ein Krankenhaus Ja
         Krankenhaus 1
-        Name QuickHealing Hospital (Krankenhaus)
-        Einrichtungsadresse Krankenhausstraße 1, 21481 Buchhorst, Deutschland
+        Aufnahmedatum 05.01.2022
+        Entlassdatum 09.01.2022
+        Name der Einrichtung QuickHealing Hospital (Krankenhaus)
+        Adresse der Einrichtung Krankenhausstraße 1, 21481 Buchhorst, Deutschland
         Telefon: 01234567
         E-Mail: anna@ansprechpartner.de
         Kontaktperson: Dr. Anna Beate Carolin Ansprechpartner
-        Beginn 05.01.2022
-        Ende 09.01.2022
         Hinweise zur Hospitalisierung wichtige Zusatzinformation
         Krankenhaus 2
-        Name QuickHealing Hospital (Krankenhaus)
         Station Intensivmedizin
-        Einrichtungsadresse Krankenhausstraße 1, 21481 Buchhorst, Deutschland
+        Aufnahmedatum 07.01.2022
+        Name der Einrichtung QuickHealing Hospital (Krankenhaus)
+        Adresse der Einrichtung Krankenhausstraße 1, 21481 Buchhorst, Deutschland
         Telefon: 01234567
         E-Mail: anna@ansprechpartner.de
         Kontaktperson: Dr. Anna Beate Carolin Ansprechpartner
-        Beginn 07.01.2022
         Tätigkeit, Betreuung oder Unterbringung in Ja
         Einrichtungen mit Relevanz für den\s
         Infektionsschutz (siehe § 23 Abs. 3 IfSG, §35\s
@@ -315,7 +315,7 @@ class DiseaseNotificationControllerIntegrationTest {
         Beginn der Tätigkeit/Betreuung/Unterbringung 01.12.2021
         Ende der Tätigkeit/Betreuung/Unterbringung 05.01.2022
         Rolle Tätigkeit
-        Einrichtungsadresse Einrichtungsname
+        Adresse der Einrichtung Einrichtungsname
         Straße 123, 21481 Buchhorst, Deutschland
         Telefon: 0123456789
         E-Mail: mail@einrichtung.de

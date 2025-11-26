@@ -61,6 +61,8 @@ public final class FhirFactory {
       readResourceFile("bundles/laboratoryReport/LaboratoryReportBundleDv1.json");
   public static final String LABORATORY_REPORT_BUNDLE_DV2_JSON =
       readResourceFile("bundles/laboratoryReport/LaboratoryReportBundleDv2.json");
+  public static final String LABORATORY_REPORT_BUNDLE_DV2_JSON_ANONYMOUS_PATIENT =
+      readResourceFile("bundles/laboratoryReport/LaboratoryReportBundleBrokenPatient.json");
   public static final String LABORATORY_PARTICIPANT_REPORT_BUNDLE_DV2_JSON =
       readResourceFile("bundles/laboratoryReport/LaboratoryReportBundleDv2_participantid.json");
   public static final String LABORATORY_REPORT_BUNDLE_DV2_PATHOGENS_JSON =
@@ -203,6 +205,16 @@ public final class FhirFactory {
   public static Bundle createLaboratoryReportBundle() {
     try {
       return (Bundle) FHIR_PARSER.parseFromJson(LABORATORY_REPORT_BUNDLE_DV2_JSON);
+    } catch (Exception e) {
+      throw new IllegalStateException(
+          "Could not instantiate laboratory report bundle for tests", e);
+    }
+  }
+
+  public static Bundle createLaboratoryReportBundleWithBrokenPatient() {
+    try {
+      return (Bundle)
+          FHIR_PARSER.parseFromJson(LABORATORY_REPORT_BUNDLE_DV2_JSON_ANONYMOUS_PATIENT);
     } catch (Exception e) {
       throw new IllegalStateException(
           "Could not instantiate laboratory report bundle for tests", e);

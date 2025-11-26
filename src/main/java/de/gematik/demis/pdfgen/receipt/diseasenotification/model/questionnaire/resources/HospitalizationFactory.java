@@ -54,9 +54,6 @@ class HospitalizationFactory {
 
   private static final String HOSPITALIZATION_COMPONENT_NAME = "hospitalized";
 
-  private static final String CODE_SYSTEM_HOSPITALIZATION_TYPE =
-      "https://demis.rki.de/fhir/CodeSystem/hospitalizationServiceType";
-
   private final OrganizationFactory organizationFactory;
   private final QuestionnaireResponseHelper questionnaireResponseHelper;
   private final TranslationService translationService;
@@ -85,10 +82,6 @@ class HospitalizationFactory {
         .filter(Encounter.class::isInstance)
         .map(Encounter.class::cast)
         .toList();
-  }
-
-  private static boolean isHospitalizationType(Coding coding) {
-    return CODE_SYSTEM_HOSPITALIZATION_TYPE.equals(coding.getSystem());
   }
 
   public List<Hospitalization> create(final QuestionnaireResponse questionnaireResponse) {
@@ -141,7 +134,6 @@ class HospitalizationFactory {
 
   private String getServiceType(Encounter encounter) {
     return encounter.getServiceType().getCoding().stream()
-        .filter(HospitalizationFactory::isHospitalizationType)
         .findFirst()
         .map(this.translationService::resolveCodeableConceptValues)
         .orElse(null);

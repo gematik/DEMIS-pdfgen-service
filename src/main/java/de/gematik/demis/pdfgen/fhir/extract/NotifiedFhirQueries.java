@@ -46,6 +46,15 @@ public class NotifiedFhirQueries {
       return Optional.empty();
     }
     IBaseResource notifiedPerson = fhirNotificationOptional.get().getSubject().getResource();
+    // fallback for broken ids
+    if (notifiedPerson == null) {
+      notifiedPerson =
+          bundle.getEntry().stream()
+              .filter(bundleEntryComponent -> bundleEntryComponent.getResource() instanceof Patient)
+              .findFirst()
+              .map(Bundle.BundleEntryComponent::getResource)
+              .orElse(null);
+    }
     return Optional.ofNullable(notifiedPerson instanceof Patient patient ? patient : null);
   }
 }
