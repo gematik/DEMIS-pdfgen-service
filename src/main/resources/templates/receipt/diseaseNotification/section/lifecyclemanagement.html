@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+
+<th:block th:fragment="lifecyclemanagement(diseaseNotificationTemplateDto)">
+    <div id="lifecycle-title">
+        <p class="document-title">Informationen zur Weitergabe der Meldungs-ID für zugehörige Folge- und
+            Ergänzungsmeldungen durch andere Einrichtungen</p>
+
+        <p>
+            Das DEMIS-Lifecyclemanagement von Meldungen beschreibt in verschiedenen Szenarien den
+            Umgang mit Meldungen bzw. mit der Meldungs-ID bei Korrekturen und Ergänzungen sowie bei Ergänzungen von
+            meldepflichtigen Informationen durch mehrere Melder.
+        </p>
+        <p>
+            Insbesondere wenn weitere Meldepflichtige zusätzliche Inhalte ergänzen sollen, sollte die Meldungs-ID weitergegeben
+            werden, damit auf diese Meldung verwiesen werden kann. So wird gewährleistet, dass auf Seite der Meldungsempfänger
+            (z.B. im Gesundheitsamt) diese Meldungen eindeutig in Zusammenhang gebracht werden können.
+        </p>
+    </div>
+    <div id="lifecycle-summary" class="grid-box">
+        <div class="notification-box frame-box">
+            <div id="box-person-information">
+                <span class="blue-font heavy-font" th:text='#{common.notified.person.header}'></span>
+                <br/>
+                <span class="blue-font small-font" th:text='#{common.notified.person.gender}'></span>
+                <span class="small-font"
+                      th:text='${diseaseNotificationTemplateDto.notifiedPersonDTO.anonymized().gender()}'></span>
+                <br/>
+                <span class="blue-font small-font"
+                      th:text='#{common.notified.person.birthdate-short}'></span>
+                <span class="small-font"
+                      th:text='${diseaseNotificationTemplateDto.notifiedPersonDTO.anonymized().birthdate()}'></span>
+                <br/>
+                <span class="blue-font small-font"
+                      th:text='#{common.notified.person.postal-code-short}'></span>
+                <span class="small-font"
+                      th:text='${diseaseNotificationTemplateDto.notifiedPersonDTO.anonymized().shortPostalCode()}'></span>
+            </div>
+            <br/>
+            <br/>
+            <div id="box-organisation-information">
+                <span class="blue-font heavy-font" th:text='#{common.notifier.facility.header}'></span>
+                <br/>
+                <span class="blue-font small-font" th:text='#{common.notifier.facility.name}'></span>
+                <span class="small-font"
+                      th:text='${diseaseNotificationTemplateDto.notifier.facility?.getNameAndType()}'></span>
+                <br/>
+                <span class="blue-font small-font" th:text='#{common.notifier.facility.address}'></span>
+                <span class="small-font"
+                      th:text='${diseaseNotificationTemplateDto.notifier.facility?.addressDTO?.getFullAddressAsSingleLine()}'></span>
+                <br/>
+                <span class="blue-font small-font" th:text='#{common.notifier.facility.nameDTO}'></span>
+                <span class="small-font"
+                      th:text='${diseaseNotificationTemplateDto.notifier.facility?.getTelecomsAsMultipleLines()}'></span>
+            </div>
+            <br/>
+            <br/>
+            <th:block th:if="${diseaseNotificationTemplateDto.conditionDTO != null}">
+                <div id="box-condition-information">
+                    <span class="blue-font small-font"
+                          th:text='#{laboratory-report.lab-report.notification-reason}'></span>
+                    <span class="small-font heavy-font"
+                          th:text='${#strings.toUpperCase(diseaseNotificationTemplateDto.conditionDTO.diseaseCode())}'></span>
+                    <br/>
+                    <span class="blue-font small-font"
+                          th:text='#{disease-notification.conditionDTO.recorded-date}'></span>
+                    <span class="small-font"
+                          th:text='${#strings.isEmpty(diseaseNotificationTemplateDto.conditionDTO.recordedDate()?.dateWithoutTime) ? #messages.msg("disease-notification.lifecycle.no-data") : diseaseNotificationTemplateDto.conditionDTO.recordedDate().dateWithoutTime}'></span>
+                    <br/>
+                    <span class="blue-font small-font"
+                          th:text='#{disease-notification.conditionDTO.onset-date}'></span>
+                    <span class="small-font"
+                          th:text='${#strings.isEmpty(diseaseNotificationTemplateDto.conditionDTO.onsetDate()?.dateWithoutTime) ? #messages.msg("disease-notification.lifecycle.no-data") : diseaseNotificationTemplateDto.conditionDTO.onsetDate().dateWithoutTime}'></span>
+                    <br/>
+                    <span class="blue-font small-font"
+                          th:text='#{disease-notification.conditionDTO.evidence}'></span>
+                    <span class="small-font"
+                          th:text='${#strings.isEmpty(diseaseNotificationTemplateDto.conditionDTO.allSymptoms) ? #messages.msg("disease-notification.lifecycle.no-data") : diseaseNotificationTemplateDto.conditionDTO.allSymptoms}'></span>
+                    <br/>
+                    <span class="blue-font small-font"
+                          th:text='#{disease-notification.conditionDTO.note}'></span>
+                    <span class="small-font"
+                          th:text='${#strings.isEmpty(diseaseNotificationTemplateDto.conditionDTO.note()) ? #messages.msg("disease-notification.lifecycle.no-data") : diseaseNotificationTemplateDto.conditionDTO.note()}'></span>
+                </div>
+            </th:block>
+            <br/>
+            <br/>
+            <th:block th:if="${diseaseNotificationTemplateDto.commonQuestionnaire != null}">
+                <th:block th:with="labItem=${diseaseNotificationTemplateDto.commonQuestionnaire.findLaboratoryItem().orElse(null)}">
+                    <th:block th:if="${labItem != null}">
+                        <div id="box-laboratory-information">
+                            <span class="blue-font small-font" th:text='${labItem.text}'></span>
+                            <span class="small-font" th:text='${labItem.answers.get(0).value()}'></span>
+                            <th:block th:each="subitem : ${labItem.answers.get(0).subitems()}">
+                                <th:block th:if="${subitem.resource != null and subitem.resource.laboratory != null}"
+                                          th:with="lab=${subitem.resource.laboratory}">
+                                    <br/>
+                                    <br/>
+                                    <span class="blue-font heavy-font" th:text='${subitem.text}'></span>
+                                    <br/>
+                                    <span class="blue-font small-font" th:text='#{disease-notification.common-questions.lab.name}'></span>
+                                    <span class="small-font" th:text='${lab.nameAndType}'></span>
+                                    <br/>
+                                    <span class="blue-font small-font" th:text='#{common.section.address.header}'></span>
+                                    <span class="small-font" th:text='${lab.addressDTO?.fullAddressAsSingleLine}'></span>
+                                    <br/>
+                                    <span class="blue-font small-font" th:text='#{common.section.contact.header}'></span>
+                                    <span class="small-font" th:text='${lab.telecomsAsMultipleLines}'></span>
+                                </th:block>
+                            </th:block>
+                        </div>
+                    </th:block>
+                </th:block>
+            </th:block>
+        </div>
+        <div class="qrcode-placeholder">
+            <span th:text='#{common.notification.identifier}'></span>
+            <br/>
+            <img alt="qr-notification-identifier" class="lifecycle-qr"
+                 th:src='${"data:image/png;base64," + diseaseNotificationTemplateDto.qrCode}'/>
+            <br/>
+            <span class="small-font"
+                  th:text='${diseaseNotificationTemplateDto.notification.identifier}'></span>
+        </div>
+    </div>
+    <div class="clear-row"></div>
+</th:block>
+</body>
+</html>

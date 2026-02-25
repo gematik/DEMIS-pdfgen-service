@@ -4,7 +4,7 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification;
  * #%L
  * pdfgen-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,15 +22,12 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
-import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_BUNDLE_JSON;
-import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_WITH_MISSING_POSTALCODE_BUNDLE_XML;
-import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_WITH_PARTIAL_POSTALCODE_BUNDLE_XML;
-import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_WITH_PROVENANCE_CERTIFICATE_JSON;
-import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_WITH_PROVENANCE_MUK_BUNDLE_JSON;
+import static de.gematik.demis.pdfgen.test.helper.FhirFactory.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -82,6 +79,38 @@ class DiseaseNotificationControllerIntegrationTest {
     new WireMockFuts().setDefaults().add(new DiseaseFeature());
   }
 
+  private static final String FOLLOW_UP_PAGE =
+      """
+      Informationen zur Weitergabe der Meldungs-ID für zugehörige Folge- und\s
+      Ergänzungsmeldungen durch andere Einrichtungen
+      Das DEMIS-Lifecyclemanagement von Meldungen beschreibt in verschiedenen Szenarien den Umgang mit Meldungen\s
+      bzw. mit der Meldungs-ID bei Korrekturen und Ergänzungen sowie bei Ergänzungen von meldepflichtigen Informationen\s
+      durch mehrere Melder.
+      Insbesondere wenn weitere Meldepflichtige zusätzliche Inhalte ergänzen sollen, sollte die Meldungs-ID weitergegeben\s
+      werden, damit auf diese Meldung verwiesen werden kann. So wird gewährleistet, dass auf Seite der\s
+      Meldungsempfänger (z.B. im Gesundheitsamt) diese Meldungen eindeutig in Zusammenhang gebracht werden können.
+      Betroffene Person Meldungs-ID\s
+      Geschlecht Weiblich\s
+      Geburtsdatum (Monat/Jahr) 06/1999\s
+      Ersten 3 Ziffern der PLZ der Adresse 123
+      Meldende Einrichtung\s
+      Name SlowHealing Klinik (Krankenhaus)\s
+      Adresse Krankenhausstraße 1, 21481 Buchhorst, Deutschland\s
+      Kontakt Telefon: 01234567 E-Mail: anna@ansprechpartner.de
+      7f562b87-f2c2-4e9d-b3fc-37f6b5dca3a5
+      Meldetatbestand CVDD\s
+      Datum der Diagnosestellung 02.01.2022\s
+      Erkrankungsbeginn 01.01.2022\s
+      Symptome Fieber Halsschmerzen/-entzündung Husten Pneunomie\s
+      (Lungenentzündung) Schnupfen akutes schweres Atemnotsyndrom (ARDS)\s
+      Diagnosehinweise Textueller Hinweis
+      Laborbeauftragung Ja\s
+      Beauftragtes Labor\s
+      Name QuickScan Labor (Erregerdiagnostische Untersuchungsstelle)\s
+      Adresse Laborstraße 345, 21481 Buchhorst, Deutschland\s
+      Kontakt Telefon: 666555444 E-Mail: mail@labor.de
+      """;
+
   @Test
   void generatePdfFromBundleJsonString_shouldRespond200WithPdf_DiseaseNotification()
       throws Exception {
@@ -93,7 +122,7 @@ class DiseaseNotificationControllerIntegrationTest {
     validateOkResponseDiseaseNotification(
         response,
         "Empfangsbestätigung Erkrankungsmeldung - Bertha-Luise Hanna Karin Betroffen.pdf");
-    validateBodyDiseaseResponse(response, "");
+    validateBodyDiseaseResponse(response, FOLLOW_UP_PAGE);
   }
 
   private static Stream<Arguments> inputValuesProvenance() {
@@ -113,15 +142,18 @@ class DiseaseNotificationControllerIntegrationTest {
   void generatePdfFromBundleXmlString_shouldRespond200WithPdf_DiseaseNotificationWithProvenanceOzg(
       String notificationMethod, String authenticationMethod, String pathToInputBundle)
       throws Exception {
-    String expectedProvenance =
+    String expectedFurtherInformation =
         """
         Authentifizierung
         Meldeweg {notificationMethod}
         Authentifizierungsmethode {authenticationMethod}
         Vertrauensniveau substanziell
-        """;
-    expectedProvenance = expectedProvenance.replace("{notificationMethod}", notificationMethod);
-    expectedProvenance = expectedProvenance.replace("{authenticationMethod}", authenticationMethod);
+        """
+            + FOLLOW_UP_PAGE;
+    expectedFurtherInformation =
+        expectedFurtherInformation.replace("{notificationMethod}", notificationMethod);
+    expectedFurtherInformation =
+        expectedFurtherInformation.replace("{authenticationMethod}", authenticationMethod);
 
     final var response =
         generateAndValidateNotification(pathToInputBundle, MediaType.APPLICATION_JSON_VALUE);
@@ -129,7 +161,7 @@ class DiseaseNotificationControllerIntegrationTest {
     validateOkResponseDiseaseNotification(
         response,
         "Empfangsbestätigung Erkrankungsmeldung - Bertha-Luise Hanna Karin Betroffen.pdf");
-    validateBodyDiseaseResponse(response, expectedProvenance);
+    validateBodyDiseaseResponse(response, expectedFurtherInformation);
   }
 
   @Test
@@ -169,6 +201,26 @@ class DiseaseNotificationControllerIntegrationTest {
     assertThat(pdfText)
         .as("disease notification PDF text")
         .contains(cleanupString(expectedHospitalizationOrder));
+  }
+
+  @Test
+  void generatePdfFromBundleJsonString_shouldDisplayKeineAngabeForEmptyFields() throws Exception {
+    // given - bundle with no onsetDateTime, no evidence (symptoms), and no note
+    final var response =
+        generateAndValidateNotification(
+            DISEASE_NOTIFICATION_WITH_EMPTY_FIELDS_JSON, MediaType.APPLICATION_JSON_VALUE);
+
+    // then - lifecycle page should show "Keine Angabe" for empty fields
+    final String pdfText = PdfExtractorHelper.extractPdfText(response.getContentAsByteArray());
+    assertThat(pdfText)
+        .as("PDF should contain 'Keine Angabe' for empty onset date")
+        .contains("Erkrankungsbeginn Keine Angabe");
+    assertThat(pdfText)
+        .as("PDF should contain 'Keine Angabe' for empty symptoms")
+        .contains("Symptome Keine Angabe");
+    assertThat(pdfText)
+        .as("PDF should contain 'Keine Angabe' for empty note")
+        .contains("Diagnosehinweise Keine Angabe");
   }
 
   @Test
@@ -226,7 +278,7 @@ class DiseaseNotificationControllerIntegrationTest {
   }
 
   private void validateBodyDiseaseResponse(
-      final MockHttpServletResponse response, final String provenance) throws Exception {
+      final MockHttpServletResponse response, final String furtherInformation) throws Exception {
     final String expectedText =
         """
         Empfangsbestätigung\s
@@ -362,7 +414,7 @@ class DiseaseNotificationControllerIntegrationTest {
         Trimester
         2. Trimester
         """
-            + provenance;
+            + furtherInformation;
     final String pdfText = PdfExtractorHelper.extractPdfText(response.getContentAsByteArray());
     assertThat(pdfText).as("disease notification PDF text").isEqualTo(cleanupString(expectedText));
   }

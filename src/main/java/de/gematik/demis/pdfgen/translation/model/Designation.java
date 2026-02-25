@@ -4,7 +4,7 @@ package de.gematik.demis.pdfgen.translation.model;
  * #%L
  * pdfgen-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,11 +22,19 @@ package de.gematik.demis.pdfgen.translation.model;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record Designation(String language, String value) {}
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public record Designation(String language, String value, Use use) {
+
+  public Designation(String language, String value) {
+    this(language, value, null);
+  }
+}

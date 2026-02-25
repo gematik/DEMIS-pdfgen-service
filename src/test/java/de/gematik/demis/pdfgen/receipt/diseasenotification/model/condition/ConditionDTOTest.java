@@ -4,7 +4,7 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification.model.condition;
  * #%L
  * pdfgen-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,7 +22,8 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification.model.condition;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
@@ -38,6 +39,9 @@ import org.hl7.fhir.r4.model.DateTimeType;
 import org.junit.jupiter.api.Test;
 
 class ConditionDTOTest {
+
+  private static final String DISEASE = "Masern";
+  private static final String DISEASE_CODE = "MSVD";
 
   @Test
   void builderAndGetters_shouldHandleNullAndBlankGracefully() {
@@ -62,6 +66,8 @@ class ConditionDTOTest {
                       // when
                       ConditionDTO conditionDTO =
                           ConditionDTO.builder()
+                              .disease(DISEASE)
+                              .diseaseCode(DISEASE_CODE)
                               .symptoms(symptoms)
                               .onsetDate(onsetDate)
                               .recordedDate(recordedDate)
@@ -69,6 +75,8 @@ class ConditionDTOTest {
                               .build();
 
                       // then
+                      assertThat(conditionDTO.disease()).isEqualTo(DISEASE);
+                      assertThat(conditionDTO.diseaseCode()).isEqualTo(DISEASE_CODE);
                       assertThat(conditionDTO.symptoms()).isEqualTo(symptoms);
                       assertThat(conditionDTO.onsetDate()).isEqualTo(onsetDate);
                       assertThat(conditionDTO.recordedDate()).isEqualTo(recordedDate);

@@ -4,7 +4,7 @@ package de.gematik.demis.pdfgen.receipt.laboratoryreport;
  * #%L
  * pdfgen-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,7 +22,8 @@ package de.gematik.demis.pdfgen.receipt.laboratoryreport;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
@@ -39,8 +40,10 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
+@TestPropertySource(properties = {"feature.flag.pdf.optimization=true"})
 class LaboratoryReportServiceIntegrationTest {
 
   /** A pattern to match the headline for the lifecycle headline. */
@@ -98,6 +101,16 @@ class LaboratoryReportServiceIntegrationTest {
     assertThat(pdfData.bytes()).isNotNull();
     String pdfText = extractPdfText(pdfData);
     assertThat(pdfText).contains("Ergebniswert 6.0 [IU]/mL").contains("Ergebniswert 8.0 U/mL");
+  }
+
+  @Test
+  void generatePdfWithRatio() throws Exception {
+    PdfData pdfData =
+        laboratoryReportService.generatePdfFromBundleJsonString(
+            LABORATORY_NOTIFICATION_BUNDLE_RATIO_JSON);
+    assertThat(pdfData.bytes()).isNotNull();
+    String pdfText = extractPdfText(pdfData);
+    assertThat(pdfText).contains("Ergebniswert 1.0:100.0");
   }
 
   private @NotNull String generateAndValidateLaboratoryReportPdf(PdfData laboratoryReportService)

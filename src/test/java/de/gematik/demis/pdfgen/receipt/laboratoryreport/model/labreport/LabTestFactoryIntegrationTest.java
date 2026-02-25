@@ -4,7 +4,7 @@ package de.gematik.demis.pdfgen.receipt.laboratoryreport.model.labreport;
  * #%L
  * pdfgen-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,12 +22,15 @@ package de.gematik.demis.pdfgen.receipt.laboratoryreport.model.labreport;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
 import static de.gematik.demis.pdfgen.test.helper.FhirFactory.createLaboratoryReportBundle;
 import static de.gematik.demis.pdfgen.test.helper.FhirFactory.createLaboratoryReportQuantitiesBundle;
+import static de.gematik.demis.pdfgen.test.helper.FhirFactory.createLaboratoryReportRangeBundle;
+import static de.gematik.demis.pdfgen.test.helper.FhirFactory.createLaboratoryReportRatioBundle;
 import static de.gematik.demis.pdfgen.test.helper.FhirFactory.createLaboratoryReportTransactionIdBundle;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -37,8 +40,10 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
+@TestPropertySource(properties = {"feature.flag.pdf.optimization=true"})
 class LabTestFactoryIntegrationTest {
 
   @Autowired private LabTestFactory labTestFactory;
@@ -98,5 +103,31 @@ class LabTestFactoryIntegrationTest {
     assertThat(labTests).hasSize(2);
     assertThat(labTests.get(0).getValue()).isEqualTo("6.0 [IU]/mL");
     assertThat(labTests.get(1).getValue()).isEqualTo("8.0 U/mL");
+  }
+
+  @Test
+  void createLabTests_createLabTestsWithRatioAsExpected() {
+    // given
+    Bundle bundle = createLaboratoryReportRatioBundle();
+
+    // when
+    List<LabTest> labTests = labTestFactory.createLabTests(bundle);
+
+    // then
+    assertThat(labTests).hasSize(1);
+    assertThat(labTests.get(0).getValue()).isEqualTo("1.0:100.0");
+  }
+
+  @Test
+  void createLabTests_createLabTestsWithRangeAsExpected() {
+    // given
+    Bundle bundle = createLaboratoryReportRangeBundle();
+
+    // when
+    List<LabTest> labTests = labTestFactory.createLabTests(bundle);
+
+    // then
+    assertThat(labTests).hasSize(1);
+    assertThat(labTests.get(0).getValue()).isEqualTo("von 5 bis 15");
   }
 }

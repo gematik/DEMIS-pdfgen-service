@@ -4,7 +4,7 @@ package de.gematik.demis.pdfgen.receipt.common.model.enums;
  * #%L
  * pdfgen-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,34 +22,51 @@ package de.gematik.demis.pdfgen.receipt.common.model.enums;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
 import static de.gematik.demis.pdfgen.utils.StringUtils.makeEnumNameHumanFriendly;
 
+import de.gematik.demis.pdfgen.lib.profile.DemisExtensions;
 import de.gematik.demis.pdfgen.utils.MessageUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.Enumerations.AdministrativeGender;
+import org.hl7.fhir.r4.model.Extension;
+import org.hl7.fhir.r4.model.Patient;
 
 @Slf4j
 @RequiredArgsConstructor
 public enum GenderEnum {
   MALE("enum.gender.male"),
   FEMALE("enum.gender.female"),
-  OTHER("enum.gender.other"),
+  OTHERX("enum.gender.otherx"),
+  DIVERSE("enum.gender.diverse"),
   UNKNOWN("enum.gender.unknown");
 
   private final String messageKey;
 
-  public static GenderEnum of(AdministrativeGender fhirGender) {
+  public static GenderEnum of(Patient patient, boolean genderExtensionEnabled) {
+    if (patient == null) {
+      return UNKNOWN;
+    }
+    AdministrativeGender fhirGender = patient.getGender();
     if (AdministrativeGender.MALE == fhirGender) {
       return MALE;
     } else if (AdministrativeGender.FEMALE == fhirGender) {
       return FEMALE;
     } else if (AdministrativeGender.OTHER == fhirGender) {
-      return OTHER;
+      if (!genderExtensionEnabled) {
+        return DIVERSE;
+      }
+
+      if ("D".equals(getGenderExtensionCode(patient))) {
+        return DIVERSE;
+      }
+      return OTHERX;
     } else if (AdministrativeGender.UNKNOWN == fhirGender
         || AdministrativeGender.NULL == fhirGender) {
       return UNKNOWN;
@@ -57,6 +74,20 @@ public enum GenderEnum {
       log.warn("Received unexpected AdministrativeGender value {}", fhirGender);
       return UNKNOWN;
     }
+  }
+
+  private static String getGenderExtensionCode(Patient patient) {
+    if (patient.getGenderElement() == null) {
+      return null;
+    }
+    Extension ext =
+        patient
+            .getGenderElement()
+            .getExtensionByUrl(DemisExtensions.EXTENSION_URL_GENDER_AMTLICH_DE);
+    if (ext != null && ext.getValue() instanceof Coding coding) {
+      return coding.getCode();
+    }
+    return null;
   }
 
   @Override

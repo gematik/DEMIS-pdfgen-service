@@ -4,7 +4,7 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification;
  * #%L
  * pdfgen-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,13 +22,16 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
 import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_BUNDLE_JSON;
 import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_BUNDLE_XML;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.when;
 
 import de.gematik.demis.fhirparserlibrary.FhirParser;
@@ -77,7 +80,8 @@ class DiseaseNotificationServiceTest {
         DiseaseNotificationTemplateDto.builder().notifiedPersonDTO(notifiedPersonDTO).build();
 
     when(fhirParser.parseFromJson(DISEASE_NOTIFICATION_BUNDLE_JSON)).thenReturn(b);
-    when(diseaseNotificationTemplateDtoFactory.create(b)).thenReturn(dto);
+    when(diseaseNotificationTemplateDtoFactory.create(any(Bundle.class), anyBoolean()))
+        .thenReturn(dto);
     when(templateParser.process(dto, diseaseNotificationTemplate)).thenReturn("resultString");
     byte[] bytes = "resultString".getBytes();
     when(pdfGenerator.generatePdfFromHtml("resultString")).thenReturn(bytes);
@@ -98,7 +102,8 @@ class DiseaseNotificationServiceTest {
         DiseaseNotificationTemplateDto.builder().notifiedPersonDTO(notifiedPersonDTO).build();
 
     when(fhirParser.parseFromXml(DISEASE_NOTIFICATION_BUNDLE_XML)).thenReturn(b);
-    when(diseaseNotificationTemplateDtoFactory.create(b)).thenReturn(dto);
+    when(diseaseNotificationTemplateDtoFactory.create(any(Bundle.class), anyBoolean()))
+        .thenReturn(dto);
     when(templateParser.process(dto, diseaseNotificationTemplate)).thenReturn("resultString");
     byte[] bytes = "resultString".getBytes();
     when(pdfGenerator.generatePdfFromHtml("resultString")).thenReturn(bytes);

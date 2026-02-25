@@ -1,0 +1,485 @@
+{
+  "resourceType": "Bundle",
+  "id": "8627ea00-f7c8-4b80-8d00-fb400f302e3c",
+  "meta": {
+    "profile": [
+      "https://demis.rki.de/fhir/StructureDefinition/NotificationBundleLaboratory"
+    ]
+  },
+  "identifier": {
+    "system": "https://demis.rki.de/fhir/NamingSystem/NotificationBundleId",
+    "value": "Bundle/8627ea00-f7c8-4b80-8d00-fb400f302e3c"
+  },
+  "type": "document",
+  "timestamp": "2025-10-20T14:43:28.394+02:00",
+  "entry": [
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Composition/0273d74e-f581-422a-8672-88ca90ddc883",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "0273d74e-f581-422a-8672-88ca90ddc883",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotificationLaboratory"
+          ]
+        },
+        "identifier": {
+          "system": "https://demis.rki.de/fhir/NamingSystem/NotificationId",
+          "value": "3234281e-624c-4bcc-8a1d-06ddcc9a1616"
+        },
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "34782-3",
+              "display": "Infectious disease Note"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/2ca816dd-5f3a-41e9-8175-2c54a5edff6e"
+        },
+        "date": "2025-10-20T14:43:22+02:00",
+        "author": [
+          {
+            "reference": "PractitionerRole/60bdc99d-6ade-4a6c-b9d1-adf0d06f0800"
+          }
+        ],
+        "title": "Erregernachweismeldung",
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "11502-2",
+                  "display": "Laboratory report"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "DiagnosticReport/44413b64-61cf-466a-83bf-7eabc9241adc"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Organization/4cf46677-2c39-4f80-be0f-9da0e78afb7b",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "4cf46677-2c39-4f80-be0f-9da0e78afb7b",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/SubmittingFacility"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR",
+            "value": "999999999"
+          }
+        ],
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "https://demis.rki.de/fhir/CodeSystem/organizationType",
+                "code": "medFacility",
+                "display": "Medizinische Einrichtung"
+              }
+            ]
+          }
+        ],
+        "name": "Dr. med. Mustermann Medat Computer-Systeme GmbH weiterer Name 3 weiterer Name 4",
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "089 126 80 80",
+            "use": "work"
+          },
+          {
+            "system": "email",
+            "value": "service@medat.de",
+            "use": "work"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Albrechtstrasse 14"
+            ],
+            "city": "Muenchen",
+            "postalCode": "80636",
+            "country": "20422"
+          }
+        ],
+        "contact": [
+          {
+            "name": {
+              "use": "official",
+              "text": "Dr. med. Mustermann Medat Computer-Systeme GmbH weiterer Name 3 weiterer Name 4"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Patient/2ca816dd-5f3a-41e9-8175-2c54a5edff6e",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "2ca816dd-5f3a-41e9-8175-2c54a5edff6e",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifiedPerson"
+          ]
+        },
+        "name": [
+          {
+            "use": "official",
+            "family": "Blabber",
+            "given": [
+              "Blubber"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1988-07-23",
+        "address": [
+          {
+            "extension": [
+              {
+                "url": "https://demis.rki.de/fhir/StructureDefinition/AddressUse",
+                "valueCoding": {
+                  "system": "https://demis.rki.de/fhir/CodeSystem/addressUse",
+                  "code": "primary",
+                  "display": "Hauptwohnsitz"
+                }
+              }
+            ],
+            "line": [
+              "Karlstrasse"
+            ],
+            "city": "Diterhausen",
+            "postalCode": "85347",
+            "country": "20422"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/PractitionerRole/e74b2969-7f98-404f-b0eb-d862d347c069",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "e74b2969-7f98-404f-b0eb-d862d347c069",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/SubmittingRole"
+          ]
+        },
+        "organization": {
+          "reference": "Organization/4cf46677-2c39-4f80-be0f-9da0e78afb7b"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Organization/f588442b-09e0-46ee-9f79-0c15906517e6",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "f588442b-09e0-46ee-9f79-0c15906517e6",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifierFacility"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "https://demis.rki.de/fhir/NamingSystem/DemisLaboratoryId",
+            "value": "12345"
+          },
+          {
+            "system": "https://demis.rki.de/fhir/NamingSystem/DemisParticipantId",
+            "value": "98765"
+          },
+          {
+            "system": "https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR",
+            "value": "123456789"
+          }
+        ],
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "https://demis.rki.de/fhir/CodeSystem/organizationType",
+                "code": "laboratory",
+                "display": "Erregerdiagnostische Untersuchungsstelle"
+              }
+            ]
+          }
+        ],
+        "name": "Labor von Mustermann",
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "0301234",
+            "use": "work"
+          },
+          {
+            "system": "fax",
+            "value": "0301234",
+            "use": "work"
+          },
+          {
+            "system": "email",
+            "value": "office@meldereinrichtung.de",
+            "use": "work"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "MelderEinrichtung Strasse nr 123 Drittenhinterhof"
+            ],
+            "city": "Berlin",
+            "postalCode": "11111",
+            "country": "20422"
+          }
+        ],
+        "contact": [
+          {
+            "name": {
+              "use": "official",
+              "family": "MelderEinrichtung Ansp. Nachname",
+              "given": [
+                "MelderEinrichtung Ansp. Vorname"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Practitioner/0d60f38e-73bd-4116-a66d-1f0336ab8e8a",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "0d60f38e-73bd-4116-a66d-1f0336ab8e8a",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/Notifier"
+          ]
+        },
+        "name": [
+          {
+            "use": "official",
+            "family": "MelderPersonTestNachname",
+            "given": [
+              "MelderPersonTesVorname"
+            ]
+          }
+        ],
+        "telecom": [
+          {
+            "extension": [
+              {
+                "url": "https://demis.rki.de/fhir/StructureDefinition/Comment",
+                "valueString": "montag-freitag 8:00-16:00"
+              }
+            ],
+            "system": "phone",
+            "value": "030 1234"
+          }
+        ],
+        "address": [
+          {
+            "use": "home",
+            "line": [
+              "MelderPerson Strasse nr 123 Drittenhinterhof"
+            ],
+            "city": "Berlin",
+            "postalCode": "11111",
+            "country": "20422"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/PractitionerRole/60bdc99d-6ade-4a6c-b9d1-adf0d06f0800",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "60bdc99d-6ade-4a6c-b9d1-adf0d06f0800",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifierRole"
+          ]
+        },
+        "practitioner": {
+          "reference": "Practitioner/0d60f38e-73bd-4116-a66d-1f0336ab8e8a"
+        },
+        "organization": {
+          "reference": "Organization/f588442b-09e0-46ee-9f79-0c15906517e6"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Specimen/c97e921b-1f4a-46b9-ad5a-324dc0cfe0bc",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "c97e921b-1f4a-46b9-ad5a-324dc0cfe0bc",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/SpecimenCVDP"
+          ]
+        },
+        "status": "available",
+        "type": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "20241115",
+              "code": "119364003",
+              "display": "Serumprobe"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/2ca816dd-5f3a-41e9-8175-2c54a5edff6e"
+        },
+        "receivedTime": "2025-10-14T09:38:34+02:00",
+        "collection": {
+          "collector": {
+            "reference": "PractitionerRole/e74b2969-7f98-404f-b0eb-d862d347c069"
+          },
+          "collectedDateTime": "2025-10-14T09:38:00+02:00"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Observation/1a6d08f1-1a3a-43bf-a651-2469f13189d9",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "1a6d08f1-1a3a-43bf-a651-2469f13189d9",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/PathogenDetectionCVDP"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "version": "2.80",
+              "code": "94510-5",
+              "display": "SARS-CoV-2 (COVID-19) N gene [Cycle Threshold #] in Specimen by NAA with probe detection"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/2ca816dd-5f3a-41e9-8175-2c54a5edff6e"
+        },
+        "valueRatio": {
+          "numerator": {
+            "value": 1.0,
+            "system": "http://unitsofmeasure.org",
+            "code": "{titer}"
+          },
+          "denominator": {
+            "value": 100.0,
+            "system": "http://unitsofmeasure.org",
+            "code": "{titer}"
+          }
+        },
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "code": "POS",
+                "display": "Positive"
+              }
+            ]
+          }
+        ],
+        "method": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "20241115",
+              "code": "258036007",
+              "display": "Immunoblotting (qualifier value)"
+            }
+          ]
+        },
+        "specimen": {
+          "reference": "Specimen/c97e921b-1f4a-46b9-ad5a-324dc0cfe0bc"
+        }
+      }
+
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/DiagnosticReport/44413b64-61cf-466a-83bf-7eabc9241adc",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "44413b64-61cf-466a-83bf-7eabc9241adc",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/LaboratoryReportCVDP"
+          ]
+        },
+        "basedOn": [
+          {
+            "type": "ServiceRequest",
+            "identifier": {
+              "system": "https://demis.rki.de/fhir/NamingSystem/ServiceRequestId",
+              "value": "6531"
+            }
+          }
+        ],
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "https://demis.rki.de/fhir/CodeSystem/notificationCategory",
+              "code": "cvdp",
+              "display": "Severe-Acute-Respiratory-Syndrome-Coronavirus-2 (SARS-CoV-2)"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/2ca816dd-5f3a-41e9-8175-2c54a5edff6e"
+        },
+        "issued": "2025-10-20T14:43:22.000+02:00",
+        "result": [
+          {
+            "reference": "Observation/1a6d08f1-1a3a-43bf-a651-2469f13189d9"
+          }
+        ],
+        "conclusionCode": [
+          {
+            "coding": [
+              {
+                "system": "https://demis.rki.de/fhir/CodeSystem/conclusionCode",
+                "code": "pathogenDetected",
+                "display": "Meldepflichtiger Erreger nachgewiesen"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

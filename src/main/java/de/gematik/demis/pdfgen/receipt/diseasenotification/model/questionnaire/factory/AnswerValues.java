@@ -4,7 +4,7 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.
  * #%L
  * pdfgen-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,7 +22,8 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
@@ -112,12 +113,12 @@ public class AnswerValues
     }
     if (answer.hasValueQuantity()) {
       Quantity quantity = answer.getValueQuantity();
-      return print(quantity);
+      return print(quantity, translationService);
     }
     return null;
   }
 
-  private static String print(Quantity quantity) {
+  private static String print(Quantity quantity, TranslationService translationService) {
     StringBuilder text = new StringBuilder();
 
     if (quantity.hasComparator()) {
@@ -126,11 +127,26 @@ public class AnswerValues
     if (quantity.hasValue()) {
       text.append(quantity.getValue()).append(BLANK);
     }
-    if (quantity.hasUnit()) {
-      text.append(quantity.getUnit());
-    } else if (quantity.hasCode()) {
-      text.append(quantity.getCode());
+
+    if (translationService.isPdfOptimization()) {
+      String valueQuantityUnit = translationService.getValueQuantityUnit(quantity.getCode());
+      if (valueQuantityUnit == null || valueQuantityUnit.isEmpty()) {
+        if (quantity.hasUnit()) {
+          text.append(quantity.getUnit());
+        } else if (quantity.hasCode()) {
+          text.append(quantity.getCode());
+        }
+      } else {
+        text.append(valueQuantityUnit);
+      }
+    } else {
+      if (quantity.hasUnit()) {
+        text.append(quantity.getUnit());
+      } else if (quantity.hasCode()) {
+        text.append(quantity.getCode());
+      }
     }
+
     return text.toString().trim();
   }
 

@@ -4,7 +4,7 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification.model;
  * #%L
  * pdfgen-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,7 +22,8 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification.model;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
@@ -44,6 +45,7 @@ public class DiseaseNotificationTemplateDto {
 
   private Metadata metadata;
   private Notification notification;
+  private String qrCode;
   private Recipient recipient;
   private Notifier notifier;
   private NotifiedPersonDTO notifiedPersonDTO;
@@ -52,5 +54,6 @@ public class DiseaseNotificationTemplateDto {
   private Questionnaire specificQuestionnaire;
   private Authentication authentication;
   private Map<String, String> additionalConfig;
+  private boolean addSecondPage;
   private String watermarkBase64Image;
 }

@@ -4,7 +4,7 @@ package de.gematik.demis.pdfgen.translation;
  * #%L
  * pdfgen-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,7 +22,8 @@ package de.gematik.demis.pdfgen.translation;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
@@ -35,21 +36,56 @@ import de.gematik.demis.pdfgen.translation.model.Designation;
 import feign.FeignException;
 import java.util.List;
 import java.util.Optional;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class TranslationService {
 
   private static final String EMPTY_STRING = "";
   private static final List<String> GERMAN_TRANSLATION = asList("de", "de-DE", "de-CH", "de-AT");
+  private static final String LONG_COMMON_NAME = "LONG_COMMON_NAME";
+  private final String ucumValueSetUrl;
+  private final String ucumUseCode;
   private final ValueSetFeignClient valueSetFeignClient;
   private final CodeSystemFeignClient codeSystemFeignClient;
+  @Getter private final boolean pdfOptimization;
+
+  public TranslationService(
+      @Value("${pdfgen.quantity.value.display.value.set.source}") String ucumValueSetUrl,
+      @Value("${pdfgen.quantity.value.designation.use}") String ucumUseCode,
+      ValueSetFeignClient valueSetFeignClient,
+      CodeSystemFeignClient codeSystemFeignClient,
+      @Value("${feature.flag.pdf.optimization}") boolean pdfOptimization) {
+    this.ucumValueSetUrl = ucumValueSetUrl;
+    this.ucumUseCode = ucumUseCode;
+    this.valueSetFeignClient = valueSetFeignClient;
+    this.codeSystemFeignClient = codeSystemFeignClient;
+    this.pdfOptimization = pdfOptimization;
+  }
+
+  public String getValueQuantityUnit(final String code) {
+    if (code == null) {
+      return EMPTY_STRING;
+    }
+
+    Optional<CodeDisplay> infoForCodeFromValueSet =
+        getInfoForCodeFromCodeSystem(ucumValueSetUrl, code);
+    if (infoForCodeFromValueSet.isPresent()) {
+      for (Designation designation : infoForCodeFromValueSet.get().getDesignations()) {
+        if (ucumUseCode.equals(designation.use().code())) {
+          return designation.value();
+        }
+      }
+    }
+
+    return EMPTY_STRING;
+  }
 
   public String resolveCodeableConceptValues(final CodeableConcept codeableConcept) {
     if (codeableConcept == null) {
@@ -86,6 +122,13 @@ public class TranslationService {
   }
 
   private String extractGermanIfPossible(CodeDisplay display) {
+    for (Designation designation : display.getDesignations()) {
+      if (german(designation)
+          && designation.use() != null
+          && LONG_COMMON_NAME.equals(designation.use().code())) {
+        return designation.value();
+      }
+    }
     return display.getDesignations().stream()
         .filter(this::german)
         .findFirst()

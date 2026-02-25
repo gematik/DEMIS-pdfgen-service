@@ -4,7 +4,7 @@ package de.gematik.demis.pdfgen.receipt.laboratoryreport;
  * #%L
  * pdfgen-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,7 +22,8 @@ package de.gematik.demis.pdfgen.receipt.laboratoryreport;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
@@ -220,7 +221,7 @@ class LaboratoryReportControllerIntegrationTest {
     Probenmaterialstatus Verfügbar
     Probenmaterial Upper respiratory swab sample (specimen)
     Erläuterung (Probe) Ich bin eine interessante Zusatzinformation ...
-    Transaktions-Id (DESH) IMS-12345-CVDP-00001
+    Transaktions-ID (IGS) IMS-12345-CVDP-00001
     """
         + expectedProvenance
         + """

@@ -4,7 +4,7 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification.model;
  * #%L
  * pdfgen-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,7 +22,8 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification.model;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
@@ -64,13 +65,14 @@ class DiseaseNotificationTemplateDtoFactoryIntegrationTest {
 
   @Test
   void create_shouldHandleNullGracefully() {
-    assertThat(this.dtoFactory.create(null)).isNull();
+    assertThat(this.dtoFactory.create(null, true)).isNull();
   }
 
   @Test
   void create_shouldTestFactoryCreation() {
     // when
-    DiseaseNotificationTemplateDto dto = this.dtoFactory.create(createDiseaseNotificationBundle());
+    DiseaseNotificationTemplateDto dto =
+        this.dtoFactory.create(createDiseaseNotificationBundle(), true);
 
     // then
     verifyRequiredParameters(dto);
@@ -86,7 +88,7 @@ class DiseaseNotificationTemplateDtoFactoryIntegrationTest {
     entries.remove(11);
 
     // when
-    DiseaseNotificationTemplateDto dto = this.dtoFactory.create(input);
+    DiseaseNotificationTemplateDto dto = this.dtoFactory.create(input, true);
 
     // then
     verifyRequiredParameters(dto);

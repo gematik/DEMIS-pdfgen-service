@@ -4,7 +4,7 @@ package de.gematik.demis.pdfgen.test.helper;
  * #%L
  * pdfgen-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,7 +22,8 @@ package de.gematik.demis.pdfgen.test.helper;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
@@ -99,6 +100,8 @@ public final class FhirFactory {
       readResourceFile("bundles/disease/DiseaseNotificationBundleWithProvenanceCertificate.json");
   public static final String DISEASE_NOTIFICATION_WITH_PROVENANCE_MUK_BUNDLE_JSON =
       readResourceFile("bundles/disease/DiseaseNotificationBundleWithProvenanceMuk.json");
+  public static final String DISEASE_NOTIFICATION_WITH_EMPTY_FIELDS_JSON =
+      readResourceFile("bundles/disease/DiseaseNotificationBundleWithEmptyFields.json");
   public static final String LABORATORY_NOTIFICATION_WITH_MISSING_BIRTHDAY =
       readResourceFile("bundles/specialTestCases/LaboratoryNotificationWithMissingBirthday.json");
   public static final String LABORATORY_NOTIFICATION_WITHOUT_SPECIMEN_STATUS =
@@ -108,6 +111,10 @@ public final class FhirFactory {
           "bundles/specialTestCases/LaboratoryReportBundleDv2_pathogens_without_collectionTime.json");
   public static final String LABORATORY_NOTIFICATION_BUNDLE_QUANTITIES_JSON =
       readResourceFile("bundles/laboratoryReport/LaboratoryNotificationBundleQuantities.json");
+  public static final String LABORATORY_NOTIFICATION_BUNDLE_RATIO_JSON =
+      readResourceFile("bundles/laboratoryReport/LaboratoryNotificationBundleRatio.json");
+  public static final String LABORATORY_NOTIFICATION_BUNDLE_RANGE_JSON =
+      readResourceFile("bundles/laboratoryReport/LaboratoryNotificationBundleRange.json");
   public static final String EMPTY_BUNDLE_JSON = readResourceFile("bundles/EmptyBundle.json");
 
   private static final FhirParser FHIR_PARSER = new FhirParser(FhirContext.forR4());
@@ -173,6 +180,24 @@ public final class FhirFactory {
     } catch (Exception e) {
       throw new IllegalStateException(
           "Could not instantiate laboratory report bundle for quantities", e);
+    }
+  }
+
+  public static Bundle createLaboratoryReportRatioBundle() {
+    try {
+      return (Bundle) FHIR_PARSER.parseFromJson(LABORATORY_NOTIFICATION_BUNDLE_RATIO_JSON);
+    } catch (Exception e) {
+      throw new IllegalStateException(
+          "Could not instantiate laboratory report bundle for ratio", e);
+    }
+  }
+
+  public static Bundle createLaboratoryReportRangeBundle() {
+    try {
+      return (Bundle) FHIR_PARSER.parseFromJson(LABORATORY_NOTIFICATION_BUNDLE_RANGE_JSON);
+    } catch (Exception e) {
+      throw new IllegalStateException(
+          "Could not instantiate laboratory report bundle for range", e);
     }
   }
 
