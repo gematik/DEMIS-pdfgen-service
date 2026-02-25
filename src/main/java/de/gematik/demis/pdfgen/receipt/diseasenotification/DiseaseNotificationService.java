@@ -4,7 +4,7 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification;
  * #%L
  * pdfgen-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,7 +22,8 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
@@ -55,6 +56,7 @@ public class DiseaseNotificationService {
   private final DiseaseNotificationTemplateDtoFactory diseaseNotificationTemplateDtoFactory;
 
   private @Value("${pdfgen.template.disease-notification}") String diseaseNotificationTemplate;
+  private @Value("${feature.flag.disease.second.page}") boolean addSecondPage;
 
   @Observed(
       name = "disease-json",
@@ -93,7 +95,8 @@ public class DiseaseNotificationService {
   }
 
   private PdfData generatePdfFromBundle(final Bundle bundle) throws PdfGenerationException {
-    DiseaseNotificationTemplateDto data = diseaseNotificationTemplateDtoFactory.create(bundle);
+    DiseaseNotificationTemplateDto data =
+        diseaseNotificationTemplateDtoFactory.create(bundle, this.addSecondPage);
     String html = createHtml(data);
     return new PdfData(this.pdfGenerator.generatePdfFromHtml(html));
   }

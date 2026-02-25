@@ -4,7 +4,7 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification.model.condition;
  * #%L
  * pdfgen-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,7 +22,8 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification.model.condition;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
@@ -71,6 +72,7 @@ public class ConditionFactory {
 
   private void setDisease(Condition fhirCondition, ConditionDTO.ConditionDTOBuilder builder) {
     builder.disease(this.translationService.resolveCodeableConceptValues(fhirCondition.getCode()));
+    builder.diseaseCode(fhirCondition.getCode().getCodingFirstRep().getCode());
   }
 
   private void setOnsetDate(Condition fhirCondition, ConditionDTO.ConditionDTOBuilder builder) {

@@ -4,7 +4,7 @@ package de.gematik.demis.pdfgen.receipt.common.model.section;
  * #%L
  * pdfgen-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,13 +22,14 @@ package de.gematik.demis.pdfgen.receipt.common.model.section;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import de.gematik.demis.notification.builder.demis.fhir.notification.builder.infectious.NotifiedPersonDataBuilder;
+import de.gematik.demis.notification.builder.demis.fhir.notification.builder.infectious.NotifiedPersonNominalDataBuilder;
 import de.gematik.demis.notification.builder.demis.fhir.notification.builder.infectious.laboratory.NotificationBundleLaboratoryDataBuilder;
 import de.gematik.demis.notification.builder.demis.fhir.notification.builder.technicals.AddressDataBuilder;
 import de.gematik.demis.notification.builder.demis.fhir.notification.builder.technicals.OrganizationBuilder;
@@ -89,8 +90,8 @@ class NotifiedPersonFactoryAddressHandlingTest {
             .build();
 
     final Patient notifiedPerson =
-        new NotifiedPersonDataBuilder()
-            .setDefaults()
+        new NotifiedPersonNominalDataBuilder()
+            .setDefault()
             .addAddress(referencingOrganization)
             .addAddress(primaryResidence)
             .build();

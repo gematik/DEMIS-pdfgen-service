@@ -4,7 +4,7 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.
  * #%L
  * pdfgen-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,27 +22,40 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+
+import de.gematik.demis.pdfgen.translation.TranslationService;
 import java.math.BigDecimal;
 import org.assertj.core.api.Assertions;
 import org.hl7.fhir.r4.model.DateType;
 import org.hl7.fhir.r4.model.Quantity;
 import org.hl7.fhir.r4.model.QuestionnaireResponse;
 import org.hl7.fhir.r4.model.TimeType;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class AnswerValuesTest {
 
-  @InjectMocks AnswerValues answerValues;
+  private AnswerValues answerValues;
+  @Mock TranslationService translationServiceMock;
+
+  @BeforeEach
+  void setUp() {
+    this.answerValues = new AnswerValues(translationServiceMock);
+  }
 
   @Test
   @DisplayName("valueDate supports precision: day")
@@ -96,7 +109,13 @@ class AnswerValuesTest {
 
   @Nested
   class QuantityTests {
-    @InjectMocks AnswerValues answerValues;
+    private AnswerValues answerValues;
+    @Mock TranslationService translationServiceMock;
+
+    @BeforeEach
+    void setUp() {
+      this.answerValues = new AnswerValues(translationServiceMock);
+    }
 
     @Test
     @DisplayName("valueQuantity with unit and code")
@@ -150,6 +169,44 @@ class AnswerValuesTest {
       answer.setValue(quantity);
       String text = this.answerValues.apply(answer);
       Assertions.assertThat(text).as("valueQuantity with comparator").isEqualTo("< 100");
+    }
+
+    @Test
+    @DisplayName("valueQuantity with translation service unit")
+    void quantityTest4() {
+      Quantity quantity = new Quantity();
+      quantity.setCode("mg");
+      quantity.setValue(BigDecimal.valueOf(100));
+      quantity.setSystem("http://unitsofmeasure.org");
+      var answer = new QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent();
+      answer.setValue(quantity);
+
+      when(translationServiceMock.isPdfOptimization()).thenReturn(true);
+      when(translationServiceMock.getValueQuantityUnit("mg")).thenReturn("Milligramm");
+
+      String text = this.answerValues.apply(answer);
+      Assertions.assertThat(text)
+          .as("valueQuantity with translation service unit")
+          .isEqualTo("100 Milligramm");
+    }
+
+    @Test
+    @DisplayName("valueQuantity with translation service unit")
+    void quantityTest4Regression() {
+      Quantity quantity = new Quantity();
+      quantity.setCode("mg");
+      quantity.setValue(BigDecimal.valueOf(100));
+      quantity.setSystem("http://unitsofmeasure.org");
+      var answer = new QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent();
+      answer.setValue(quantity);
+
+      when(translationServiceMock.isPdfOptimization()).thenReturn(false);
+
+      String text = this.answerValues.apply(answer);
+      Assertions.assertThat(text)
+          .as("valueQuantity with translation service unit")
+          .isEqualTo("100 mg");
+      Mockito.verify(translationServiceMock, Mockito.times(0)).getValueQuantityUnit(anyString());
     }
   }
 }

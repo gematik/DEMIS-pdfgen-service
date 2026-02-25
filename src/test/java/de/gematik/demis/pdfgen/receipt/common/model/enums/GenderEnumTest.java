@@ -4,7 +4,7 @@ package de.gematik.demis.pdfgen.receipt.common.model.enums;
  * #%L
  * pdfgen-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,43 +22,90 @@ package de.gematik.demis.pdfgen.receipt.common.model.enums;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import de.gematik.demis.pdfgen.lib.profile.DemisExtensions;
 import java.util.stream.Stream;
+import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.Enumerations.AdministrativeGender;
+import org.hl7.fhir.r4.model.Extension;
+import org.hl7.fhir.r4.model.Patient;
 import org.junit.jupiter.api.Test;
 
 class GenderEnumTest {
 
   @Test
-  void shouldCreateEnumCorrectly() {
-    // given
-    GenderEnum shouldBeMale = GenderEnum.of(AdministrativeGender.MALE);
-    GenderEnum shouldBeFemale = GenderEnum.of(AdministrativeGender.FEMALE);
-    GenderEnum shouldBeOther = GenderEnum.of(AdministrativeGender.OTHER);
-    GenderEnum shouldBeUnknown1 = GenderEnum.of(AdministrativeGender.UNKNOWN);
-    GenderEnum shouldBeUnknown2 = GenderEnum.of(AdministrativeGender.NULL);
-    GenderEnum shouldBeUnknown3 = GenderEnum.of(null);
+  void shouldCreateEnumCorrectly_withFeatureFlagEnabled() {
+    assertThat(GenderEnum.of(createPatient(AdministrativeGender.MALE), true))
+        .isEqualTo(GenderEnum.MALE);
+    assertThat(GenderEnum.of(createPatient(AdministrativeGender.FEMALE), true))
+        .isEqualTo(GenderEnum.FEMALE);
+    assertThat(GenderEnum.of(createPatientWithGenderExtension("X"), true))
+        .isEqualTo(GenderEnum.OTHERX);
+    assertThat(GenderEnum.of(createPatientWithGenderExtension("D"), true))
+        .isEqualTo(GenderEnum.DIVERSE);
+    assertThat(GenderEnum.of(createPatient(AdministrativeGender.OTHER), true))
+        .isEqualTo(GenderEnum.OTHERX);
+    assertThat(GenderEnum.of(createPatient(AdministrativeGender.UNKNOWN), true))
+        .isEqualTo(GenderEnum.UNKNOWN);
+    assertThat(GenderEnum.of(createPatient(AdministrativeGender.NULL), true))
+        .isEqualTo(GenderEnum.UNKNOWN);
+    assertThat(GenderEnum.of(null, true)).isEqualTo(GenderEnum.UNKNOWN);
+  }
 
-    // then
-    assertThat(shouldBeMale).isEqualTo(GenderEnum.MALE);
-    assertThat(shouldBeFemale).isEqualTo(GenderEnum.FEMALE);
-    assertThat(shouldBeOther).isEqualTo(GenderEnum.OTHER);
-    assertThat(shouldBeUnknown1).isEqualTo(GenderEnum.UNKNOWN);
-    assertThat(shouldBeUnknown2).isEqualTo(GenderEnum.UNKNOWN);
-    assertThat(shouldBeUnknown3).isEqualTo(GenderEnum.UNKNOWN);
+  @Test
+  void shouldCreateEnumCorrectly_withFeatureFlagDisabled() {
+    assertThat(GenderEnum.of(createPatient(AdministrativeGender.MALE), false))
+        .isEqualTo(GenderEnum.MALE);
+    assertThat(GenderEnum.of(createPatient(AdministrativeGender.FEMALE), false))
+        .isEqualTo(GenderEnum.FEMALE);
+    assertThat(GenderEnum.of(createPatientWithGenderExtension("X"), false))
+        .isEqualTo(GenderEnum.DIVERSE);
+    assertThat(GenderEnum.of(createPatientWithGenderExtension("D"), false))
+        .isEqualTo(GenderEnum.DIVERSE);
+    assertThat(GenderEnum.of(createPatient(AdministrativeGender.OTHER), false))
+        .isEqualTo(GenderEnum.DIVERSE);
+    assertThat(GenderEnum.of(createPatient(AdministrativeGender.UNKNOWN), false))
+        .isEqualTo(GenderEnum.UNKNOWN);
+    assertThat(GenderEnum.of(createPatient(AdministrativeGender.NULL), false))
+        .isEqualTo(GenderEnum.UNKNOWN);
+    assertThat(GenderEnum.of(null, false)).isEqualTo(GenderEnum.UNKNOWN);
+  }
+
+  private Patient createPatient(AdministrativeGender gender) {
+    Patient patient = new Patient();
+    patient.setGender(gender);
+    return patient;
   }
 
   @Test
   void toString_evaluatesToCapitalizedName() {
     assertThat(GenderEnum.MALE).hasToString("Männlich");
     assertThat(GenderEnum.FEMALE).hasToString("Weiblich");
-    assertThat(GenderEnum.OTHER).hasToString("Divers");
+    assertThat(GenderEnum.OTHERX).hasToString("Kein Geschlechtseintrag");
+    assertThat(GenderEnum.DIVERSE).hasToString("Divers");
     assertThat(GenderEnum.UNKNOWN).hasToString("Unbekannt");
+  }
+
+  private Patient createPatientWithGenderExtension(String extensionCode) {
+    Patient patient = new Patient();
+    patient.setGender(AdministrativeGender.OTHER);
+
+    Coding coding = new Coding();
+    coding.setSystem("http://fhir.de/CodeSystem/gender-amtlich-de");
+    coding.setCode(extensionCode);
+
+    Extension extension = new Extension();
+    extension.setUrl(DemisExtensions.EXTENSION_URL_GENDER_AMTLICH_DE);
+    extension.setValue(coding);
+
+    patient.getGenderElement().addExtension(extension);
+    return patient;
   }
 
   @Test

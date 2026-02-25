@@ -4,7 +4,7 @@ package de.gematik.demis.pdfgen.receipt.laboratoryreport.model.labreport;
  * #%L
  * pdfgen-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,20 +22,31 @@ package de.gematik.demis.pdfgen.receipt.laboratoryreport.model.labreport;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
 import de.gematik.demis.pdfgen.fhir.extract.LaboratoryFhirQueries;
 import de.gematik.demis.pdfgen.receipt.laboratoryreport.model.labreport.enums.LabTestStatusEnum;
 import de.gematik.demis.pdfgen.translation.TranslationService;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.Annotation;
+import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.CodeableConcept;
+import org.hl7.fhir.r4.model.Observation;
+import org.hl7.fhir.r4.model.Quantity;
+import org.hl7.fhir.r4.model.Range;
+import org.hl7.fhir.r4.model.Ratio;
+import org.hl7.fhir.r4.model.StringType;
+import org.hl7.fhir.r4.model.Type;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -46,6 +57,7 @@ public class LabTestFactory {
   private final LaboratoryFhirQueries laboratoryFhirQueries;
   private final SpecimenFactory specimenFactory;
   private final TranslationService displayTranslationService;
+  private @Value("${feature.flag.pdf.optimization}") boolean pdfOptimization;
 
   @Nonnull
   public List<LabTest> createLabTests(final Bundle bundle) {
@@ -105,10 +117,8 @@ public class LabTestFactory {
 
     if (type instanceof StringType stringType) {
       return stringType.getValue();
-
     } else if (type instanceof Quantity quantity) {
       return resolveQuantityValues(quantity);
-
     } else if (type instanceof CodeableConcept codeableConcept) {
       String resolvedCoding =
           displayTranslationService.resolveCodeableConceptValues(codeableConcept);
@@ -116,10 +126,30 @@ public class LabTestFactory {
           codeableConcept.getText() != null
               ? System.lineSeparator() + codeableConcept.getText()
               : "";
-      // StringBuilder durch einfache String-Konkatenation ersetzt
       return resolvedCoding + text;
+    } else if (pdfOptimization) {
+      if (type instanceof Ratio ratio) {
+        return resolveRatioValues(ratio);
+      }
+      if (type instanceof Range range) {
+        return resolveRangeValues(range);
+      }
     }
     return null;
+  }
+
+  private String resolveRangeValues(Range range) {
+    BigDecimal low = range.getLow().getValue();
+    BigDecimal high = range.getHigh().getValue();
+    String code = displayTranslationService.getValueQuantityUnit(range.getHigh().getCode());
+    return String.format("von %s bis %s %s", low, high, code).trim();
+  }
+
+  private String resolveRatioValues(Ratio ratio) {
+    BigDecimal numerator = ratio.getNumerator().getValue();
+    BigDecimal denominator = ratio.getDenominator().getValue();
+    String code = displayTranslationService.getValueQuantityUnit(ratio.getNumerator().getCode());
+    return String.format("%s:%s %s", numerator, denominator, code).trim();
   }
 
   private String resolveQuantityValues(Quantity quantity) {

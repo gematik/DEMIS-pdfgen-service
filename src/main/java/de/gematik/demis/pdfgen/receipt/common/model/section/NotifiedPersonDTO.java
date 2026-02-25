@@ -4,7 +4,7 @@ package de.gematik.demis.pdfgen.receipt.common.model.section;
  * #%L
  * pdfgen-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,7 +22,8 @@ package de.gematik.demis.pdfgen.receipt.common.model.section;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
@@ -116,7 +117,9 @@ public class NotifiedPersonDTO implements TelecomsHolder {
     AnonymizedNotifiedPerson person = this.anonymized.get();
     if (person == null) {
       person =
-          new AnonymizedNotifiedPersonFactory(this.gender, this.birthdate, this.addressDTOs).get();
+          new AnonymizedNotifiedPersonFactory(
+                  this.gender, this.birthdate, this.addressDTOs, this.organizationDTOs)
+              .get();
       this.anonymized.set(person);
     }
     return person;

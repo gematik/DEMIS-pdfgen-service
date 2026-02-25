@@ -4,7 +4,7 @@ package de.gematik.demis.pdfgen.receipt.common.model.section;
  * #%L
  * pdfgen-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,7 +22,8 @@ package de.gematik.demis.pdfgen.receipt.common.model.section;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
@@ -33,17 +34,33 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
-import de.gematik.demis.notification.builder.demis.fhir.notification.builder.infectious.NotifiedPersonDataBuilder;
+import de.gematik.demis.notification.builder.demis.fhir.notification.builder.infectious.NotifiedPersonNominalDataBuilder;
 import de.gematik.demis.notification.builder.demis.fhir.notification.builder.technicals.AddressDataBuilder;
 import de.gematik.demis.pdfgen.fhir.extract.NotifiedFhirQueries;
 import de.gematik.demis.pdfgen.receipt.common.model.enums.GenderEnum;
-import de.gematik.demis.pdfgen.receipt.common.model.subsection.*;
+import de.gematik.demis.pdfgen.receipt.common.model.subsection.AddressDTO;
+import de.gematik.demis.pdfgen.receipt.common.model.subsection.AddressFactory;
+import de.gematik.demis.pdfgen.receipt.common.model.subsection.ContactFactory;
+import de.gematik.demis.pdfgen.receipt.common.model.subsection.DemisAddressUseServiceTest;
+import de.gematik.demis.pdfgen.receipt.common.model.subsection.NameDTO;
+import de.gematik.demis.pdfgen.receipt.common.model.subsection.OrganizationDTO;
+import de.gematik.demis.pdfgen.receipt.common.model.subsection.OrganizationFactory;
+import de.gematik.demis.pdfgen.receipt.common.model.subsection.Telecom;
+import de.gematik.demis.pdfgen.receipt.common.model.subsection.TelecomFactory;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
-import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.Address;
+import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.DateType;
+import org.hl7.fhir.r4.model.Enumerations;
+import org.hl7.fhir.r4.model.Extension;
+import org.hl7.fhir.r4.model.Organization;
+import org.hl7.fhir.r4.model.Patient;
+import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -109,12 +126,16 @@ class NotifiedPersonFactoryTest {
     Bundle laboratoryReportBundle = new Bundle();
 
     Patient notifiedPersonPatient =
-        new NotifiedPersonDataBuilder()
+        new NotifiedPersonNominalDataBuilder()
             .setBirthdate(
-                Date.from(
-                    LocalDate.of(1950, 2, 11).atStartOfDay(ZoneId.systemDefault()).toInstant()))
+                new DateType(
+                    Date.from(
+                        LocalDate.of(1950, 2, 11)
+                            .atStartOfDay(ZoneId.systemDefault())
+                            .toInstant())))
             .setGender(Enumerations.AdministrativeGender.FEMALE)
-            .buildExampleNotifiedPerson();
+            .setAddress(List.of(new AddressDataBuilder().build()))
+            .build();
 
     when(notifiedFhirQueries.getNotifiedPerson(laboratoryReportBundle))
         .thenReturn(Optional.of(notifiedPersonPatient));
@@ -170,10 +191,13 @@ class NotifiedPersonFactoryTest {
         addressForNPP, DemisAddressUseServiceTest.PRIMARY_CODE);
 
     Patient notifiedPersonPatient =
-        new NotifiedPersonDataBuilder()
+        new NotifiedPersonNominalDataBuilder()
             .setBirthdate(
-                Date.from(
-                    LocalDate.of(1950, 2, 11).atStartOfDay(ZoneId.systemDefault()).toInstant()))
+                new DateType(
+                    Date.from(
+                        LocalDate.of(1950, 2, 11)
+                            .atStartOfDay(ZoneId.systemDefault())
+                            .toInstant())))
             .setGender(Enumerations.AdministrativeGender.FEMALE)
             .addAddress(addressForNPP)
             .build();

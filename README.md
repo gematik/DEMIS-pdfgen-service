@@ -1,4 +1,4 @@
-<img align="right" alt="gematik" width="250" height="47" src="media/Gematik_Logo_Flag.png"/> <br/>
+<div style="text-align:right"><img src="https://raw.githubusercontent.com/gematik/gematik.github.io/master/Gematik_Logo_Flag_With_Background.png" width="250" height="47" alt="gematik GmbH Logo"/> <br/> </div> <br/>
 
 # pdfgen-Service
 
@@ -16,7 +16,7 @@ The media type must be provided as a request header and must be of type
 
 [![Quality Gate Status](https://sonar.prod.ccs.gematik.solutions/api/project_badges/measure?project=de.gematik.demis%3Apdfgen-service&metric=alert_status&token=7f24a1dd3efdc568effea24956accd1e8057f3ba)](https://sonar.prod.ccs.gematik.solutions/dashboard?id=de.gematik.demis%3Apdfgen-service) [![Vulnerabilities](https://sonar.prod.ccs.gematik.solutions/api/project_badges/measure?project=de.gematik.demis%3Apdfgen-service&metric=vulnerabilities&token=7f24a1dd3efdc568effea24956accd1e8057f3ba)](https://sonar.prod.ccs.gematik.solutions/dashboard?id=de.gematik.demis%3Apdfgen-service) [![Bugs](https://sonar.prod.ccs.gematik.solutions/api/project_badges/measure?project=de.gematik.demis%3Apdfgen-service&metric=bugs&token=7f24a1dd3efdc568effea24956accd1e8057f3ba)](https://sonar.prod.ccs.gematik.solutions/dashboard?id=de.gematik.demis%3Apdfgen-service) [![Code Smells](https://sonar.prod.ccs.gematik.solutions/api/project_badges/measure?project=de.gematik.demis%3Apdfgen-service&metric=code_smells&token=7f24a1dd3efdc568effea24956accd1e8057f3ba)](https://sonar.prod.ccs.gematik.solutions/dashboard?id=de.gematik.demis%3Apdfgen-service) [![Lines of Code](https://sonar.prod.ccs.gematik.solutions/api/project_badges/measure?project=de.gematik.demis%3Apdfgen-service&metric=ncloc&token=7f24a1dd3efdc568effea24956accd1e8057f3ba)](https://sonar.prod.ccs.gematik.solutions/dashboard?id=de.gematik.demis%3Apdfgen-service) [![Coverage](https://sonar.prod.ccs.gematik.solutions/api/project_badges/measure?project=de.gematik.demis%3Apdfgen-service&metric=coverage&token=7f24a1dd3efdc568effea24956accd1e8057f3ba)](https://sonar.prod.ccs.gematik.solutions/dashboard?id=de.gematik.demis%3Apdfgen-service)
 
-### Release Notes
+### Notes
 
 See [ReleaseNotes](ReleaseNotes.md) for all information regarding the (newest) releases.
 

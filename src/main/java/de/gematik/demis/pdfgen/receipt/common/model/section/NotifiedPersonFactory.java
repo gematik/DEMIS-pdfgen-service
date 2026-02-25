@@ -4,7 +4,7 @@ package de.gematik.demis.pdfgen.receipt.common.model.section;
  * #%L
  * pdfgen-service
  * %%
- * Copyright (C) 2025 gematik GmbH
+ * Copyright (C) 2025 - 2026 gematik GmbH
  * %%
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
  * European Commission – subsequent versions of the EUPL (the "Licence").
@@ -22,7 +22,8 @@ package de.gematik.demis.pdfgen.receipt.common.model.section;
  *
  * *******
  *
- * For additional notes and disclaimer from gematik and in case of changes by gematik find details in the "Readme" file.
+ * For additional notes and disclaimer from gematik and in case of changes by gematik,
+ * find details in the "Readme" file.
  * #L%
  */
 
@@ -45,6 +46,7 @@ import org.hl7.fhir.r4.model.Address;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Patient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -56,6 +58,9 @@ public class NotifiedPersonFactory {
   private final TelecomFactory telecomFactory;
   private final AddressFactory addressFactory;
   private final OrganizationFactory organizationFactory;
+
+  @Value("${feature.flag.pdf.optimization}")
+  private boolean genderExtensionEnabled;
 
   @Nullable
   public NotifiedPersonDTO create(final Bundle bundle) {
@@ -76,9 +81,9 @@ public class NotifiedPersonFactory {
     notifiedPerson.nameDTO(this.contactFactory.create(patient.getNameFirstRep()));
   }
 
-  private static void setGender(
+  private void setGender(
       Patient patient, NotifiedPersonDTO.NotifiedPersonDTOBuilder notifiedPerson) {
-    notifiedPerson.gender(GenderEnum.of(patient.getGender()));
+    notifiedPerson.gender(GenderEnum.of(patient, genderExtensionEnabled));
   }
 
   private static void setBirthdate(

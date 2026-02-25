@@ -59,6 +59,12 @@
                 th:replace='~{receipt/common/section/authentication :: authentication(${diseaseNotificationTemplateDto.authentication})}'/>
 
     </table>
+
+    <!-- Conditionally include second page with QR Code -->
+    <div th:if="${diseaseNotificationTemplateDto.addSecondPage}">
+        <div class="new-page" />
+        <div th:replace="~{receipt/diseaseNotification/section/lifecyclemanagement :: lifecyclemanagement(${diseaseNotificationTemplateDto})}"></div>
+    </div>
 </div>
 
 </body>

@@ -33,7 +33,8 @@ deploymentLabels: {}
 #   key: value
 customEnvVars:
   DEMIS_NETWORK_FHIR_UI_DATA_MODEL_TRANSLATION_SERVICE_ADDRESS: http://futs.demis.svc.cluster.local
-  FEATURE_FLAG_NEW_API_ENDPOINTS: "false"
+  FEATURE_FLAG_DISEASE_SECOND_PAGE: "false"
+  FEATURE_FLAG_PDF_OPTIMIZATION: "false"
   CONFIG_OPTION_PDF_WATERMARK:
 
 # Define custom Container Entrypoint and Arguments (e.g. JVM Tuning)
@@ -111,7 +112,7 @@ service:
 # Resources
 resources:
   limits:
-    memory: "650Mi"
+    memory: "850Mi"
   requests:
     cpu: "300m"
     memory: "650Mi"
