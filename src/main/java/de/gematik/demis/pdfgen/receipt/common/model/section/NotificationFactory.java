@@ -29,18 +29,27 @@ package de.gematik.demis.pdfgen.receipt.common.model.section;
 
 import de.gematik.demis.pdfgen.fhir.extract.NotificationFhirQueries;
 import de.gematik.demis.pdfgen.receipt.common.model.enums.NotificationStatusEnum;
+import de.gematik.demis.pdfgen.receipt.common.model.enums.NotificationType;
 import de.gematik.demis.pdfgen.utils.DateTimeHolder;
 import java.util.Optional;
 import javax.annotation.Nullable;
-import lombok.RequiredArgsConstructor;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Composition;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class NotificationFactory {
+
   private final NotificationFhirQueries notificationFhirQueries;
+  private final boolean notificationTypeActive;
+
+  public NotificationFactory(
+      NotificationFhirQueries notificationFhirQueries,
+      @Value("${feature.flag.pdf.label:false}") boolean notificationTypeActive) {
+    this.notificationFhirQueries = notificationFhirQueries;
+    this.notificationTypeActive = notificationTypeActive;
+  }
 
   @Nullable
   public Notification create(final Bundle bundle) {
@@ -55,6 +64,8 @@ public class NotificationFactory {
     setStatus(fhirNotification, notification);
     setDateTime(fhirNotification, notification);
     setRelations(fhirNotification, notification);
+    notification.notificationType(NotificationType.getNotificationType(bundle));
+    notification.notificationTypeActive(notificationTypeActive);
     return notification.build();
   }
 

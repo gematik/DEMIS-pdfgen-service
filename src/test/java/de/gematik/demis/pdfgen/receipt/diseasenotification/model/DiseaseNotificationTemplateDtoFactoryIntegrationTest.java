@@ -60,7 +60,6 @@ class DiseaseNotificationTemplateDtoFactoryIntegrationTest {
     assertThat(dto.getNotifiedPersonDTO()).isNotNull();
     assertThat(dto.getNotifiedPersonDTO().getGender()).isEqualTo(GenderEnum.FEMALE);
     assertThat(dto.getConditionDTO()).isNotNull();
-    assertThat(dto.getCommonQuestionnaire()).isNotNull();
   }
 
   @Test
@@ -77,6 +76,7 @@ class DiseaseNotificationTemplateDtoFactoryIntegrationTest {
     // then
     verifyRequiredParameters(dto);
     assertThat(dto.getSpecificQuestionnaire()).isNotNull();
+    assertThat(dto.getCommonQuestionnaire()).isNotNull();
   }
 
   @Test
@@ -93,5 +93,23 @@ class DiseaseNotificationTemplateDtoFactoryIntegrationTest {
     // then
     verifyRequiredParameters(dto);
     assertThat(dto.getSpecificQuestionnaire()).isNull();
+    assertThat(dto.getCommonQuestionnaire()).isNotNull();
+  }
+
+  @Test
+  void create_shouldHandleMissingCommonQuestionnaire() {
+    // given
+    Bundle input = createDiseaseNotificationBundle();
+    List<Bundle.BundleEntryComponent> entries = input.getEntry();
+    ((Composition) entries.getFirst().getResource()).getSection().remove(1);
+    entries.remove(8);
+
+    // when
+    DiseaseNotificationTemplateDto dto = this.dtoFactory.create(input, true);
+
+    // then
+    verifyRequiredParameters(dto);
+    assertThat(dto.getCommonQuestionnaire()).isNull();
+    assertThat(dto.getSpecificQuestionnaire()).isNotNull();
   }
 }

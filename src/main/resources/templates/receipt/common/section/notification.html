@@ -19,9 +19,26 @@
                     #{common.notification.date},
                     ${notification.dateTime})}'></tr>
 
-        <tr th:replace='~{fragment/rows :: entryRow(
-                    #{common.notification.relates-to},
+        <th:block th:if="${notification.notificationTypeActive}">
+            <th:block th:if="${notification.notificationType?.name() == 'LABORATORY_NOTIFICATION'}">
+                <tr th:replace='~{fragment/rows :: entryRow(
+                    #{common.laboratory.notification.relates-to},
                     ${notification.getAllRelatesTo()})}'></tr>
+            </th:block>
+
+            <th:block th:if="${notification.notificationType?.name() == 'DISEASE_NOTIFICATION'}">
+                <tr th:replace='~{fragment/rows :: entryRow(
+                    #{common.disease.notification.relates-to},
+                    ${notification.getAllRelatesTo()})}'></tr>
+            </th:block>
+        </th:block>
+
+        <th:block th:if="${!notification.notificationTypeActive}">
+            <tr th:replace='~{fragment/rows :: entryRow(
+                    #{common.laboratory.notification.relates-to},
+                    ${notification.getAllRelatesTo()})}'></tr>
+        </th:block>
+
     </th:block>
 </th:block>
 

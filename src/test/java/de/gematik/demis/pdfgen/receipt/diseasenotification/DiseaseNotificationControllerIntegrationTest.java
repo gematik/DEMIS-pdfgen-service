@@ -292,7 +292,7 @@ class DiseaseNotificationControllerIntegrationTest {
         Meldungs-ID 7f562b87-f2c2-4e9d-b3fc-37f6b5dca3a5
         Meldungsstatus Final
         Meldungserstellung/-änderung 10.03.2022 14:57
-        Meldungsverweis (Primärlabor) ABC123
+        Meldungsverweis (Initiale Meldungs-ID) ABC123
         Meldungsempfänger
         Name Kreis Herzogtum Lauenburg | Gesundheitsamt
         Adresse Barlachstr. 4, 23909 Ratzeburg

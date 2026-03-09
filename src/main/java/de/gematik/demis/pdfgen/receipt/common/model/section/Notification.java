@@ -31,6 +31,7 @@ import static de.gematik.demis.pdfgen.utils.StringUtils.LINE_BREAK;
 import static de.gematik.demis.pdfgen.utils.StringUtils.concatenateWithDelimiter;
 
 import de.gematik.demis.pdfgen.receipt.common.model.enums.NotificationStatusEnum;
+import de.gematik.demis.pdfgen.receipt.common.model.enums.NotificationType;
 import de.gematik.demis.pdfgen.utils.DateTimeHolder;
 import java.util.List;
 import lombok.Builder;
@@ -43,6 +44,8 @@ public class Notification {
   private NotificationStatusEnum status;
   private DateTimeHolder dateTime;
   private List<String> relations;
+  private NotificationType notificationType;
+  private boolean notificationTypeActive;
 
   public String getAllRelatesTo() {
     return concatenateWithDelimiter(LINE_BREAK, relations);
