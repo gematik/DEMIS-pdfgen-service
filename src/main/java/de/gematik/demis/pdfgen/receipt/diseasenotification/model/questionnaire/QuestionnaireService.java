@@ -80,6 +80,9 @@ public class QuestionnaireService {
   public Questionnaire createCommonQuestionnaire(Bundle bundle) {
     try {
       var questionnaireResponse = getCommonQuestionnaireResponse(bundle);
+      if (questionnaireResponse == null) {
+        return null;
+      }
       var code = CODE_COMMON_QUESTIONNAIRE;
       var translation = this.questionnaireTranslations.apply(code);
       return createQuestionnaire(questionnaireResponse, code, translation);
@@ -111,10 +114,7 @@ public class QuestionnaireService {
     return fhirQueries
         .findResourceWithProfile(
             bundle, QuestionnaireResponse.class, DemisProfiles.DISEASE_INFORMATION_COMMON)
-        .orElseThrow(
-            () ->
-                new IllegalArgumentException(
-                    "Disease notification bundle without common information questionnaire response"));
+        .orElse(null);
   }
 
   private QuestionnaireResponse getSpecificQuestionnaireResponse(Bundle bundle, String profileUrl) {

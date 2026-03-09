@@ -2,10 +2,14 @@
 
 # Release pdfgen-Service
 
+## 2.9.2
+- changed label for disease notifications for relates-to id entries in produced pdf
+- remove throwing exception for disease notification without CommonQuestionnaire
+
 ## 2.9.1
 - added specific font for watermark in PDF receipt
 - removed istio helm charts
-- upgraded spring-parent version to 2.14.21
+- upgraded spring parent to 2.14.21
 
 ## 2.9.0
 - corrected label for IGS transaction ID
