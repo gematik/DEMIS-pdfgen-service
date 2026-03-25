@@ -35,6 +35,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Builder
 @ConfigurationProperties(prefix = "feature.flag")
 public class FeatureFlags {
-
   private boolean hospitalizationOrder;
+  private boolean diseaseStrict;
 }

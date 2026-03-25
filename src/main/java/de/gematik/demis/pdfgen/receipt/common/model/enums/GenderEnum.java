@@ -49,7 +49,7 @@ public enum GenderEnum {
 
   private final String messageKey;
 
-  public static GenderEnum of(Patient patient, boolean genderExtensionEnabled) {
+  public static GenderEnum of(Patient patient) {
     if (patient == null) {
       return UNKNOWN;
     }
@@ -59,10 +59,6 @@ public enum GenderEnum {
     } else if (AdministrativeGender.FEMALE == fhirGender) {
       return FEMALE;
     } else if (AdministrativeGender.OTHER == fhirGender) {
-      if (!genderExtensionEnabled) {
-        return DIVERSE;
-      }
-
       if ("D".equals(getGenderExtensionCode(patient))) {
         return DIVERSE;
       }

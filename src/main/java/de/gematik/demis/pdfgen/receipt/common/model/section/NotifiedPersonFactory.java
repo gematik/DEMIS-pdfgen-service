@@ -46,7 +46,6 @@ import org.hl7.fhir.r4.model.Address;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Patient;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -58,9 +57,6 @@ public class NotifiedPersonFactory {
   private final TelecomFactory telecomFactory;
   private final AddressFactory addressFactory;
   private final OrganizationFactory organizationFactory;
-
-  @Value("${feature.flag.pdf.optimization}")
-  private boolean genderExtensionEnabled;
 
   @Nullable
   public NotifiedPersonDTO create(final Bundle bundle) {
@@ -83,7 +79,7 @@ public class NotifiedPersonFactory {
 
   private void setGender(
       Patient patient, NotifiedPersonDTO.NotifiedPersonDTOBuilder notifiedPerson) {
-    notifiedPerson.gender(GenderEnum.of(patient, genderExtensionEnabled));
+    notifiedPerson.gender(GenderEnum.of(patient));
   }
 
   private static void setBirthdate(

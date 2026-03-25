@@ -24,6 +24,9 @@
                         #{disease-notification.common-questions.lab.name},
                         ${organization.getNameAndType})}"></tr>
                 <tr th:replace='~{fragment/rows :: paddedRow(
+                        #{common.notifier.facility.identifier},
+                        ${organization.getIdentifier()?.getAsMultipleLines()})}'></tr>
+                <tr th:replace='~{fragment/rows :: paddedRow(
                         #{common.section.address.header},
                         ${organization.getAddressDTO()?.getFullAddressAsSingleLine()})}'></tr>
                 <tr th:replace="~{fragment/rows :: paddedRow(

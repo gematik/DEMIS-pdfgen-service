@@ -40,10 +40,8 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
-@TestPropertySource(properties = {"feature.flag.pdf.optimization=true"})
 class LabTestFactoryIntegrationTest {
 
   @Autowired private LabTestFactory labTestFactory;

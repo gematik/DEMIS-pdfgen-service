@@ -64,28 +64,21 @@ public class DiseaseNotificationTemplateDtoFactory {
   private final WatermarkService watermarkService;
 
   @Nullable
-  public DiseaseNotificationTemplateDto create(final Bundle bundle, final boolean addSecondPage) {
+  public DiseaseNotificationTemplateDto create(final Bundle bundle) {
     if (bundle == null) {
       return null;
     }
-
-    String qrCode = null;
-    if (addSecondPage) {
-      qrCode = generateQrCode(bundle);
-    }
-
     final var builder =
         DiseaseNotificationTemplateDto.builder()
             .metadata(MetadataFactory.create(bundle))
             .notification(notificationFactory.create(bundle))
-            .qrCode(qrCode)
+            .qrCode(generateQrCode(bundle))
             .recipient(recipientFactory.create(bundle))
             .notifier(notifierFactory.create(bundle))
             .notifiedPersonDTO(notifiedPersonFactory.create(bundle))
             .conditionDTO(conditionFactory.create(bundle))
             .commonQuestionnaire(questionnaireService.createCommonQuestionnaire(bundle))
-            .authentication(authenticationFactory.create(bundle))
-            .addSecondPage(addSecondPage);
+            .authentication(authenticationFactory.create(bundle));
     Questionnaire specific = questionnaireService.createSpecificQuestionnaire(bundle);
     if (specific != null) {
       builder.specificQuestionnaire(specific);

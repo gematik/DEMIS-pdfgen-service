@@ -202,6 +202,6 @@ class DiseaseNotificationHtmlTemplateParserIntegrationTest {
 
   private DiseaseNotificationTemplateDto createDiseaseNotificationTemplateDto() throws Exception {
     Bundle bundle = (Bundle) fhirParser.parseFromJson(DISEASE_NOTIFICATION_BUNDLE_JSON);
-    return dtoFactory.create(bundle, true);
+    return dtoFactory.create(bundle);
   }
 }

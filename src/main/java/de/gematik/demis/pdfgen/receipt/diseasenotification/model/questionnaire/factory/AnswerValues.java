@@ -128,23 +128,15 @@ public class AnswerValues
       text.append(quantity.getValue()).append(BLANK);
     }
 
-    if (translationService.isPdfOptimization()) {
-      String valueQuantityUnit = translationService.getValueQuantityUnit(quantity.getCode());
-      if (valueQuantityUnit == null || valueQuantityUnit.isEmpty()) {
-        if (quantity.hasUnit()) {
-          text.append(quantity.getUnit());
-        } else if (quantity.hasCode()) {
-          text.append(quantity.getCode());
-        }
-      } else {
-        text.append(valueQuantityUnit);
-      }
-    } else {
+    String valueQuantityUnit = translationService.getValueQuantityUnit(quantity.getCode());
+    if (valueQuantityUnit == null || valueQuantityUnit.isEmpty()) {
       if (quantity.hasUnit()) {
         text.append(quantity.getUnit());
       } else if (quantity.hasCode()) {
         text.append(quantity.getCode());
       }
+    } else {
+      text.append(valueQuantityUnit);
     }
 
     return text.toString().trim();

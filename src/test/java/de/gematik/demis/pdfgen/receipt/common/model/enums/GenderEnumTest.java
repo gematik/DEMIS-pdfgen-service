@@ -41,40 +41,18 @@ class GenderEnumTest {
 
   @Test
   void shouldCreateEnumCorrectly_withFeatureFlagEnabled() {
-    assertThat(GenderEnum.of(createPatient(AdministrativeGender.MALE), true))
-        .isEqualTo(GenderEnum.MALE);
-    assertThat(GenderEnum.of(createPatient(AdministrativeGender.FEMALE), true))
+    assertThat(GenderEnum.of(createPatient(AdministrativeGender.MALE))).isEqualTo(GenderEnum.MALE);
+    assertThat(GenderEnum.of(createPatient(AdministrativeGender.FEMALE)))
         .isEqualTo(GenderEnum.FEMALE);
-    assertThat(GenderEnum.of(createPatientWithGenderExtension("X"), true))
+    assertThat(GenderEnum.of(createPatientWithGenderExtension("X"))).isEqualTo(GenderEnum.OTHERX);
+    assertThat(GenderEnum.of(createPatientWithGenderExtension("D"))).isEqualTo(GenderEnum.DIVERSE);
+    assertThat(GenderEnum.of(createPatient(AdministrativeGender.OTHER)))
         .isEqualTo(GenderEnum.OTHERX);
-    assertThat(GenderEnum.of(createPatientWithGenderExtension("D"), true))
-        .isEqualTo(GenderEnum.DIVERSE);
-    assertThat(GenderEnum.of(createPatient(AdministrativeGender.OTHER), true))
-        .isEqualTo(GenderEnum.OTHERX);
-    assertThat(GenderEnum.of(createPatient(AdministrativeGender.UNKNOWN), true))
+    assertThat(GenderEnum.of(createPatient(AdministrativeGender.UNKNOWN)))
         .isEqualTo(GenderEnum.UNKNOWN);
-    assertThat(GenderEnum.of(createPatient(AdministrativeGender.NULL), true))
+    assertThat(GenderEnum.of(createPatient(AdministrativeGender.NULL)))
         .isEqualTo(GenderEnum.UNKNOWN);
-    assertThat(GenderEnum.of(null, true)).isEqualTo(GenderEnum.UNKNOWN);
-  }
-
-  @Test
-  void shouldCreateEnumCorrectly_withFeatureFlagDisabled() {
-    assertThat(GenderEnum.of(createPatient(AdministrativeGender.MALE), false))
-        .isEqualTo(GenderEnum.MALE);
-    assertThat(GenderEnum.of(createPatient(AdministrativeGender.FEMALE), false))
-        .isEqualTo(GenderEnum.FEMALE);
-    assertThat(GenderEnum.of(createPatientWithGenderExtension("X"), false))
-        .isEqualTo(GenderEnum.DIVERSE);
-    assertThat(GenderEnum.of(createPatientWithGenderExtension("D"), false))
-        .isEqualTo(GenderEnum.DIVERSE);
-    assertThat(GenderEnum.of(createPatient(AdministrativeGender.OTHER), false))
-        .isEqualTo(GenderEnum.DIVERSE);
-    assertThat(GenderEnum.of(createPatient(AdministrativeGender.UNKNOWN), false))
-        .isEqualTo(GenderEnum.UNKNOWN);
-    assertThat(GenderEnum.of(createPatient(AdministrativeGender.NULL), false))
-        .isEqualTo(GenderEnum.UNKNOWN);
-    assertThat(GenderEnum.of(null, false)).isEqualTo(GenderEnum.UNKNOWN);
+    assertThat(GenderEnum.of(null)).isEqualTo(GenderEnum.UNKNOWN);
   }
 
   private Patient createPatient(AdministrativeGender gender) {

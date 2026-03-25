@@ -60,11 +60,7 @@ class TranslationServiceTest {
     void shouldReturnEmptyStringWhenCodeIsNull() {
       translationService =
           new TranslationService(
-              "someUcumUrl",
-              "someUcumUseCode",
-              valueSetFeignClientMock,
-              codeSystemFeignClientMock,
-              false);
+              "someUcumUrl", "someUcumUseCode", valueSetFeignClientMock, codeSystemFeignClientMock);
 
       String result = translationService.getValueQuantityUnit(null);
 
@@ -75,11 +71,7 @@ class TranslationServiceTest {
     void shouldReturnEmptyStringWhenClientReturnsNoData() {
       translationService =
           new TranslationService(
-              "someUcumUrl",
-              "someUcumUseCode",
-              valueSetFeignClientMock,
-              codeSystemFeignClientMock,
-              false);
+              "someUcumUrl", "someUcumUseCode", valueSetFeignClientMock, codeSystemFeignClientMock);
 
       when(codeSystemFeignClientMock.getInfoForCodeFromCodeSystem("someUcumUrl", "someCode"))
           .thenReturn(null);
@@ -93,11 +85,7 @@ class TranslationServiceTest {
     void shouldReturnEmptyStringWhenClientReturnsDataWithNoUcumUseCode() {
       translationService =
           new TranslationService(
-              "someUcumUrl",
-              "someUcumUseCode",
-              valueSetFeignClientMock,
-              codeSystemFeignClientMock,
-              false);
+              "someUcumUrl", "someUcumUseCode", valueSetFeignClientMock, codeSystemFeignClientMock);
 
       when(codeSystemFeignClientMock.getInfoForCodeFromCodeSystem("someUcumUrl", "someCode"))
           .thenReturn(
@@ -117,11 +105,7 @@ class TranslationServiceTest {
     void shouldReturnStringFromReturnValueWhenClientReturnsData() {
       translationService =
           new TranslationService(
-              "someUcumUrl",
-              "someUcumUseCode",
-              valueSetFeignClientMock,
-              codeSystemFeignClientMock,
-              false);
+              "someUcumUrl", "someUcumUseCode", valueSetFeignClientMock, codeSystemFeignClientMock);
 
       when(codeSystemFeignClientMock.getInfoForCodeFromCodeSystem("someUcumUrl", "someCode"))
           .thenReturn(
@@ -139,10 +123,10 @@ class TranslationServiceTest {
   }
 
   @Test
-  void shouldReturnLongCommonNameWhenPdfOptimizationIsEnabled() {
+  void shouldReturnLongCommonName() {
     TranslationService translationService =
         new TranslationService(
-            "someUrl", "someCode", valueSetFeignClientMock, codeSystemFeignClientMock, true);
+            "someUrl", "someCode", valueSetFeignClientMock, codeSystemFeignClientMock);
 
     when(codeSystemFeignClientMock.getInfoForCodeFromCodeSystem("someSystemUrl", "someCode"))
         .thenReturn(
@@ -165,7 +149,7 @@ class TranslationServiceTest {
   void shouldReturnFirstGermanDesignation() {
     TranslationService translationService =
         new TranslationService(
-            "someUrl", "someCode", valueSetFeignClientMock, codeSystemFeignClientMock, true);
+            "someUrl", "someCode", valueSetFeignClientMock, codeSystemFeignClientMock);
 
     when(codeSystemFeignClientMock.getInfoForCodeFromCodeSystem("someSystemUrl", "someCode"))
         .thenReturn(
@@ -188,7 +172,7 @@ class TranslationServiceTest {
   void shouldReturnLongCommonNameBeforeAnyOtherEntry() {
     TranslationService translationService =
         new TranslationService(
-            "someUrl", "someCode", valueSetFeignClientMock, codeSystemFeignClientMock, true);
+            "someUrl", "someCode", valueSetFeignClientMock, codeSystemFeignClientMock);
 
     when(codeSystemFeignClientMock.getInfoForCodeFromCodeSystem("someSystemUrl", "someCode"))
         .thenReturn(

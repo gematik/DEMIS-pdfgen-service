@@ -46,7 +46,6 @@ import org.hl7.fhir.r4.model.Range;
 import org.hl7.fhir.r4.model.Ratio;
 import org.hl7.fhir.r4.model.StringType;
 import org.hl7.fhir.r4.model.Type;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -57,7 +56,6 @@ public class LabTestFactory {
   private final LaboratoryFhirQueries laboratoryFhirQueries;
   private final SpecimenFactory specimenFactory;
   private final TranslationService displayTranslationService;
-  private @Value("${feature.flag.pdf.optimization}") boolean pdfOptimization;
 
   @Nonnull
   public List<LabTest> createLabTests(final Bundle bundle) {
@@ -127,13 +125,11 @@ public class LabTestFactory {
               ? System.lineSeparator() + codeableConcept.getText()
               : "";
       return resolvedCoding + text;
-    } else if (pdfOptimization) {
-      if (type instanceof Ratio ratio) {
-        return resolveRatioValues(ratio);
-      }
-      if (type instanceof Range range) {
-        return resolveRangeValues(range);
-      }
+    }
+    if (type instanceof Ratio ratio) {
+      return resolveRatioValues(ratio);
+    } else if (type instanceof Range range) {
+      return resolveRangeValues(range);
     }
     return null;
   }

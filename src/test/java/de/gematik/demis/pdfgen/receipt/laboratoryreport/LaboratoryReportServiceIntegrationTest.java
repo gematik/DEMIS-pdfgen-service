@@ -40,10 +40,8 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
-@TestPropertySource(properties = {"feature.flag.pdf.optimization=true"})
 class LaboratoryReportServiceIntegrationTest {
 
   /** A pattern to match the headline for the lifecycle headline. */

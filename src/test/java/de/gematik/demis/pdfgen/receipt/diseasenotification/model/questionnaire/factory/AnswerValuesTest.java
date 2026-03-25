@@ -27,7 +27,6 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.
  * #L%
  */
 
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import de.gematik.demis.pdfgen.translation.TranslationService;
@@ -43,7 +42,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -181,32 +179,12 @@ class AnswerValuesTest {
       var answer = new QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent();
       answer.setValue(quantity);
 
-      when(translationServiceMock.isPdfOptimization()).thenReturn(true);
       when(translationServiceMock.getValueQuantityUnit("mg")).thenReturn("Milligramm");
 
       String text = this.answerValues.apply(answer);
       Assertions.assertThat(text)
           .as("valueQuantity with translation service unit")
           .isEqualTo("100 Milligramm");
-    }
-
-    @Test
-    @DisplayName("valueQuantity with translation service unit")
-    void quantityTest4Regression() {
-      Quantity quantity = new Quantity();
-      quantity.setCode("mg");
-      quantity.setValue(BigDecimal.valueOf(100));
-      quantity.setSystem("http://unitsofmeasure.org");
-      var answer = new QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent();
-      answer.setValue(quantity);
-
-      when(translationServiceMock.isPdfOptimization()).thenReturn(false);
-
-      String text = this.answerValues.apply(answer);
-      Assertions.assertThat(text)
-          .as("valueQuantity with translation service unit")
-          .isEqualTo("100 mg");
-      Mockito.verify(translationServiceMock, Mockito.times(0)).getValueQuantityUnit(anyString());
     }
   }
 }

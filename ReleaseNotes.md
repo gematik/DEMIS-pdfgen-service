@@ -2,16 +2,27 @@
 
 # Release pdfgen-Service
 
-## 2.9.2
+## Release 2.10.0
+- updated base-image and updated from java 21 to java 25
+- changed garbage collector to G1GC
+- increased RAM-Limit
+- decreased MaxRAMPercentage from 80% to 65%
+- activated feign header forwarding
+- added identifier to laboratory facilities in questionnaire answers of disease receipts
+- updated dependencies
+- removed FEATURE_FLAG_DISEASE_SECOND_PAGE
+- removed FEATURE_FLAG_PDF_OPTIMIZATION
+
+## Release 2.9.2
 - changed label for disease notifications for relates-to id entries in produced pdf
 - remove throwing exception for disease notification without CommonQuestionnaire
 
-## 2.9.1
+## Release 2.9.1
 - added specific font for watermark in PDF receipt
 - removed istio helm charts
 - upgraded spring parent to 2.14.21
 
-## 2.9.0
+## Release 2.9.0
 - corrected label for IGS transaction ID
 - updated dependencies
 - added a QR code page to the Disease PDF
@@ -26,12 +37,12 @@
 - removed feature flag FEATURE_FLAG_NEW_API_ENDPOINTS
 - fixed missing postal code on second PDF page by adding fallback to organization address
 
-## 2.8.4
+## Release 2.8.4
 - update spring-parent to 2.14.2
 - remove feature flag FEATURE_FLAG_HOSPITALIZATION_ORDER
 - fixed the display of the hospitalization station in the Disease PDF receipt based on the strict profile (from version 7.x.x)
 
-## 2.8.3
+## Release 2.8.3
 - use unit for printed quantities and code in case that there is no unit available
 - update parent to 2.14.1
 - add text from observation value if codeable concept and text field is filled
@@ -39,26 +50,26 @@
 - show only one specimen material per specimen on laboratory page 2
 - fix patient finding for bundles with broken patient id
  
-## 2.8.2
+## Release 2.8.2
 - Added support for MeinUnternehmenskonto
 - Remove feature flag PDFGEN.WARMUP
 
-## 2.8.1
+## Release 2.8.1
 - Edit text for authentication method output for authentication via SMC-B
 - Adding extra header for requests to FUTS new APIs
 
-## 2.8.0
+## Release 2.8.0
 - Add support for new FUTS API endpoints
 - Edit authentication method output for authenticator and token-exchange
 
-## 2.7.2
+## Release 2.7.2
 - updated dependencies
 - updated base image
 - python script to clean up TransmittingSiteSearchText.xml 
 - Update TransmittingSiteSearchText
 - Add script to minimize TransmittingSiteSearchText
 
-## 2.7.1
+## Release 2.7.1
 - Updated ospo-resources for adding additional notes and disclaimer
 - setting new resources in helm chart
 - setting new timeouts and retries in helm chart
@@ -66,14 +77,14 @@
 - updating dependencies
 - Fix provenance in PDF receipt for notifications sent over meldung.demis.rki.de
 
-## 2.7.0
+## Release 2.7.0
 - Add service API documentation
 - Align order of hospitalization information in UI and PDF
 
-## 2.6.4
+## Release 2.6.4
 - Fix handling of PostalCodes
 
-## 2.6.3
+## Release 2.6.3
 - Updates:
   - Dependency-Updates (CVEs et al.)
   - Introducing resistances after §7.1 
@@ -89,32 +100,32 @@
   - Address order updated
   - Update reason for hospitalization
 
-## 2.1.5
+## Release 2.1.5
 - first official GitHub-Release
 
-## 2.1.0
-### changed
+## Release 2.1.0
+## Release# changed
 - Supporting multiple observations in laboratory reports for §7.1 notifications
 
-## 2.0.2
-### changed
+## Release 2.0.2
+## Release# changed
 - Notification ID as QR Code
 
-## 2.0.1
-### fixed
+## Release 2.0.1
+## Release# fixed
 - Bugfix Notification-ID OccupancyBed missing in PDF
 
-## 2.0.0
-### changed
+## Release 2.0.0
+## Release# changed
 - Implemented Hospital Notifications PDFs, logging
 
-## 1.1.1
-### changed
+## Release 1.1.1
+## Release# changed
 - Implemented PDF-Generator Functionalities
 
-## 1.1.0
-### changed
+## Release 1.1.0
+## Release# changed
 - fix Apache Tomcat CVE-2022-45143, upgrade SpringBoot
 
-## 1.0.0
+## Release 1.0.0
 - Initial release

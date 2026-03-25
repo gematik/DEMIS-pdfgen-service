@@ -27,6 +27,7 @@ package de.gematik.demis.pdfgen.receipt.common.model.subsection;
  * #L%
  */
 
+import de.gematik.demis.pdfgen.FeatureFlags;
 import de.gematik.demis.pdfgen.receipt.common.service.transmittingsite.TransmittingSite;
 import de.gematik.demis.pdfgen.translation.TranslationService;
 import java.util.Objects;
@@ -37,11 +38,7 @@ import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
-import org.hl7.fhir.r4.model.Extension;
-import org.hl7.fhir.r4.model.IdType;
-import org.hl7.fhir.r4.model.Organization;
-import org.hl7.fhir.r4.model.Reference;
-import org.hl7.fhir.r4.model.Type;
+import org.hl7.fhir.r4.model.*;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -49,6 +46,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class OrganizationFactory {
 
+  private final FeatureFlags featureFlags;
+  private final IdentifierFactory identifierFactory;
   private final AddressFactory addressFactory;
   private final TelecomFactory telecomFactory;
   private final ContactFactory contactFactory;
@@ -78,12 +77,20 @@ public class OrganizationFactory {
     OrganizationDTO.OrganizationDTOBuilder organization = OrganizationDTO.builder();
     setId(fhirOrganization, organization);
     setName(fhirOrganization, organization);
-    setContact(fhirOrganization, organization);
+    setIdentifier(fhirOrganization, organization);
     setType(fhirOrganization, organization);
+    setContact(fhirOrganization, organization);
     setAddress(fhirOrganization, organization);
     setTelecoms(fhirOrganization, organization);
     setDepartment(fhirOrganization, organization);
     return organization.build();
+  }
+
+  private void setIdentifier(
+      Organization fhirOrganization, OrganizationDTO.OrganizationDTOBuilder organization) {
+    if (this.featureFlags.isDiseaseStrict() && fhirOrganization.hasIdentifier()) {
+      organization.identifier(this.identifierFactory.create(fhirOrganization.getIdentifier()));
+    }
   }
 
   private void setDepartment(
