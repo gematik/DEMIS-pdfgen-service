@@ -60,8 +60,7 @@
 
     </table>
 
-    <!-- Conditionally include second page with QR Code -->
-    <div th:if="${diseaseNotificationTemplateDto.addSecondPage}">
+    <div>
         <div class="new-page" />
         <div th:replace="~{receipt/diseaseNotification/section/lifecyclemanagement :: lifecyclemanagement(${diseaseNotificationTemplateDto})}"></div>
     </div>

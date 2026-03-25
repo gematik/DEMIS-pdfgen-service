@@ -54,6 +54,5 @@ public class DiseaseNotificationTemplateDto {
   private Questionnaire specificQuestionnaire;
   private Authentication authentication;
   private Map<String, String> additionalConfig;
-  private boolean addSecondPage;
   private String watermarkBase64Image;
 }

@@ -31,7 +31,6 @@ import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATI
 import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_BUNDLE_XML;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.when;
 
 import de.gematik.demis.fhirparserlibrary.FhirParser;
@@ -80,8 +79,7 @@ class DiseaseNotificationServiceTest {
         DiseaseNotificationTemplateDto.builder().notifiedPersonDTO(notifiedPersonDTO).build();
 
     when(fhirParser.parseFromJson(DISEASE_NOTIFICATION_BUNDLE_JSON)).thenReturn(b);
-    when(diseaseNotificationTemplateDtoFactory.create(any(Bundle.class), anyBoolean()))
-        .thenReturn(dto);
+    when(diseaseNotificationTemplateDtoFactory.create(any(Bundle.class))).thenReturn(dto);
     when(templateParser.process(dto, diseaseNotificationTemplate)).thenReturn("resultString");
     byte[] bytes = "resultString".getBytes();
     when(pdfGenerator.generatePdfFromHtml("resultString")).thenReturn(bytes);
@@ -102,8 +100,7 @@ class DiseaseNotificationServiceTest {
         DiseaseNotificationTemplateDto.builder().notifiedPersonDTO(notifiedPersonDTO).build();
 
     when(fhirParser.parseFromXml(DISEASE_NOTIFICATION_BUNDLE_XML)).thenReturn(b);
-    when(diseaseNotificationTemplateDtoFactory.create(any(Bundle.class), anyBoolean()))
-        .thenReturn(dto);
+    when(diseaseNotificationTemplateDtoFactory.create(any(Bundle.class))).thenReturn(dto);
     when(templateParser.process(dto, diseaseNotificationTemplate)).thenReturn("resultString");
     byte[] bytes = "resultString".getBytes();
     when(pdfGenerator.generatePdfFromHtml("resultString")).thenReturn(bytes);

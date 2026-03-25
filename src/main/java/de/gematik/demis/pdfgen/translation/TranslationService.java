@@ -36,7 +36,6 @@ import de.gematik.demis.pdfgen.translation.model.Designation;
 import feign.FeignException;
 import java.util.List;
 import java.util.Optional;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
@@ -54,19 +53,16 @@ public class TranslationService {
   private final String ucumUseCode;
   private final ValueSetFeignClient valueSetFeignClient;
   private final CodeSystemFeignClient codeSystemFeignClient;
-  @Getter private final boolean pdfOptimization;
 
   public TranslationService(
       @Value("${pdfgen.quantity.value.display.value.set.source}") String ucumValueSetUrl,
       @Value("${pdfgen.quantity.value.designation.use}") String ucumUseCode,
       ValueSetFeignClient valueSetFeignClient,
-      CodeSystemFeignClient codeSystemFeignClient,
-      @Value("${feature.flag.pdf.optimization}") boolean pdfOptimization) {
+      CodeSystemFeignClient codeSystemFeignClient) {
     this.ucumValueSetUrl = ucumValueSetUrl;
     this.ucumUseCode = ucumUseCode;
     this.valueSetFeignClient = valueSetFeignClient;
     this.codeSystemFeignClient = codeSystemFeignClient;
-    this.pdfOptimization = pdfOptimization;
   }
 
   public String getValueQuantityUnit(final String code) {

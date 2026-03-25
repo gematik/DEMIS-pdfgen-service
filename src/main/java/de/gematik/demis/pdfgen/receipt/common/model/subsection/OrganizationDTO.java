@@ -36,6 +36,7 @@ import lombok.Getter;
 public class OrganizationDTO implements PrintableOrganization {
   private String id;
   private String name;
+  private Identifier identifier;
   private String type;
   private AddressDTO addressDTO;
   private List<Telecom> telecoms;

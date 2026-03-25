@@ -64,14 +64,13 @@ class DiseaseNotificationTemplateDtoFactoryIntegrationTest {
 
   @Test
   void create_shouldHandleNullGracefully() {
-    assertThat(this.dtoFactory.create(null, true)).isNull();
+    assertThat(this.dtoFactory.create(null)).isNull();
   }
 
   @Test
   void create_shouldTestFactoryCreation() {
     // when
-    DiseaseNotificationTemplateDto dto =
-        this.dtoFactory.create(createDiseaseNotificationBundle(), true);
+    DiseaseNotificationTemplateDto dto = this.dtoFactory.create(createDiseaseNotificationBundle());
 
     // then
     verifyRequiredParameters(dto);
@@ -88,7 +87,7 @@ class DiseaseNotificationTemplateDtoFactoryIntegrationTest {
     entries.remove(11);
 
     // when
-    DiseaseNotificationTemplateDto dto = this.dtoFactory.create(input, true);
+    DiseaseNotificationTemplateDto dto = this.dtoFactory.create(input);
 
     // then
     verifyRequiredParameters(dto);
@@ -105,7 +104,7 @@ class DiseaseNotificationTemplateDtoFactoryIntegrationTest {
     entries.remove(8);
 
     // when
-    DiseaseNotificationTemplateDto dto = this.dtoFactory.create(input, true);
+    DiseaseNotificationTemplateDto dto = this.dtoFactory.create(input);
 
     // then
     verifyRequiredParameters(dto);

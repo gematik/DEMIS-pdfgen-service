@@ -56,7 +56,6 @@ public class DiseaseNotificationService {
   private final DiseaseNotificationTemplateDtoFactory diseaseNotificationTemplateDtoFactory;
 
   private @Value("${pdfgen.template.disease-notification}") String diseaseNotificationTemplate;
-  private @Value("${feature.flag.disease.second.page}") boolean addSecondPage;
 
   @Observed(
       name = "disease-json",
@@ -95,8 +94,7 @@ public class DiseaseNotificationService {
   }
 
   private PdfData generatePdfFromBundle(final Bundle bundle) throws PdfGenerationException {
-    DiseaseNotificationTemplateDto data =
-        diseaseNotificationTemplateDtoFactory.create(bundle, this.addSecondPage);
+    DiseaseNotificationTemplateDto data = diseaseNotificationTemplateDtoFactory.create(bundle);
     String html = createHtml(data);
     return new PdfData(this.pdfGenerator.generatePdfFromHtml(html));
   }
