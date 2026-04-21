@@ -2,6 +2,14 @@
 
 # Release pdfgen-Service
 
+## Release 2.10.2
+- set up max mamory to 650 Mi and max heap usage to 30%
+- updated spring-parent to version 2.15.7
+- set thymeleaf version to 3.1.4.RELEASE to fix CVE
+
+## Release 2.10.1
+- updated spring-parent to version 2.15.6
+
 ## Release 2.10.0
 - updated base-image and updated from java 21 to java 25
 - changed garbage collector to G1GC

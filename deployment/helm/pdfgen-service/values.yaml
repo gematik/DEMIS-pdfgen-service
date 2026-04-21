@@ -41,7 +41,7 @@ customEnvVars:
 # If not given, the Entrypoint defined in Dockerfile will be used
 application:
   entrypoint: ["java"]
-  parameters: ["-XX:ActiveProcessorCount=2", "-XX:MaxRAMPercentage=65.0", "-XX:+TieredCompilation", "-XX:+UseG1GC", "-jar", "/app.jar"]
+  parameters: ["-XX:ActiveProcessorCount=2", "-XX:MaxRAMPercentage=30.0", "-XX:+UseG1GC", "-jar", "/app.jar"]
 
 # Define Image Pull Secrets if using private registry
 imagePullSecrets: []
@@ -112,7 +112,7 @@ service:
 # Resources
 resources:
   limits:
-    memory: "1200Mi"
+    memory: "650Mi"
   requests:
     cpu: "300m"
     memory: "650Mi"
