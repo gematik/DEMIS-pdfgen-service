@@ -55,6 +55,18 @@ public class TransmittingSiteService {
           .phone("")
           .fax("")
           .build();
+  private static final TransmittingSite RKI_SITE =
+      TransmittingSite.builder()
+          .name("Robert Koch-Institut")
+          .department("")
+          .email("demis-support@rki.de")
+          .street("Nordufer 20")
+          .place("Berlin")
+          .postalCode("13353")
+          .phone("")
+          .fax("")
+          .build();
+  private static final String RKI_CODE = "1.";
   private final List<String> testHealthDepartmentCode;
   private final Map<String, TransmittingSite> transmittingSiteByCode;
 
@@ -71,6 +83,9 @@ public class TransmittingSiteService {
     if (code != null) {
       if (transmittingSiteByCode.containsKey(code)) {
         return transmittingSiteByCode.get(code);
+      }
+      if (RKI_CODE.equals(code)) {
+        return RKI_SITE;
       }
       if (testHealthDepartmentCode.contains(code)) {
         return TEST_TRANSMITTING_SITE;
