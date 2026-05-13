@@ -2,10 +2,17 @@
 
 # Release pdfgen-Service
 
+## Release 2.10.3
+- updated TransmittingSiteSearchText.xml
+- added failsafe to prevent missing rki entry for transmitting site search text
+- updated spring-parent to version 2.16.0
+
 ## Release 2.10.2
 - set up max mamory to 650 Mi and max heap usage to 30%
-- updated spring-parent to version 2.15.7
 - set thymeleaf version to 3.1.4.RELEASE to fix CVE
+- removed FEATURE_FLAG_PDF_LABEL
+- updated spring-parent to version 2.15.8
+- updated base-image for docker build
 
 ## Release 2.10.1
 - updated spring-parent to version 2.15.6

@@ -35,20 +35,15 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Composition;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class NotificationFactory {
 
   private final NotificationFhirQueries notificationFhirQueries;
-  private final boolean notificationTypeActive;
 
-  public NotificationFactory(
-      NotificationFhirQueries notificationFhirQueries,
-      @Value("${feature.flag.pdf.label:false}") boolean notificationTypeActive) {
+  public NotificationFactory(NotificationFhirQueries notificationFhirQueries) {
     this.notificationFhirQueries = notificationFhirQueries;
-    this.notificationTypeActive = notificationTypeActive;
   }
 
   @Nullable
@@ -65,7 +60,6 @@ public class NotificationFactory {
     setDateTime(fhirNotification, notification);
     setRelations(fhirNotification, notification);
     notification.notificationType(NotificationType.getNotificationType(bundle));
-    notification.notificationTypeActive(notificationTypeActive);
     return notification.build();
   }
 

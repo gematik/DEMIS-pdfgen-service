@@ -45,7 +45,6 @@ public class Notification {
   private DateTimeHolder dateTime;
   private List<String> relations;
   private NotificationType notificationType;
-  private boolean notificationTypeActive;
 
   public String getAllRelatesTo() {
     return concatenateWithDelimiter(LINE_BREAK, relations);

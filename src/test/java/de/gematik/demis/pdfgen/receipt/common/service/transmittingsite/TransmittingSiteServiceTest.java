@@ -66,4 +66,13 @@ class TransmittingSiteServiceTest {
     assertThat(transmittingSite4).isNotNull();
     assertThat(transmittingSite4.getName()).isEqualTo("Test Gesundheitsamt");
   }
+
+  /** we need to make sure, that the rki is contained in the transmittingSiteSearchText.xml */
+  @Test
+  void shouldContainRKIEntry() {
+    TransmittingSite transmittingSite = transmittingSiteService.getTransmittingSite("1.");
+
+    assertThat(transmittingSite).isNotNull();
+    assertThat(transmittingSite.getName()).isEqualTo("Robert Koch-Institut");
+  }
 }
