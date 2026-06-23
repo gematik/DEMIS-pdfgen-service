@@ -71,6 +71,7 @@ class NotificationTest {
                             assertThat(notification.getDateTime()).isEqualTo(date);
                             assertThat(notification.getRelations()).isEqualTo(relations);
                             assertThat(notification.getAllRelatesTo()).isNotNull();
+                            assertThat(notification.getAllRelatesToOrDefault()).isNotNull();
                           });
                     });
               });
@@ -102,5 +103,33 @@ class NotificationTest {
     assertThat(emptyListNotification.getAllRelatesTo()).isEmpty();
     assertThat(singleEntryListNotification.getAllRelatesTo()).isEqualTo(expectedSingleEntry);
     assertThat(fullListNotification.getAllRelatesTo()).isEqualTo(expectedFullList);
+  }
+
+  @Test
+  void getAllRelatesToOrDefault_shouldBuildRelationsAsMultilineString() {
+    // given
+    List<String> nullList = null;
+    List<String> emptyList = emptyList();
+    List<String> singleEntryList = List.of("rel1");
+    List<String> fullList = List.of("rel1", "rel2", "rel3");
+
+    Notification nullRelationNotification = Notification.builder().relations(nullList).build();
+    Notification emptyListNotification = Notification.builder().relations(emptyList).build();
+    Notification singleEntryListNotification =
+        Notification.builder().relations(singleEntryList).build();
+    Notification fullListNotification = Notification.builder().relations(fullList).build();
+
+    String expectedSingleEntry = "rel1";
+    String expectedFullList =
+        """
+                        rel1
+                        rel2
+                        rel3""";
+
+    assertThat(nullRelationNotification.getAllRelatesToOrDefault()).isEqualTo("Keine Angabe");
+    assertThat(emptyListNotification.getAllRelatesToOrDefault()).isEqualTo("Keine Angabe");
+    assertThat(singleEntryListNotification.getAllRelatesToOrDefault())
+        .isEqualTo(expectedSingleEntry);
+    assertThat(fullListNotification.getAllRelatesToOrDefault()).isEqualTo(expectedFullList);
   }
 }

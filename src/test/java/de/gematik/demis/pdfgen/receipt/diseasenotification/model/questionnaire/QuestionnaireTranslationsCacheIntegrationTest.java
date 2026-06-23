@@ -40,11 +40,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCache;
-import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.test.context.TestPropertySource;
+import org.wiremock.spring.EnableWireMock;
 
 /** Use production application.properties for testing */
-@AutoConfigureWireMock(port = 0)
+@EnableWireMock
 @SpringBootTest
 @TestPropertySource(
     locations = "classpath:application.properties",

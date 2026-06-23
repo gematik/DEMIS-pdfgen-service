@@ -37,11 +37,12 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@SpringBootTest(properties = {"feature.flag.pdf-optimization=true"})
 class LaboratoryReportServiceIntegrationTest {
 
   /** A pattern to match the headline for the lifecycle headline. */
@@ -62,11 +63,79 @@ class LaboratoryReportServiceIntegrationTest {
         laboratoryReportService.generatePdfFromBundleXmlString(LABORATORY_REPORT_BUNDLE_DV2_XML));
   }
 
+  @Nested
+  @SpringBootTest(properties = {"feature.flag.pdf-optimization=true"})
+  class ContactPersonEntry_PdfOptimizationEnabled {
+    @Test
+    void generatePdfFromBundleJsonString_shouldHaveContactPersonEntry() throws Exception {
+      final String pdfText =
+          generateAndValidateLaboratoryReportPdf(
+              laboratoryReportService.generatePdfFromBundleJsonString(
+                  LABORATORY_REPORT_BUNDLE_DV2_JSON));
+      assertThat(pdfText).contains("Kontaktperson Dr Adam Careful");
+    }
+
+    @Test
+    void generatePdfFromBundleJsonString_shouldHaveContactPersonEntry_fromContactNameText()
+        throws Exception {
+      final String pdfText =
+          generateAndValidateLaboratoryReportPdf(
+              laboratoryReportService.generatePdfFromBundleJsonString(
+                  LABORATORY_REPORT_BUNDLE_DV2_WITH_CONTACT_TEXT_JSON));
+      assertThat(pdfText).contains("Kontaktperson Dr. Adam Careful Notifier");
+      assertThat(pdfText).contains("Kontaktperson Dr. Mila Careful Submitter");
+    }
+  }
+
+  @Nested
+  @SpringBootTest(properties = {"feature.flag.pdf-optimization=false"})
+  class ContactPersonEntry_PdfOptimizationDisabled {
+    @Test
+    void generatePdfFromBundleJsonString_shouldHaveContactPersonEntry() throws Exception {
+      final String pdfText =
+          generateAndValidateLaboratoryReportPdf(
+              laboratoryReportService.generatePdfFromBundleJsonString(
+                  LABORATORY_REPORT_BUNDLE_DV2_JSON));
+      assertThat(pdfText).contains("Kontaktperson Dr Adam Careful");
+    }
+
+    @Test
+    void generatePdfFromBundleJsonString_shouldHaveContactPersonEntry_fromContactNameText()
+        throws Exception {
+      final String pdfText =
+          generateAndValidateLaboratoryReportPdf(
+              laboratoryReportService.generatePdfFromBundleJsonString(
+                  LABORATORY_REPORT_BUNDLE_DV2_WITH_CONTACT_TEXT_JSON));
+      assertThat(pdfText).contains("Kontaktperson Dr Adam Careful");
+      assertThat(pdfText).contains("Kontaktperson Dr Mila Careful");
+    }
+  }
+
   @Test
   void generatePdfRomBundleSpecialCaseExample() throws Exception {
     generateAndValidateLaboratoryReportPdf(
         laboratoryReportService.generatePdfFromBundleJsonString(
             LABORATORY_REPORT_BUNDLE_SPECIAL_CASE_TEXT_IN_VALUE_OBSERV));
+  }
+
+  @Test
+  void keepsGermanTimeForReceivedAndCollectedTime() throws Exception {
+    String pdfText =
+        generateAndValidateLaboratoryReportPdf(
+            laboratoryReportService.generatePdfFromBundleJsonString(
+                LABORATORY_REPORT_BUNDLE_DV2_JSON));
+    assertThat(pdfText).contains("Probeneingang 14.05.2020");
+    assertThat(pdfText).contains("Probenentnahme 13.05.2020");
+  }
+
+  @Test
+  void setsGermanTimeForReceivedAndCollectedTime_fromDifferentTimeZone() throws Exception {
+    String pdfText =
+        generateAndValidateLaboratoryReportPdf(
+            laboratoryReportService.generatePdfFromBundleJsonString(
+                LABORATORY_REPORT_BUNDLE_DV2_WITH_DIFFERENT_TIME_ZONE_JSON));
+    assertThat(pdfText).contains("Probeneingang 15.05.2020");
+    assertThat(pdfText).contains("Probenentnahme 14.05.2020");
   }
 
   @Test
@@ -109,6 +178,16 @@ class LaboratoryReportServiceIntegrationTest {
     assertThat(pdfData.bytes()).isNotNull();
     String pdfText = extractPdfText(pdfData);
     assertThat(pdfText).contains("Ergebniswert 1.0:100.0");
+  }
+
+  @Test
+  void generatePdfWithRatioWithComparator() throws Exception {
+    PdfData pdfData =
+        laboratoryReportService.generatePdfFromBundleJsonString(
+            LABORATORY_NOTIFICATION_BUNDLE_RATIO_WITH_COMPARATOR_JSON);
+    assertThat(pdfData.bytes()).isNotNull();
+    String pdfText = extractPdfText(pdfData);
+    assertThat(pdfText).contains("Ergebniswert >1.0:100.0");
   }
 
   private @NotNull String generateAndValidateLaboratoryReportPdf(PdfData laboratoryReportService)

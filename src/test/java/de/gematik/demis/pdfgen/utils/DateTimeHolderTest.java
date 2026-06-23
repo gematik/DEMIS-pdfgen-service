@@ -29,9 +29,13 @@ package de.gematik.demis.pdfgen.utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.TimeZone;
+import java.util.stream.Stream;
 import org.hl7.fhir.r4.model.BaseDateTimeType;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class DateTimeHolderTest {
 
@@ -129,5 +133,91 @@ class DateTimeHolderTest {
 
     // then
     assertThat(dateTimeHolder.getDateTime()).isEqualTo(validDateTime);
+  }
+
+  static Stream<String> otherTimeZones() {
+    return Stream.of(
+        "14:00:00+00:00", "15:00:00+01:00", "16:00:00+02:00", "10:00:00-04:00", "14:00:00Z");
+  }
+
+  @ParameterizedTest
+  @MethodSource("otherTimeZones")
+  void toBerlinTime_shouldConvertUtcTimeToBerlinTime(final String otherTimeZone) {
+    // given - UTC time 15:00 should become 16:00 CET or 17:00 CEST in Berlin
+    DateTimeType utcDateTime = new DateTimeType("2023-07-15T" + otherTimeZone);
+
+    // when
+    DateTimeHolder dateTimeHolder = new DateTimeHolder(utcDateTime);
+
+    // then - July is CEST (UTC+2), so 14:00 UTC -> 16:00 Berlin
+    assertThat(dateTimeHolder.toString()).isEqualTo("15.07.2023 16:00");
+    assertThat(dateTimeHolder.getDateTime().getTimeZone())
+        .isEqualTo(TimeZone.getTimeZone("Europe/Berlin"));
+  }
+
+  @ParameterizedTest
+  @MethodSource("otherTimeZones")
+  void toBerlinTime_shouldConvertUtcTimeToBerlinTimeInWinter(final String otherTimeZone) {
+    // given - UTC time in winter (CET = UTC+1)
+    DateTimeType utcDateTime = new DateTimeType("2023-01-15T" + otherTimeZone);
+
+    // when
+    DateTimeHolder dateTimeHolder = new DateTimeHolder(utcDateTime);
+
+    // then - January is CET (UTC+1), so 14:00 UTC -> 15:00 Berlin
+    assertThat(dateTimeHolder.toString()).isEqualTo("15.01.2023 15:00");
+  }
+
+  static Stream<String> otherTimeZonesLateNight() {
+    return Stream.of("22:00:00+00:00", "23:00:00+01:00", "18:00:00-04:00", "22:00:00Z");
+  }
+
+  @ParameterizedTest
+  @MethodSource("otherTimeZonesLateNight")
+  void toBerlinTime_shouldRollOverToNextDayWhenUtcLateNight(final String otherTimeZone) {
+    // given - 22:00 UTC in summer (CEST = UTC+2) should become 00:00 next day in Berlin
+    DateTimeType utcDateTime = new DateTimeType("2023-07-15T" + otherTimeZone);
+
+    // when
+    DateTimeHolder dateTimeHolder = new DateTimeHolder(utcDateTime);
+
+    // then - 22:00 UTC + 2h = 00:00 on 16.07.2023
+    assertThat(dateTimeHolder.toString()).isEqualTo("16.07.2023 00:00");
+  }
+
+  @Test
+  void toBerlinTime_shouldHandleDateTimeWithoutTimezoneGracefully() {
+    // given - has no timezone to convert
+    DateTimeType utcDateTime = new DateTimeType("2023-01-15T14:00:00");
+
+    // when
+    DateTimeHolder dateTimeHolder = new DateTimeHolder(utcDateTime);
+
+    // then - stays 14:00
+    assertThat(dateTimeHolder.toString()).isEqualTo("15.01.2023 14:00");
+  }
+
+  @Test
+  void toBerlinTime_shouldHandleDateWithoutTimeGracefully() {
+    // given - date-only value has no time to convert
+    DateTimeType dateOnly = new DateTimeType("2023-06-15");
+
+    // when
+    DateTimeHolder dateTimeHolder = new DateTimeHolder(dateOnly);
+
+    // then - should still format date correctly
+    assertThat(dateTimeHolder.toString()).isEqualTo("15.06.2023");
+    assertThat(dateTimeHolder.getDateTime().getTimeZone())
+        .isEqualTo(TimeZone.getTimeZone("Europe/Berlin"));
+  }
+
+  @Test
+  void toBerlinTime_shouldNotFailForNullDateTime() {
+    // when
+    DateTimeHolder dateTimeHolder = new DateTimeHolder(null);
+
+    // then
+    assertThat(dateTimeHolder.getDateTime()).isNull();
+    assertThat(dateTimeHolder.toString()).isEmpty();
   }
 }

@@ -33,8 +33,6 @@
     <table>
         <!--/*@thymesVar id="diseaseNotificationTemplateDto" type="de.gematik.demis.pdfgen.receipt.diseasenotification.model.DiseaseNotificationTemplateDto"*/-->
 
-        <th:block th:replace='~{receipt/common/section/metadata :: metadata(${diseaseNotificationTemplateDto.metadata})}'/>
-
         <th:block
                 th:replace='~{receipt/common/section/notification :: notification(${diseaseNotificationTemplateDto.notification})}'/>
 

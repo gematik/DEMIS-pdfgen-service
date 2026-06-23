@@ -32,7 +32,7 @@
         "extension": [
           {
             "url": "https://demis.rki.de/fhir/StructureDefinition/ReceptionTimeStampType",
-            "valueDateTime": "2022-03-11T09:06:11+02:00"
+            "valueDateTime": "2022-03-11T09:06:11+01:00"
           }
         ],
         "identifier": {
@@ -495,7 +495,6 @@
         "contact": [
           {
             "name": {
-              "text": "Frau Dr. Anna Beate Carolin Ansprechpartner",
               "family": "Ansprechpartner",
               "given": [
                 "Anna",

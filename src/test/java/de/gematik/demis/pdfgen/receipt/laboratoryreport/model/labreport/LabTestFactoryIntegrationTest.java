@@ -37,6 +37,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import de.gematik.demis.pdfgen.receipt.laboratoryreport.model.labreport.enums.LabTestStatusEnum;
 import java.util.List;
 import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.DateTimeType;
+import org.hl7.fhir.r4.model.Observation;
+import org.hl7.fhir.r4.model.Quantity;
+import org.hl7.fhir.r4.model.Ratio;
+import org.hl7.fhir.r4.model.Specimen;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -56,7 +62,7 @@ class LabTestFactoryIntegrationTest {
 
     // then
     assertThat(labTests).hasSize(1);
-    LabTest labTest = labTests.get(0);
+    LabTest labTest = labTests.getFirst();
     assertThat(labTest.getCode())
         .isEqualTo(
             "SARS-CoV-2 (COVID-19) RNA [Presence] in Serum or Plasma by NAA with probe detection");
@@ -68,6 +74,44 @@ class LabTestFactoryIntegrationTest {
     assertThat(labTest.getNotes().getFirst()).isEqualTo("Nette Zusatzinformation …");
     assertThat(labTest.getSpecimen().getTransactionId())
         .isEqualToIgnoringCase("IMS-12345-CVDP-00001");
+  }
+
+  @Test
+  void createLabTests_keepsGermanTimeForReceivedAndCollectedTime() {
+    // given
+    Bundle bundle = createLaboratoryReportBundle();
+    final Specimen specimen = (Specimen) bundle.getEntry().get(10).getResource();
+    specimen.setReceivedTime(new DateTimeType("2025-05-14T22:38:00+02:00").getValue());
+    specimen.getCollection().setCollected(new DateTimeType("2025-05-13T22:38:00+02:00"));
+
+    // when
+    List<LabTest> labTests = labTestFactory.createLabTests(bundle);
+
+    // then
+    assertThat(labTests).hasSize(1);
+    assertThat(labTests.getFirst().getSpecimen().getReceivedTime().toString())
+        .isEqualTo("14.05.2025 22:38");
+    assertThat(labTests.getFirst().getSpecimen().getCollectionTime().toString())
+        .isEqualTo("13.05.2025 22:38");
+  }
+
+  @Test
+  void createLabTests_setsGermanTimeForReceivedAndCollectedTime_fromDifferentTimeZone() {
+    // given
+    Bundle bundle = createLaboratoryReportBundle();
+    final Specimen specimen = (Specimen) bundle.getEntry().get(10).getResource();
+    specimen.setReceivedTime(new DateTimeType("2025-05-14T22:38:00Z").getValue());
+    specimen.getCollection().setCollected(new DateTimeType("2025-05-13T22:38:00Z"));
+
+    // when
+    List<LabTest> labTests = labTestFactory.createLabTests(bundle);
+
+    // then
+    assertThat(labTests).hasSize(1);
+    assertThat(labTests.getFirst().getSpecimen().getReceivedTime().toString())
+        .isEqualTo("15.05.2025 00:38");
+    assertThat(labTests.getFirst().getSpecimen().getCollectionTime().toString())
+        .isEqualTo("14.05.2025 00:38");
   }
 
   @Test
@@ -113,7 +157,7 @@ class LabTestFactoryIntegrationTest {
 
     // then
     assertThat(labTests).hasSize(1);
-    assertThat(labTests.get(0).getValue()).isEqualTo("1.0:100.0");
+    assertThat(labTests.getFirst().getValue()).isEqualTo("1.0:100.0");
   }
 
   @Test
@@ -126,6 +170,140 @@ class LabTestFactoryIntegrationTest {
 
     // then
     assertThat(labTests).hasSize(1);
-    assertThat(labTests.get(0).getValue()).isEqualTo("von 5 bis 15");
+    assertThat(labTests.getFirst().getValue()).isEqualTo("von 5 bis 15");
+  }
+
+  @Nested
+  @SpringBootTest(properties = {"feature.flag.pdf-optimization=true"})
+  class Ratio_PdfOptimizationEnabled {
+
+    @Test
+    void createLabTests_createLabTestsWithRatioAsExpected_WithBothComparator() {
+      // given
+      Bundle bundle = createLaboratoryReportRatioBundle();
+      final Observation resource = (Observation) bundle.getEntry().get(8).getResource();
+      final Ratio ratio = (Ratio) resource.getValue();
+      ratio.getNumerator().setComparator(Quantity.QuantityComparator.GREATER_THAN);
+      ratio.getDenominator().setComparator(Quantity.QuantityComparator.GREATER_OR_EQUAL);
+
+      // when
+      List<LabTest> labTests = labTestFactory.createLabTests(bundle);
+
+      // then
+      assertThat(labTests).hasSize(1);
+      assertThat(labTests.getFirst().getValue()).isEqualTo(">1.0:>=100.0");
+    }
+
+    @Test
+    void createLabTests_createLabTestsWithRatioAsExpected_WithNumeratorComparator() {
+      // given
+      Bundle bundle = createLaboratoryReportRatioBundle();
+      final Observation resource = (Observation) bundle.getEntry().get(8).getResource();
+      final Ratio ratio = (Ratio) resource.getValue();
+      ratio.getNumerator().setComparator(Quantity.QuantityComparator.GREATER_THAN);
+
+      // when
+      List<LabTest> labTests = labTestFactory.createLabTests(bundle);
+
+      // then
+      assertThat(labTests).hasSize(1);
+      assertThat(labTests.getFirst().getValue()).isEqualTo(">1.0:100.0");
+    }
+
+    @Test
+    void createLabTests_createLabTestsWithRatioAsExpected_WithDenominatorComparator() {
+      // given
+      Bundle bundle = createLaboratoryReportRatioBundle();
+      final Observation resource = (Observation) bundle.getEntry().get(8).getResource();
+      final Ratio ratio = (Ratio) resource.getValue();
+      ratio.getDenominator().setComparator(Quantity.QuantityComparator.GREATER_THAN);
+
+      // when
+      List<LabTest> labTests = labTestFactory.createLabTests(bundle);
+
+      // then
+      assertThat(labTests).hasSize(1);
+      assertThat(labTests.getFirst().getValue()).isEqualTo("1.0:>100.0");
+    }
+
+    @Test
+    void createLabTests_createLabTestsWithRatioAsExpected_WithNoComparator() {
+      // given
+      Bundle bundle = createLaboratoryReportRatioBundle();
+
+      // when
+      List<LabTest> labTests = labTestFactory.createLabTests(bundle);
+
+      // then
+      assertThat(labTests).hasSize(1);
+      assertThat(labTests.getFirst().getValue()).isEqualTo("1.0:100.0");
+    }
+  }
+
+  @Nested
+  @SpringBootTest(properties = {"feature.flag.pdf-optimization=false"})
+  class Ratio_PdfOptimizationDisabled {
+
+    @Test
+    void createLabTests_createLabTestsWithRatioAsExpected_WithBothComparator() {
+      // given
+      Bundle bundle = createLaboratoryReportRatioBundle();
+      final Observation resource = (Observation) bundle.getEntry().get(8).getResource();
+      final Ratio ratio = (Ratio) resource.getValue();
+      ratio.getNumerator().setComparator(Quantity.QuantityComparator.GREATER_THAN);
+      ratio.getDenominator().setComparator(Quantity.QuantityComparator.GREATER_THAN);
+
+      // when
+      List<LabTest> labTests = labTestFactory.createLabTests(bundle);
+
+      // then
+      assertThat(labTests).hasSize(1);
+      assertThat(labTests.getFirst().getValue()).isEqualTo("1.0:100.0");
+    }
+
+    @Test
+    void createLabTests_createLabTestsWithRatioAsExpected_WithNumeratorComparator() {
+      // given
+      Bundle bundle = createLaboratoryReportRatioBundle();
+      final Observation resource = (Observation) bundle.getEntry().get(8).getResource();
+      final Ratio ratio = (Ratio) resource.getValue();
+      ratio.getNumerator().setComparator(Quantity.QuantityComparator.GREATER_THAN);
+
+      // when
+      List<LabTest> labTests = labTestFactory.createLabTests(bundle);
+
+      // then
+      assertThat(labTests).hasSize(1);
+      assertThat(labTests.getFirst().getValue()).isEqualTo("1.0:100.0");
+    }
+
+    @Test
+    void createLabTests_createLabTestsWithRatioAsExpected_WithDenominatorComparator() {
+      // given
+      Bundle bundle = createLaboratoryReportRatioBundle();
+      final Observation resource = (Observation) bundle.getEntry().get(8).getResource();
+      final Ratio ratio = (Ratio) resource.getValue();
+      ratio.getDenominator().setComparator(Quantity.QuantityComparator.GREATER_THAN);
+
+      // when
+      List<LabTest> labTests = labTestFactory.createLabTests(bundle);
+
+      // then
+      assertThat(labTests).hasSize(1);
+      assertThat(labTests.getFirst().getValue()).isEqualTo("1.0:100.0");
+    }
+
+    @Test
+    void createLabTests_createLabTestsWithRatioAsExpected_WithNoComparator() {
+      // given
+      Bundle bundle = createLaboratoryReportRatioBundle();
+
+      // when
+      List<LabTest> labTests = labTestFactory.createLabTests(bundle);
+
+      // then
+      assertThat(labTests).hasSize(1);
+      assertThat(labTests.getFirst().getValue()).isEqualTo("1.0:100.0");
+    }
   }
 }

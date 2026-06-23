@@ -35,8 +35,10 @@ import static ca.uhn.fhir.model.api.TemporalPrecisionEnum.SECOND;
 import static ca.uhn.fhir.model.api.TemporalPrecisionEnum.YEAR;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+import java.time.ZoneId;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TimeZone;
 import lombok.Getter;
 import org.hl7.fhir.r4.model.BaseDateTimeType;
 import org.hl7.fhir.r4.model.DateTimeType;
@@ -46,6 +48,7 @@ import org.hl7.fhir.r4.model.DateTimeType;
  * the possibility that no date or time is given.
  */
 public class DateTimeHolder {
+  private static final ZoneId BERLIN_ZONE = ZoneId.of("Europe/Berlin");
   private static final Set<TemporalPrecisionEnum> SHOULD_HAVE_MONTH =
       Set.of(MONTH, DAY, MINUTE, SECOND, MILLI);
   private static final Set<TemporalPrecisionEnum> SHOULD_HAVE_DAY =
@@ -58,9 +61,17 @@ public class DateTimeHolder {
   @Getter private final String dateWithoutTimeAndDay;
 
   public DateTimeHolder(final BaseDateTimeType dateTime) {
-    this.dateTime = validOrNull(dateTime);
+    this.dateTime = toBerlinTime(validOrNull(dateTime));
     this.dateWithoutTime = toStringWithoutTime();
     this.dateWithoutTimeAndDay = toStringWithoutTimeAndDay();
+  }
+
+  private BaseDateTimeType toBerlinTime(final BaseDateTimeType dateTime) {
+    if (dateTime == null) {
+      return null;
+    }
+    dateTime.setTimeZone(TimeZone.getTimeZone(BERLIN_ZONE));
+    return dateTime;
   }
 
   public static DateTimeHolder now() {

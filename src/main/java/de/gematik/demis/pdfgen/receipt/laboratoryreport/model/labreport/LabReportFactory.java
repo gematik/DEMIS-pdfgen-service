@@ -29,6 +29,7 @@ package de.gematik.demis.pdfgen.receipt.laboratoryreport.model.labreport;
 
 import static de.gematik.demis.pdfgen.fhir.extract.ExtensionQueries.resolve;
 
+import de.gematik.demis.pdfgen.FeatureFlags;
 import de.gematik.demis.pdfgen.fhir.extract.LaboratoryFhirQueries;
 import de.gematik.demis.pdfgen.lib.profile.DemisExtensions;
 import de.gematik.demis.pdfgen.receipt.laboratoryreport.model.labreport.enums.LabReportStatusEnum;
@@ -51,6 +52,7 @@ public class LabReportFactory {
   private final LaboratoryFhirQueries laboratoryFhirQueries;
   private final LabTestFactory labTestFactory;
   private final TranslationService displayTranslationService;
+  private final FeatureFlags featureFlags;
 
   @Nullable
   public LabReport create(final Bundle bundle) {
@@ -99,7 +101,8 @@ public class LabReportFactory {
             .notificationCategoryShortCode(shortCode)
             .conclusionCode(conclusionCode)
             .labRequestId(labRequestId)
-            .labTests(labTests);
+            .labTests(labTests)
+            .pdfOptimization(featureFlags.isPdfOptimization());
 
     return builder.build();
   }

@@ -2,6 +2,19 @@
 
 # Release pdfgen-Service
 
+## Release 2.11.0
+- arranged jvm options and resource limits
+- optimized custom environment variables handling in helm chart
+- updated docker base image to gematik1/osadl-alpine-openjdk25-jre:1.0.5
+- upgraded to Spring Boot 4
+- changed position of contact person for NotifierFacility in pdf
+- fixed display of contact person in pdf to use contact.name.text when given
+- added FEATURE_FLAG_PDF_OPTIMIZATION
+- fixed received and collected time of specimen in pdf to always use german time zone
+- changed order of notification infos in pdf for laboratory and disease notifications
+- improved logging when FUTS doesn't deliver a translation
+- added ratio comparator values to pdf
+
 ## Release 2.10.3
 - updated TransmittingSiteSearchText.xml
 - added failsafe to prevent missing rki entry for transmitting site search text

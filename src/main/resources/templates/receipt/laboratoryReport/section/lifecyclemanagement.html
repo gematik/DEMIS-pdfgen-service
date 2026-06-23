@@ -61,8 +61,10 @@
             <br/>
             <br/>
             <div id="box-request-id">
-                <span class="blue-font small-font"
-                      th:text='#{laboratory-report.lab-report.order-number}'></span>
+
+                    <span th:with="label=${laboratoryReportTemplateDto.isPdfOptimization()
+        ? #messages.msg('laboratory-report.lab-report.order-number.pdfOptimization')
+        : #messages.msg('laboratory-report.lab-report.order-number')}" class="blue-font small-font" th:text="${label}"></span>
                 <span class="small-font"
                       th:text='${laboratoryReportTemplateDto.labReport.labRequestId}'></span>
             </div>

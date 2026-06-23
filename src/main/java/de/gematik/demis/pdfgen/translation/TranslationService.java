@@ -36,6 +36,7 @@ import de.gematik.demis.pdfgen.translation.model.Designation;
 import feign.FeignException;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
@@ -70,15 +71,26 @@ public class TranslationService {
       return EMPTY_STRING;
     }
 
-    Optional<CodeDisplay> infoForCodeFromValueSet =
+    Optional<CodeDisplay> infoForCodeFromCodeSystem =
         getInfoForCodeFromCodeSystem(ucumValueSetUrl, code);
-    if (infoForCodeFromValueSet.isPresent()) {
-      for (Designation designation : infoForCodeFromValueSet.get().getDesignations()) {
-        if (ucumUseCode.equals(designation.use().code())) {
+
+    if (infoForCodeFromCodeSystem.isPresent()) {
+      for (Designation designation : infoForCodeFromCodeSystem.get().getDesignations()) {
+        if (designation.use() != null && ucumUseCode.equals(designation.use().code())) {
           return designation.value();
         }
       }
+      log.warn(
+          "Using FUTS fallback for quantity unit: system={}, code={}, fallbackType=emptyString, reason=missingExpectedDesignation",
+          ucumValueSetUrl,
+          code);
+      return EMPTY_STRING;
     }
+
+    log.warn(
+        "Using FUTS fallback for quantity unit: system={}, code={}, fallbackType=emptyString, reason=lookupFailedOrEmpty",
+        ucumValueSetUrl,
+        code);
 
     return EMPTY_STRING;
   }
@@ -101,9 +113,17 @@ public class TranslationService {
     }
 
     if (coding.hasDisplay()) {
+      log.warn(
+          "Using FUTS fallback for CodeableConcept: system={}, code={}, fallbackType=coding.display",
+          coding.getSystem(),
+          coding.getCode());
       return coding.getDisplay();
     }
     // If nothing of the above works, add system and code
+    log.warn(
+        "Using FUTS fallback for CodeableConcept: system={}, code={}, fallbackType=system:code",
+        coding.getSystem(),
+        coding.getCode());
     return coding.getSystem() + ": " + coding.getCode();
   }
 
@@ -137,28 +157,50 @@ public class TranslationService {
   }
 
   private Optional<CodeDisplay> getInfoForCodeFromValueSet(String system, String code) {
+    return getInfoFromFuts(
+        "ValueSet",
+        system,
+        code,
+        () -> valueSetFeignClient.getInfoForCodeFromValueSet(system, code));
+  }
+
+  private Optional<CodeDisplay> getInfoForCodeFromCodeSystem(String system, String code) {
+    return getInfoFromFuts(
+        "CodeSystem",
+        system,
+        code,
+        () -> codeSystemFeignClient.getInfoForCodeFromCodeSystem(system, code));
+  }
+
+  private Optional<CodeDisplay> getInfoFromFuts(
+      String lookupType, String system, String code, Supplier<CodeDisplay> call) {
+    long start = System.currentTimeMillis();
+
     try {
-      return Optional.ofNullable(valueSetFeignClient.getInfoForCodeFromValueSet(system, code));
+      return Optional.ofNullable(call.get());
     } catch (FeignException e) {
-      log.error(
-          "Error when retrieving getInfoForCodeFromValueSet: {} for wanted data: {}/{}",
-          e.getMessage(),
+      long durationMs = System.currentTimeMillis() - start;
+
+      log.warn(
+          "FUTS {} lookup failed: failureType={}, system={}, code={}, status={}, exceptionType={}, durationMs={}, message={}",
+          lookupType,
+          determineFailureType(e),
           system,
-          code);
+          code,
+          e.status(),
+          e.getClass().getSimpleName(),
+          durationMs,
+          e.getMessage());
+
       return Optional.empty();
     }
   }
 
-  private Optional<CodeDisplay> getInfoForCodeFromCodeSystem(String system, String code) {
-    try {
-      return Optional.ofNullable(codeSystemFeignClient.getInfoForCodeFromCodeSystem(system, code));
-    } catch (FeignException e) {
-      log.error(
-          "Error when retrieving getInfoForCodeFromCodeSystem: {} for wanted data: {}/{}",
-          e.getMessage(),
-          system,
-          code);
-      return Optional.empty();
+  private String determineFailureType(FeignException e) {
+    int status = e.status();
+    if (status == 400 || status == 404 || status == 501) {
+      return "business";
     }
+    return "technical";
   }
 }

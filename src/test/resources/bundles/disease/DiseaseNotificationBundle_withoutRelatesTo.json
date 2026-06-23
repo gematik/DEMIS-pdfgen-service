@@ -40,15 +40,6 @@
           "value": "7f562b87-f2c2-4e9d-b3fc-37f6b5dca3a5"
         },
         "status": "final",
-        "relatesTo": [
-          {
-            "code": "appends",
-            "targetIdentifier": {
-              "system": "http://example.org/fhir/NamingSystem/document-ids",
-              "value": "ABC123"
-            }
-          }
-        ],
         "type": {
           "coding": [
             {
@@ -495,7 +486,6 @@
         "contact": [
           {
             "name": {
-              "text": "Frau Dr. Anna Beate Carolin Ansprechpartner",
               "family": "Ansprechpartner",
               "given": [
                 "Anna",
@@ -1269,116 +1259,6 @@
         "note": [
           {
             "text": "Zusatzinfo4"
-          }
-        ]
-      }
-    },{
-      "fullUrl": "https://demis.rki.de/fhir/Provenance/7f0c18f6-2ecc-4cdc-a451-db7139ab3936",
-      "resource": {
-        "resourceType": "Provenance",
-        "id": "7f0c18f6-2ecc-4cdc-a451-db7139ab3936",
-        "meta": {
-          "profile": [
-            "https://demis.rki.de/fhir/StructureDefinition/DemisProvenance"
-          ]
-        },
-        "target": [
-          {
-            "reference": "Composition/4a6bc299-2eb7-41bc-aae8-cf847d071200"
-          }
-        ],
-        "recorded": "2025-08-20T11:38:57.976+02:00",
-        "activity": {
-          "coding": [
-            {
-              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
-              "code": "CREATE"
-            }
-          ]
-        },
-        "agent": [
-          {
-            "extension": [
-              {
-                "url": "https://demis.rki.de/fhir/StructureDefinition/ProvenanceAgentLevelOfAssurance",
-                "valueCodeableConcept": {
-                  "coding": [
-                    {
-                      "code": "substantial",
-                      "system": "https://demis.rki.de/fhir/CodeSystem/levelOfAssurance"
-                    }
-                  ]
-                }
-              }
-            ],
-            "type": {
-              "coding": [
-                {
-                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
-                  "code": "performer"
-                }
-              ]
-            },
-            "role": [
-              {
-                "coding": [
-                  {
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
-                    "code": "AUT"
-                  }
-                ]
-              }
-            ],
-            "who": {
-              "type": "organization",
-              "identifier": {
-                "type": {
-                  "coding": [
-                    {
-                      "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
-                      "code": "AN"
-                    }
-                  ]
-                },
-                "system": "urn:ietf:rfc:3986",
-                "value": "urn:uuid:b2a0b54f-a729-4713-bab3-2e02ef2f7444"
-              }
-            },
-            "onBehalfOf": {
-              "type": "organization",
-              "identifier": {
-                "type": {
-                  "coding": [
-                    {
-                      "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
-                      "code": "PRN"
-                    }
-                  ]
-                },
-                "system": "https://demis.rki.de/fhir/NamingSystem/MUK",
-                "value": "du-9e1dc3bd51520fb95a1b3a335f981d666cdfafbc"
-              }
-            }
-          }
-        ],
-        "entity": [
-          {
-            "role": "source",
-            "what": {
-              "type": "Endpoint",
-              "identifier": {
-                "type": {
-                  "coding": [
-                    {
-                      "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
-                      "code": "RI"
-                    }
-                  ]
-                },
-                "system": "https://demis.rki.de/fhir/sid/DemisClientId",
-                "value": "meldeportal-internet"
-              }
-            }
           }
         ]
       }

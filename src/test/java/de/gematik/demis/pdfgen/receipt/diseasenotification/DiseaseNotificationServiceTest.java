@@ -28,7 +28,9 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification;
  */
 
 import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_BUNDLE_JSON;
+import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_BUNDLE_WITH_CONTACT_NAME_TEXT_JSON;
 import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_BUNDLE_XML;
+import static de.gematik.demis.pdfgen.test.helper.PdfExtractorHelper.extractPdfText;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -41,14 +43,19 @@ import de.gematik.demis.pdfgen.receipt.common.model.subsection.NameDTO;
 import de.gematik.demis.pdfgen.receipt.common.service.html.HtmlTemplateParser;
 import de.gematik.demis.pdfgen.receipt.diseasenotification.model.DiseaseNotificationTemplateDto;
 import de.gematik.demis.pdfgen.receipt.diseasenotification.model.DiseaseNotificationTemplateDtoFactory;
+import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Bundle;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
 
 @Slf4j
 @ExtendWith(MockitoExtension.class)
@@ -108,5 +115,72 @@ class DiseaseNotificationServiceTest {
     PdfData pdfData =
         diseaseNotificationService.generatePdfFromBundleXmlString(DISEASE_NOTIFICATION_BUNDLE_XML);
     assertThat(pdfData.bytes()).isEqualTo(bytes);
+  }
+
+  @Nested
+  @SpringBootTest(properties = {"feature.flag.pdf-optimization=true"})
+  class ContactPersonEntry_PdfOptimizationEnabled {
+    @Autowired private DiseaseNotificationService diseaseNotificationService;
+
+    @Test
+    void generatePdfFromBundleJsonString_shouldHaveContactPersonEntry() throws Exception {
+      final String pdfText =
+          generateAndValidateDiseaseNotificationPdf(
+              diseaseNotificationService.generatePdfFromBundleJsonString(
+                  DISEASE_NOTIFICATION_BUNDLE_JSON));
+      assertThat(pdfText).contains("Kontaktperson Dr. Anna Beate Carolin Ansprechpartner");
+    }
+
+    @Test
+    void generatePdfFromBundleJsonString_shouldHaveContactPersonEntry_fromContactNameText()
+        throws Exception {
+      final String pdfText =
+          generateAndValidateDiseaseNotificationPdf(
+              diseaseNotificationService.generatePdfFromBundleJsonString(
+                  DISEASE_NOTIFICATION_BUNDLE_WITH_CONTACT_NAME_TEXT_JSON));
+      assertThat(pdfText).contains("Kontaktperson Frau Dr. Anna Beate Carolin Ansprechpartner");
+    }
+  }
+
+  @Nested
+  @SpringBootTest(properties = {"feature.flag.pdf-optimization=false"})
+  class ContactPersonEntry_PdfOptimizationDisabled {
+    @Autowired private DiseaseNotificationService diseaseNotificationService;
+
+    @Test
+    void generatePdfFromBundleJsonString_shouldHaveContactPersonEntry() throws Exception {
+      final String pdfText =
+          generateAndValidateDiseaseNotificationPdf(
+              diseaseNotificationService.generatePdfFromBundleJsonString(
+                  DISEASE_NOTIFICATION_BUNDLE_JSON));
+      assertThat(pdfText).contains("Kontaktperson Dr. Anna Beate Carolin Ansprechpartner");
+    }
+
+    @Test
+    void generatePdfFromBundleJsonString_shouldHaveContactPersonEntry_fromContactNameText()
+        throws Exception {
+      final String pdfText =
+          generateAndValidateDiseaseNotificationPdf(
+              diseaseNotificationService.generatePdfFromBundleJsonString(
+                  DISEASE_NOTIFICATION_BUNDLE_WITH_CONTACT_NAME_TEXT_JSON));
+      assertThat(pdfText).contains("Kontaktperson Dr. Anna Beate Carolin Ansprechpartner");
+    }
+  }
+
+  private @NotNull String generateAndValidateDiseaseNotificationPdf(PdfData pdfData)
+      throws IOException {
+    assertThat(pdfData.bytes()).isNotNull();
+    String pdfText = extractPdfText(pdfData);
+    validateDiseaseNotificationPdfText(pdfText);
+    return pdfText;
+  }
+
+  private void validateDiseaseNotificationPdfText(String pdfText) {
+    assertThat(pdfText)
+        .containsAnyOf(
+            "Empfangsbestätigung",
+            "Vielen Dank für Ihre Meldung. Die Daten wurden an das zuständige Gesundheitsamt gemeldet",
+            "Meldevorgangs-ID a5e00874-bb26-45ac-8eea-0bde76456703",
+            "Meldungsidentifier e8d8cc43-32c2-4f93-8eaf-b2f3e6deb2a9");
   }
 }

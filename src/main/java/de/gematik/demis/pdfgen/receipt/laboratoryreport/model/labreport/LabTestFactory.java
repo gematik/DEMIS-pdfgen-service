@@ -27,6 +27,7 @@ package de.gematik.demis.pdfgen.receipt.laboratoryreport.model.labreport;
  * #L%
  */
 
+import de.gematik.demis.pdfgen.FeatureFlags;
 import de.gematik.demis.pdfgen.fhir.extract.LaboratoryFhirQueries;
 import de.gematik.demis.pdfgen.receipt.laboratoryreport.model.labreport.enums.LabTestStatusEnum;
 import de.gematik.demis.pdfgen.translation.TranslationService;
@@ -56,6 +57,7 @@ public class LabTestFactory {
   private final LaboratoryFhirQueries laboratoryFhirQueries;
   private final SpecimenFactory specimenFactory;
   private final TranslationService displayTranslationService;
+  private final FeatureFlags featureFlags;
 
   @Nonnull
   public List<LabTest> createLabTests(final Bundle bundle) {
@@ -142,18 +144,32 @@ public class LabTestFactory {
   }
 
   private String resolveRatioValues(Ratio ratio) {
-    BigDecimal numerator = ratio.getNumerator().getValue();
-    BigDecimal denominator = ratio.getDenominator().getValue();
-    String code = displayTranslationService.getValueQuantityUnit(ratio.getNumerator().getCode());
-    return String.format("%s:%s %s", numerator, denominator, code).trim();
+    final Quantity numerator = ratio.getNumerator();
+    final BigDecimal numeratorValue = numerator.getValue();
+    final Quantity denominator = ratio.getDenominator();
+    final BigDecimal denominatorValue = denominator.getValue();
+    final String code = displayTranslationService.getValueQuantityUnit(numerator.getCode());
+    if (featureFlags.isPdfOptimization()) {
+      return String.format(
+              "%s%s:%s%s %s",
+              getComparator(numerator).trim(),
+              numeratorValue,
+              getComparator(denominator).trim(),
+              denominatorValue,
+              code)
+          .trim();
+    }
+    return String.format("%s:%s %s", numeratorValue, denominatorValue, code).trim();
   }
 
   private String resolveQuantityValues(Quantity quantity) {
-    String comparator =
-        quantity.getComparator() != null ? quantity.getComparator().toCode() + " " : "";
     String value = quantity.getValue() + " ";
     String code = quantity.getCode();
     String unitOrCode = quantity.getUnit() != null ? quantity.getUnit() : code;
-    return String.format("%s%s%s", comparator, value, unitOrCode).trim();
+    return String.format("%s%s%s", getComparator(quantity), value, unitOrCode).trim();
+  }
+
+  private String getComparator(final Quantity quantity) {
+    return quantity.getComparator() != null ? quantity.getComparator().toCode() + " " : "";
   }
 }

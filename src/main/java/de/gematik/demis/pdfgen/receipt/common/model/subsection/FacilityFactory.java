@@ -27,6 +27,7 @@ package de.gematik.demis.pdfgen.receipt.common.model.subsection;
  * #L%
  */
 
+import de.gematik.demis.pdfgen.FeatureFlags;
 import de.gematik.demis.pdfgen.fhir.extract.NotifierFhirQueries;
 import de.gematik.demis.pdfgen.fhir.extract.SubmitterFhirQueries;
 import de.gematik.demis.pdfgen.translation.TranslationService;
@@ -50,6 +51,7 @@ public class FacilityFactory {
   private final ContactFactory contactFactory;
   private final IdentifierFactory identifierFactory;
   private final TranslationService displayTranslationService;
+  private final FeatureFlags featureFlags;
 
   @Nullable
   public Facility createNotifierFacility(final Bundle bundle) {
@@ -102,7 +104,8 @@ public class FacilityFactory {
             .addressDTO(addressDTO)
             .type(type)
             .telecoms(telecoms)
-            .nameDTO(nameDTO);
+            .nameDTO(nameDTO)
+            .reorderContactPersonText(featureFlags.isPdfOptimization());
 
     return builder.build();
   }
