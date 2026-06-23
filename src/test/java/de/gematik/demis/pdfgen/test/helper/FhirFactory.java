@@ -62,6 +62,13 @@ public final class FhirFactory {
       readResourceFile("bundles/laboratoryReport/LaboratoryReportBundleDv1.json");
   public static final String LABORATORY_REPORT_BUNDLE_DV2_JSON =
       readResourceFile("bundles/laboratoryReport/LaboratoryReportBundleDv2.json");
+  public static final String LABORATORY_REPORT_BUNDLE_DV2_WITHOUT_RELATES_TO_JSON =
+      readResourceFile("bundles/laboratoryReport/LaboratoryReportBundleDv2_withoutRelatesTo.json");
+  public static final String LABORATORY_REPORT_BUNDLE_DV2_WITH_CONTACT_TEXT_JSON =
+      readResourceFile("bundles/laboratoryReport/LaboratoryReportBundleDv2_withContactText.json");
+  public static final String LABORATORY_REPORT_BUNDLE_DV2_WITH_DIFFERENT_TIME_ZONE_JSON =
+      readResourceFile(
+          "bundles/laboratoryReport/LaboratoryReportBundleDv2_withDifferentTimeZone.json");
   public static final String LABORATORY_REPORT_BUNDLE_DV2_JSON_ANONYMOUS_PATIENT =
       readResourceFile("bundles/laboratoryReport/LaboratoryReportBundleBrokenPatient.json");
   public static final String LABORATORY_PARTICIPANT_REPORT_BUNDLE_DV2_JSON =
@@ -90,6 +97,10 @@ public final class FhirFactory {
       readResourceFile("bundles/ValueTextExample.json");
   public static final String DISEASE_NOTIFICATION_BUNDLE_JSON =
       readResourceFile("bundles/disease/DiseaseNotificationBundle.json");
+  public static final String DISEASE_NOTIFICATION_BUNDLE_WITHOUT_RELATES_TO_JSON =
+      readResourceFile("bundles/disease/DiseaseNotificationBundle_withoutRelatesTo.json");
+  public static final String DISEASE_NOTIFICATION_BUNDLE_WITH_CONTACT_NAME_TEXT_JSON =
+      readResourceFile("bundles/disease/DiseaseNotificationBundle_withContactNameText.json");
   public static final String DISEASE_NOTIFICATION_BUNDLE_XML =
       readResourceFile("bundles/disease/DiseaseNotificationBundle.xml");
   public static final String DISEASE_NOTIFICATION_WITH_MISSING_POSTALCODE_BUNDLE_XML =
@@ -113,6 +124,9 @@ public final class FhirFactory {
       readResourceFile("bundles/laboratoryReport/LaboratoryNotificationBundleQuantities.json");
   public static final String LABORATORY_NOTIFICATION_BUNDLE_RATIO_JSON =
       readResourceFile("bundles/laboratoryReport/LaboratoryNotificationBundleRatio.json");
+  public static final String LABORATORY_NOTIFICATION_BUNDLE_RATIO_WITH_COMPARATOR_JSON =
+      readResourceFile(
+          "bundles/laboratoryReport/LaboratoryNotificationBundleRatioWithComparator.json");
   public static final String LABORATORY_NOTIFICATION_BUNDLE_RANGE_JSON =
       readResourceFile("bundles/laboratoryReport/LaboratoryNotificationBundleRange.json");
   public static final String EMPTY_BUNDLE_JSON = readResourceFile("bundles/EmptyBundle.json");

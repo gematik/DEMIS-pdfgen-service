@@ -26,6 +26,11 @@
 
         <th:block th:if="${notifier.hasFacility()}" th:with="facility=${notifier.facility}">
             <tr th:replace='~{fragment/rows :: titleRow(#{common.notifier.facility.header})}'></tr>
+            <th:block th:if="${facility.isReorderContactPersonText()}">
+                <tr th:replace='~{fragment/rows :: paddedRow(
+                            #{common.notifier.facility.nameDTO.person},
+                            ${facility.getNameDTO()?.getFullNameFromContactNameText()})}'></tr>
+            </th:block>
             <tr th:replace='~{fragment/rows :: paddedRow(
                         #{common.notifier.facility.name},
                         ${facility.getNameAndType()})}'></tr>
@@ -38,9 +43,11 @@
             <tr th:replace='~{fragment/rows :: paddedRow(
                         #{common.notifier.facility.nameDTO},
                         ${facility.getTelecomsAsMultipleLines()})}'></tr>
-            <tr th:replace='~{fragment/rows :: paddedRow(
-                        #{common.notifier.facility.nameDTO.person},
-                        ${facility.getNameDTO()?.getFullName()})}'></tr>
+            <th:block th:if="${!facility.isReorderContactPersonText()}">
+                <tr th:replace='~{fragment/rows :: paddedRow(
+                            #{common.notifier.facility.nameDTO.person},
+                            ${facility.getNameDTO()?.getFullName()})}'></tr>
+            </th:block>
         </th:block>
     </th:block>
 </th:block>

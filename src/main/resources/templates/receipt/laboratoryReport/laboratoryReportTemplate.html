@@ -35,8 +35,6 @@
     </div>
 
     <table>
-        <th:block th:replace="~{receipt/common/section/metadata :: metadata(${laboratoryReportTemplateDto.metadata})}"/>
-
         <th:block th:replace='~{receipt/common/section/notification :: notification(${laboratoryReportTemplateDto.notification})}'/>
 
         <th:block th:replace='~{receipt/common/section/recipient :: recipient(${laboratoryReportTemplateDto.recipient})}'/>

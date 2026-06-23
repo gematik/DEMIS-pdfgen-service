@@ -29,6 +29,7 @@ package de.gematik.demis.pdfgen.pdf;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
+import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -47,6 +48,19 @@ public class PdfGenerator {
    */
   private static final int SMALLEST_PDF_BYTES = 1024 * 150;
 
+  private static final String ARIMO_FONT_PATH = "/static/fonts/Arimo-Regular.ttf";
+
+  private static final BaseFont ARIMO_FONT = loadArimoFont();
+
+  private static BaseFont loadArimoFont() {
+    try {
+      log.debug("Arimo font pre-loaded: {}", ARIMO_FONT_PATH);
+      return BaseFont.createFont(ARIMO_FONT_PATH, BaseFont.IDENTITY_H, true);
+    } catch (DocumentException | IOException e) {
+      throw new ExceptionInInitializerError(e);
+    }
+  }
+
   @Value("${server.port:0}")
   private int port = 0;
 
@@ -58,15 +72,13 @@ public class PdfGenerator {
     }
   }
 
-  private static ITextRenderer createRenderer() throws IOException {
+  private static ITextRenderer createRenderer() {
     ITextRenderer renderer = new ITextRenderer();
-    renderer
-        .getFontResolver()
-        .addFont("/static/fonts/Arimo-Regular.ttf", BaseFont.IDENTITY_H, true);
+    renderer.getFontResolver().addFont(ARIMO_FONT, ARIMO_FONT_PATH, null);
     return renderer;
   }
 
-  private static void writePdfBytes(String html, OutputStream out) throws IOException {
+  private static void writePdfBytes(String html, OutputStream out) throws DocumentException {
     ITextRenderer renderer = createRenderer();
     renderer.setDocumentFromString(html);
     renderer.layout();

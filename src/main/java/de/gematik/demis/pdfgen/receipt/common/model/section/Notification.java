@@ -45,8 +45,15 @@ public class Notification {
   private DateTimeHolder dateTime;
   private List<String> relations;
   private NotificationType notificationType;
+  private Metadata metadata;
+  private boolean pdfOptimization;
 
   public String getAllRelatesTo() {
     return concatenateWithDelimiter(LINE_BREAK, relations);
+  }
+
+  public String getAllRelatesToOrDefault() {
+    final String relatesTo = concatenateWithDelimiter(LINE_BREAK, relations);
+    return relatesTo.isEmpty() ? "Keine Angabe" : relatesTo;
   }
 }

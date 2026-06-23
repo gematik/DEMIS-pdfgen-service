@@ -44,6 +44,7 @@ public class ContactFactory {
 
     return NameDTO.builder()
         .prefix(humanName.getPrefixAsSingleString())
+        .text(humanName.getText())
         .givenName(humanName.getGivenAsSingleString())
         .familyName(humanName.getFamily())
         .build();

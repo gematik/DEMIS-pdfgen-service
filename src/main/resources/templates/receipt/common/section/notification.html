@@ -7,30 +7,66 @@
 
     <th:block th:if="${notification != null}">
 
-        <tr th:replace='~{fragment/rows :: entryRow(
-                    #{common.notification.identifier},
-                    ${notification.identifier})}'></tr>
+        <th:block th:if="${!notification.isPdfOptimization()}">
 
-        <tr th:replace='~{fragment/rows :: entryRow(
-                    #{common.notification.status},
-                    ${notification.status})}'></tr>
+            <th:block th:if="${notification.metadata != null}">
+                <tr th:replace="~{fragment/rows :: entryRow(
+                    #{common.metadata.identifier},
+                    ${notification.metadata.identifier})}"></tr>
 
-        <tr th:replace='~{fragment/rows :: entryRow(
-                    #{common.notification.date},
-                    ${notification.dateTime})}'></tr>
+                <tr th:replace='~{fragment/rows :: entryRow(
+                    #{common.metadata.date},
+                    ${notification.metadata.date})}'></tr>
 
-        <th:block th:if="${notification.notificationType?.name() == 'LABORATORY_NOTIFICATION'}">
+            </th:block>
             <tr th:replace='~{fragment/rows :: entryRow(
-                #{common.laboratory.notification.relates-to},
-                ${notification.getAllRelatesTo()})}'></tr>
+                        #{common.notification.identifier},
+                        ${notification.identifier})}'></tr>
+
+            <tr th:replace='~{fragment/rows :: entryRow(
+                        #{common.notification.status},
+                        ${notification.status})}'></tr>
+
+            <tr th:replace='~{fragment/rows :: entryRow(
+                        #{common.notification.date},
+                        ${notification.dateTime})}'></tr>
+
+            <th:block th:if="${notification.notificationType?.name() == 'LABORATORY_NOTIFICATION'}">
+                <tr th:replace='~{fragment/rows :: entryRow(
+                    #{common.laboratory.notification.relates-to},
+                    ${notification.getAllRelatesTo()})}'></tr>
+            </th:block>
+
+            <th:block th:if="${notification.notificationType?.name() == 'DISEASE_NOTIFICATION'}">
+                <tr th:replace='~{fragment/rows :: entryRow(
+                    #{common.notification.relates-to},
+                    ${notification.getAllRelatesTo()})}'></tr>
+            </th:block>
         </th:block>
 
-        <th:block th:if="${notification.notificationType?.name() == 'DISEASE_NOTIFICATION'}">
+        <th:block th:if="${notification.isPdfOptimization()}">
             <tr th:replace='~{fragment/rows :: entryRow(
-                #{common.disease.notification.relates-to},
-                ${notification.getAllRelatesTo()})}'></tr>
-        </th:block>
+                        #{common.notification.identifier},
+                        ${notification.identifier})}'></tr>
 
+            <tr th:replace='~{fragment/rows :: entryRow(
+                #{common.notification.relates-to},
+                ${notification.getAllRelatesToOrDefault()})}'></tr>
+
+            <th:block th:if="${notification.metadata != null}">
+                <tr th:replace="~{fragment/rows :: entryRow(
+                    #{common.metadata.identifier},
+                    ${notification.metadata.identifier})}"></tr>
+            </th:block>
+            <tr th:replace='~{fragment/rows :: entryRow(
+                        #{common.notification.date.pdfOptimization},
+                        ${notification.metadata.date})}'></tr>
+
+            <tr th:replace='~{fragment/rows :: entryRow(
+                        #{common.notification.status},
+                        ${notification.status})}'></tr>
+
+        </th:block>
     </th:block>
 </th:block>
 

@@ -1,6 +1,6 @@
 # Declare Source Digest for the Base Image
-ARG SOURCE_DIGEST=46cefc61289b58c2bf566c433f63481b479f98f99d8debbed7817b701ca48a82
-FROM gematik1/osadl-alpine-openjdk25-jre:1.0.4@sha256:${SOURCE_DIGEST}
+ARG SOURCE_DIGEST=b25f889d5ef8e086d582dabf2134720c6de2564016ae7a85a234215110edddcc
+FROM gematik1/osadl-alpine-openjdk25-jre:1.0.5@sha256:${SOURCE_DIGEST}
 
 ARG SOURCE_DIGEST=46cefc61289b58c2bf566c433f63481b479f98f99d8debbed7817b701ca48a82
 

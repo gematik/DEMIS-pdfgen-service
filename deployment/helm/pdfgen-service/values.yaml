@@ -6,7 +6,7 @@ replicaCount: 2
 # Enables debug mode
 debug:
   enable: false
-
+  params: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:9000"
 # Required Values for the Chart
 required:
   # Define the docker image
@@ -34,13 +34,16 @@ deploymentLabels: {}
 customEnvVars:
   DEMIS_NETWORK_FHIR_UI_DATA_MODEL_TRANSLATION_SERVICE_ADDRESS: http://futs.demis.svc.cluster.local
   FEATURE_FLAG_DISEASE_STRICT: "false"
+  FEATURE_FLAG_PDF_OPTIMIZATION: "false"
   CONFIG_OPTION_PDF_WATERMARK:
-
+  JAVA_TOOL_OPTIONS: "-XX:ActiveProcessorCount=2 -XX:MaxRAMPercentage=30.0 -XX:MaxMetaspaceSize=160m -XX:+UseG1GC"
+  SERVER_PORT: "8080"
+  TZ: "Europe/Berlin"
 # Define custom Container Entrypoint and Arguments (e.g. JVM Tuning)
 # If not given, the Entrypoint defined in Dockerfile will be used
 application:
-  entrypoint: ["java"]
-  parameters: ["-XX:ActiveProcessorCount=2", "-XX:MaxRAMPercentage=30.0", "-XX:+UseG1GC", "-jar", "/app.jar"]
+  entrypoint: []
+  parameters: []
 
 # Define Image Pull Secrets if using private registry
 imagePullSecrets: []

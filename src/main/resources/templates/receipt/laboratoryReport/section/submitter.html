@@ -25,6 +25,11 @@
 
         <th:block th:if="${!submitter.hasPerson() && submitter.hasFacility()}" th:with="facility=${submitter.facility}">
             <tr th:replace='~{fragment/rows :: titleRow(#{laboratory-report.submitter.facility.header})}'></tr>
+            <th:block th:if="${facility.isReorderContactPersonText()}">
+                <tr th:replace='~{fragment/rows :: paddedRow(
+                #{laboratory-report.submitter.facility.nameDTO.person},
+                ${facility.getNameDTO()?.getFullNameFromContactNameText()})}'></tr>
+            </th:block>
             <tr th:replace='~{fragment/rows :: paddedRow(
                 #{laboratory-report.submitter.facility.name},
                 ${facility.getNameAndStationOrType()})}'></tr>
@@ -37,9 +42,11 @@
             <tr th:replace='~{fragment/rows :: paddedRow(
                 #{laboratory-report.submitter.facility.nameDTO},
                 ${facility.getTelecomsAsMultipleLines()})}'></tr>
-            <tr th:replace='~{fragment/rows :: paddedRow(
+            <th:block th:if="${!facility.isReorderContactPersonText()}">
+                <tr th:replace='~{fragment/rows :: paddedRow(
                 #{laboratory-report.submitter.facility.nameDTO.person},
                 ${facility.getNameDTO()?.getFullName()})}'></tr>
+            </th:block>
         </th:block>
 
     </th:block>

@@ -116,7 +116,17 @@ class OrganizationDTOTest {
   @Test
   void getSubmitterDetailsHandlesAbsentDepartment() {
     OrganizationDTO build =
-        OrganizationDTO.builder().nameDTO(new NameDTO("", "First", "Last")).build();
+        OrganizationDTO.builder().nameDTO(new NameDTO("", null, "First", "Last")).build();
+    String submitterDetails = build.getSubmitterDetails();
+    assertThat(submitterDetails).isEqualTo("First Last");
+  }
+
+  @Test
+  void getSubmitterDetailsHandlesAbsentDepartment_prefersContactTextOverFirstAndLastName() {
+    OrganizationDTO build =
+        OrganizationDTO.builder()
+            .nameDTO(new NameDTO("", "Dr. Notifier Person", "First", "Last"))
+            .build();
     String submitterDetails = build.getSubmitterDetails();
     assertThat(submitterDetails).isEqualTo("First Last");
   }
@@ -125,7 +135,7 @@ class OrganizationDTOTest {
   void getSubmitterDetailsWorksWithRelevantInformation() {
     OrganizationDTO build =
         OrganizationDTO.builder()
-            .nameDTO(new NameDTO("", "Contact", "Person"))
+            .nameDTO(new NameDTO("", null, "Contact", "Person"))
             .department("Example Department")
             .telecoms(List.of(new Telecom(TelecomTypeEnum.PHONE, TelecomUseEnum.WORK, "123")))
             .build();

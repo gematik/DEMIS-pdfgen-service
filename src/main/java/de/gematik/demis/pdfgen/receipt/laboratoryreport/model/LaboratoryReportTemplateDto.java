@@ -48,4 +48,5 @@ public class LaboratoryReportTemplateDto {
   private Authentication authentication;
   private boolean qrCodeOnLastPage;
   private String watermarkBase64Image;
+  private boolean pdfOptimization;
 }

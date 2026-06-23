@@ -28,14 +28,20 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.
  */
 
 import java.util.Map;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /** Translation of a questionnaire consisting of title and item texts. */
 @Builder
 @Getter
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
 class QuestionnaireTranslationDto {
 
   /** questionnaire title */

@@ -38,14 +38,14 @@ import de.gematik.demis.pdfgen.FeatureFlags;
 import de.gematik.demis.pdfgen.test.helper.PdfExtractorHelper;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -54,9 +54,10 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.TestPropertySources;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.wiremock.spring.EnableWireMock;
 
 @AutoConfigureMockMvc
-@AutoConfigureWireMock(port = 0)
+@EnableWireMock
 @SpringBootTest(
     properties = "server.port=10102",
     webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -111,18 +112,159 @@ class DiseaseNotificationControllerIntegrationTest {
       Kontakt Telefon: 666555444 E-Mail: mail@labor.de
       """;
 
-  @Test
-  void generatePdfFromBundleJsonString_shouldRespond200WithPdf_DiseaseNotification()
-      throws Exception {
+  @Nested
+  class PdfOptimizationDisabled {
+    @BeforeEach
+    void setup() {
+      when(featureFlags.isPdfOptimization()).thenReturn(false);
+    }
 
-    final var response =
-        generateAndValidateNotification(
-            DISEASE_NOTIFICATION_BUNDLE_JSON, MediaType.APPLICATION_JSON_VALUE);
+    @Test
+    void generatePdfFromBundleJsonString_shouldRespond200WithPdf() throws Exception {
+      final var response =
+          generateAndValidateNotification(
+              DISEASE_NOTIFICATION_BUNDLE_JSON, MediaType.APPLICATION_JSON_VALUE);
 
-    validateOkResponseDiseaseNotification(
-        response,
-        "Empfangsbestätigung Erkrankungsmeldung - Bertha-Luise Hanna Karin Betroffen.pdf");
-    validateBodyDiseaseResponse(response, FOLLOW_UP_PAGE);
+      validateOkResponseDiseaseNotification(
+          response,
+          "Empfangsbestätigung Erkrankungsmeldung - Bertha-Luise Hanna Karin Betroffen.pdf");
+
+      final String expectedNotifierFacilityPdfText =
+          getExpectedNotifierFacilityPdfText(
+              "Kontaktperson Dr. Anna Beate Carolin Ansprechpartner");
+      final String expectedNotification =
+          getExpectedNotificationPdfText("Meldungsverweis (Initiale Meldungs-ID) ABC123");
+
+      validateBodyDiseaseResponse(
+          response, FOLLOW_UP_PAGE, expectedNotifierFacilityPdfText, expectedNotification);
+    }
+
+    @Test
+    void generatePdfFromBundleJsonString_withoutRelatesTo_shouldNotHaveEntryInPdf()
+        throws Exception {
+      final var response =
+          generateAndValidateNotification(
+              DISEASE_NOTIFICATION_BUNDLE_WITHOUT_RELATES_TO_JSON,
+              MediaType.APPLICATION_JSON_VALUE);
+
+      validateOkResponseDiseaseNotification(
+          response,
+          "Empfangsbestätigung Erkrankungsmeldung - Bertha-Luise Hanna Karin Betroffen.pdf");
+
+      final String expectedNotifierFacilityPdfText =
+          getExpectedNotifierFacilityPdfText(
+              "Kontaktperson Dr. Anna Beate Carolin Ansprechpartner");
+
+      // FEATURE_FLAG_PDF_OPTIMIZATION is disabled -> no entry for initial notification id in pdf
+      final String expectedNotification = getExpectedNotificationPdfText("");
+
+      validateBodyDiseaseResponse(
+          response, FOLLOW_UP_PAGE, expectedNotifierFacilityPdfText, expectedNotification);
+    }
+
+    @Test
+    void
+        generatePdfFromBundleJsonString_withContactNameText_shouldHaveContactNameConcatenationAsContactPerson()
+            throws Exception {
+      final var response =
+          generateAndValidateNotification(
+              DISEASE_NOTIFICATION_BUNDLE_WITH_CONTACT_NAME_TEXT_JSON,
+              MediaType.APPLICATION_JSON_VALUE);
+
+      validateOkResponseDiseaseNotification(
+          response,
+          "Empfangsbestätigung Erkrankungsmeldung - Bertha-Luise Hanna Karin Betroffen.pdf");
+
+      // FEATURE_FLAG_PDF_OPTIMIZATION is disabled -> entry "Kontaktperson" build from contact.name
+      // concatenation
+      final String expectedNotifierFacilityPdfText =
+          getExpectedNotifierFacilityPdfText(
+              "Kontaktperson Dr. Anna Beate Carolin Ansprechpartner");
+
+      final String expectedNotification =
+          getExpectedNotificationPdfText("Meldungsverweis (Initiale Meldungs-ID) ABC123");
+
+      validateBodyDiseaseResponse(
+          response, FOLLOW_UP_PAGE, expectedNotifierFacilityPdfText, expectedNotification);
+    }
+  }
+
+  @Nested
+  class PdfOptimizationEnabled {
+    @BeforeEach
+    void setup() {
+      when(featureFlags.isPdfOptimization()).thenReturn(true);
+    }
+
+    @Test
+    void generatePdfFromBundleJsonString_shouldRespond200WithPdf() throws Exception {
+      final var response =
+          generateAndValidateNotification(
+              DISEASE_NOTIFICATION_BUNDLE_JSON, MediaType.APPLICATION_JSON_VALUE);
+
+      validateOkResponseDiseaseNotification(
+          response,
+          "Empfangsbestätigung Erkrankungsmeldung - Bertha-Luise Hanna Karin Betroffen.pdf");
+
+      final String expectedNotifierFacilityPdfText =
+          getExpectedNotifierFacilityPdfText(
+              "Kontaktperson Dr. Anna Beate Carolin Ansprechpartner");
+      final String expectedNotification =
+          getExpectedNotificationPdfText("Meldungsverweis (Initiale Meldungs-ID) ABC123");
+
+      validateBodyDiseaseResponse(
+          response, FOLLOW_UP_PAGE, expectedNotifierFacilityPdfText, expectedNotification);
+    }
+
+    @Test
+    void generatePdfFromBundleJsonString_withoutRelatesTo_shouldHaveEntryInPdf() throws Exception {
+      final var response =
+          generateAndValidateNotification(
+              DISEASE_NOTIFICATION_BUNDLE_WITHOUT_RELATES_TO_JSON,
+              MediaType.APPLICATION_JSON_VALUE);
+
+      validateOkResponseDiseaseNotification(
+          response,
+          "Empfangsbestätigung Erkrankungsmeldung - Bertha-Luise Hanna Karin Betroffen.pdf");
+
+      final String expectedNotifierFacilityPdfText =
+          getExpectedNotifierFacilityPdfText(
+              "Kontaktperson Dr. Anna Beate Carolin Ansprechpartner");
+
+      // FEATURE_FLAG_PDF_OPTIMIZATION is enabled -> entry for initial notification id in pdf "Keine
+      // Angabe"
+      final String expectedNotification =
+          getExpectedNotificationPdfText("Meldungsverweis (Initiale Meldungs-ID) Keine Angabe");
+
+      validateBodyDiseaseResponse(
+          response, FOLLOW_UP_PAGE, expectedNotifierFacilityPdfText, expectedNotification);
+    }
+
+    @Test
+    void
+        generatePdfFromBundleJsonString_withContactNameText_shouldHaveContactNameTextAsContactPerson()
+            throws Exception {
+      final var response =
+          generateAndValidateNotification(
+              DISEASE_NOTIFICATION_BUNDLE_WITH_CONTACT_NAME_TEXT_JSON,
+              MediaType.APPLICATION_JSON_VALUE);
+
+      validateOkResponseDiseaseNotification(
+          response,
+          "Empfangsbestätigung Erkrankungsmeldung - Bertha-Luise Hanna Karin Betroffen.pdf");
+
+      // FEATURE_FLAG_PDF_OPTIMIZATION is enabled -> entry "Kontaktperson" build from
+      // contact.name.text
+      final String expectedNotifierFacilityPdfText =
+          getExpectedNotifierFacilityPdfText(
+              "Kontaktperson Frau Dr. Anna Beate Carolin Ansprechpartner");
+
+      final String expectedNotification =
+          getExpectedNotificationPdfText("Meldungsverweis (Initiale Meldungs-ID) ABC123");
+
+      validateBodyDiseaseResponse(
+          response, FOLLOW_UP_PAGE, expectedNotifierFacilityPdfText, expectedNotification);
+    }
   }
 
   private static Stream<Arguments> inputValuesProvenance() {
@@ -161,7 +303,18 @@ class DiseaseNotificationControllerIntegrationTest {
     validateOkResponseDiseaseNotification(
         response,
         "Empfangsbestätigung Erkrankungsmeldung - Bertha-Luise Hanna Karin Betroffen.pdf");
-    validateBodyDiseaseResponse(response, expectedFurtherInformation);
+
+    final String expectedNotifierFacilityPdfText =
+        getExpectedNotifierFacilityPdfText(
+            "Kontaktperson Frau Dr. Anna Beate Carolin Ansprechpartner");
+    final String expectedNotification =
+        getExpectedNotificationPdfText("Meldungsverweis (Initiale Meldungs-ID) ABC123");
+
+    validateBodyDiseaseResponse(
+        response,
+        expectedFurtherInformation,
+        expectedNotifierFacilityPdfText,
+        expectedNotification);
   }
 
   @Test
@@ -278,7 +431,11 @@ class DiseaseNotificationControllerIntegrationTest {
   }
 
   private void validateBodyDiseaseResponse(
-      final MockHttpServletResponse response, final String furtherInformation) throws Exception {
+      final MockHttpServletResponse response,
+      final String furtherInformation,
+      final String expectedNotifierFacility,
+      final String expectedNotification)
+      throws Exception {
     final String expectedText =
         """
         Empfangsbestätigung\s
@@ -287,24 +444,18 @@ class DiseaseNotificationControllerIntegrationTest {
         Kontakt mit Ihnen aufnehmen, um weitere Daten zu ermitteln. Bitte speichern Sie die Meldungsquittung\s
         datenschutzrechtlich sicher ab, da diese personenbezogene Daten enthält.
         Weiterführende Informationen zur Meldung gemäß §6 IfSG finden Sie in der DEMIS-Wissensdatenbank
-        Meldevorgangs-ID 2d66a331-102a-4047-b666-1b2f18ee955e
-        Zeitpunkt des Eingangs 11.03.2022 09:06
-        Meldungs-ID 7f562b87-f2c2-4e9d-b3fc-37f6b5dca3a5
-        Meldungsstatus Final
-        Meldungserstellung/-änderung 10.03.2022 14:57
-        Meldungsverweis (Initiale Meldungs-ID) ABC123
+        """
+            + expectedNotification
+            + """
         Meldungsempfänger
         Name Kreis Herzogtum Lauenburg | Gesundheitsamt
         Adresse Barlachstr. 4, 23909 Ratzeburg
         Kontakt Telefon: +49 4541 888-380
         E-Mail: gesundheitsdienste@kreis-rz.de
         Meldende Einrichtung
-        Name SlowHealing Klinik (Krankenhaus)
-        Identifier BSNR: 123456789
-        Adresse Krankenhausstraße 1, 21481 Buchhorst, Deutschland
-        Kontakt Telefon: 01234567
-        E-Mail: anna@ansprechpartner.de
-        Kontaktperson Dr. Anna Beate Carolin Ansprechpartner
+        """
+            + expectedNotifierFacility
+            + """
         Betroffene Person
         Name Bertha-Luise Hanna Karin Betroffen
         Geschlecht Weiblich
@@ -421,5 +572,40 @@ class DiseaseNotificationControllerIntegrationTest {
 
   private String cleanupString(final String input) {
     return input.replaceAll("\r\n", "\n").replaceAll("^\\s+", "").replaceAll("\\s+$", "");
+  }
+
+  private String getExpectedNotifierFacilityPdfText(final String contactPersonEntryString) {
+    return (featureFlags.isPdfOptimization() ? contactPersonEntryString + "\n" : "")
+        + """
+        Name SlowHealing Klinik (Krankenhaus)
+        Identifier BSNR: 123456789
+        Adresse Krankenhausstraße 1, 21481 Buchhorst, Deutschland
+        Kontakt Telefon: 01234567
+        E-Mail: anna@ansprechpartner.de
+        """
+        + (!featureFlags.isPdfOptimization() ? contactPersonEntryString + "\n" : "");
+  }
+
+  private String getExpectedNotificationPdfText(String initalNotificationIdEntry) {
+    initalNotificationIdEntry =
+        !initalNotificationIdEntry.isEmpty() ? initalNotificationIdEntry + "\n" : "";
+    return (featureFlags.isPdfOptimization()
+        ? """
+        Meldungs-ID 7f562b87-f2c2-4e9d-b3fc-37f6b5dca3a5
+        """
+            + initalNotificationIdEntry
+            + """
+        Meldevorgangs-ID 2d66a331-102a-4047-b666-1b2f18ee955e
+        Meldungserstellung 11.03.2022 09:06
+        Meldungsstatus Final
+        """
+        : """
+        Meldevorgangs-ID 2d66a331-102a-4047-b666-1b2f18ee955e
+        Zeitpunkt des Eingangs 11.03.2022 09:06
+        Meldungs-ID 7f562b87-f2c2-4e9d-b3fc-37f6b5dca3a5
+        Meldungsstatus Final
+        Meldungserstellung/-änderung 10.03.2022 14:57
+        """
+            + initalNotificationIdEntry);
   }
 }

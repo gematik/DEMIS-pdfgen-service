@@ -40,10 +40,18 @@ public class NameDTO {
   private static final String SPACE_DELIMITER = " ";
 
   private String prefix;
+  private String text;
   private String givenName;
   private String familyName;
 
   public String getFullName() {
     return concatenateWithDelimiter(SPACE_DELIMITER, prefix, givenName, familyName);
+  }
+
+  public String getFullNameFromContactNameText() {
+    if (text != null) {
+      return text;
+    }
+    return getFullName();
   }
 }

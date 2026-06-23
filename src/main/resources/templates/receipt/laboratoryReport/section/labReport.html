@@ -35,9 +35,14 @@
                 #{laboratory-report.lab-report.explanation},
                 ${labReport.conclusion})}'></tr>
 
-            <tr th:replace='~{fragment/rows :: paddedRow(
-                #{laboratory-report.lab-report.order-number},
-                ${labReport.labRequestId})}'></tr>
+            <th:block th:with="label=${labReport.isPdfOptimization()
+        ? #messages.msg('laboratory-report.lab-report.order-number.pdfOptimization')
+        : #messages.msg('laboratory-report.lab-report.order-number')}">
+                <tr th:replace='~{fragment/rows :: paddedRow(
+                    ${label},
+                    ${labReport.labRequestId})}'></tr>
+            </th:block>
+
 
         </th:block>
 

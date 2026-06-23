@@ -44,7 +44,6 @@ public interface ValueSetFeignClient {
    * Value set codes are not used in the DEMIS FHIR documents anymore.
    * We keep this feature for now for backward compatibility.
    */
-
   @GetMapping("${demis.network.fhir-ui-data-model-translation.context-path}ValueSet")
   @Headers("x-fhir-profile: fhir-profile-snapshots")
   CodeDisplay getInfoForCodeFromValueSet(@RequestParam String system, @RequestParam String code);
