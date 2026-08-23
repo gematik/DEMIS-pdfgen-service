@@ -38,6 +38,10 @@ table td {
     white-space: pre-line;
 }
 
+.multi-entry-td {
+    white-space: normal;
+}
+
 table td ul {
     margin: 0;
     padding-left: 14px;
@@ -119,7 +123,7 @@ table td ul {
 }
 
 .sub-title-row {
-    display: flex;
+    /* FlyingSaucer supports only CSS 2.1; layout is float-based (see .sub-title-row-first) */
     width: 100%;
     padding-left: 0;
     padding-top: 0.25cm;
@@ -149,6 +153,29 @@ table td ul {
     font-size: 10.7px;
 }
 
+.notes-row {
+    display: table;
+    width: 100%;
+}
+
+.notes-label {
+    display: table-cell;
+    width: 1%;
+    white-space: nowrap;
+    padding-right: 0.3em;
+}
+
+.notes-value {
+    display: table-cell;
+}
+
+.indent-entry {
+    display: block;
+    white-space: normal;
+    padding-left: 1em;
+    text-indent: -1em;
+}
+
 .heavy-font {
     font-weight: bolder;
 }
@@ -159,7 +186,7 @@ table td ul {
 }
 
 /**
-Set the Container as a Float Layout due to CSS 2.1 Support in FlyingSource
+Set the Container as a Float Layout due to CSS 2.1 Support in FlyingSaucer
 MSDN: https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Legacy_Layout_Methods
  */
 .grid-box {
@@ -178,10 +205,10 @@ Set the boxes aligned in the Grid
 }
 
 .qrcode-placeholder {
+    /* FlyingSaucer supports only CSS 2.1; image is centered via margin auto on the child img */
     width: 38%;
     padding: 0.2cm 0.2cm 0.2cm 0;
     float: right;
-    align-content: center;
     text-align: center;
 }
 
@@ -208,4 +235,8 @@ The Laboratory Id entry uses all the width available
     width: 100%;
     margin: 0 auto;
     padding: 0.1cm 0.1cm 0.3cm;
+}
+
+#box-laboratory-information {
+    word-wrap: normal;
 }

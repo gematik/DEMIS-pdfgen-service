@@ -83,10 +83,11 @@ public class QuestionnaireFactory {
     if (resource.isPresent()) {
       return resource.get();
     }
-    String text = context.translation().item(source.getLinkId());
+    String linkId = source.getLinkId();
+    String text = context.translation().item(linkId);
     List<Answer> answers = createAnswers(source, context);
     List<Item> subitems = createSubitems(source, context);
-    return new Item(text, answers, subitems);
+    return new Item(linkId, text, answers, subitems);
   }
 
   private List<Item> createSubitems(

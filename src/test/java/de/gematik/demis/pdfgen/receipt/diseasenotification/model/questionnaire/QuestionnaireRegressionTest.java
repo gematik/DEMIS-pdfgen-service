@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
-class QuestionnaireTest {
+class QuestionnaireRegressionTest {
 
   @Test
   void findLaboratoryItem_shouldReturnEmptyWhenItemsIsNull() {
@@ -45,7 +45,7 @@ class QuestionnaireTest {
     Questionnaire questionnaire = new Questionnaire("Test", null, "completed");
 
     // when
-    Optional<Item> result = questionnaire.findLabSpecimenTakenItem(true);
+    Optional<Item> result = questionnaire.findLabSpecimenTakenItem(false);
 
     // then
     assertThat(result).isEmpty();
@@ -57,7 +57,7 @@ class QuestionnaireTest {
     Questionnaire questionnaire = new Questionnaire("Test", Collections.emptyList(), "completed");
 
     // when
-    Optional<Item> result = questionnaire.findLabSpecimenTakenItem(true);
+    Optional<Item> result = questionnaire.findLabSpecimenTakenItem(false);
 
     // then
     assertThat(result).isEmpty();
@@ -70,7 +70,7 @@ class QuestionnaireTest {
     Questionnaire questionnaire = new Questionnaire("Test", List.of(simpleItem), "completed");
 
     // when
-    Optional<Item> result = questionnaire.findLabSpecimenTakenItem(true);
+    Optional<Item> result = questionnaire.findLabSpecimenTakenItem(false);
 
     // then
     assertThat(result).isEmpty();
@@ -86,22 +86,20 @@ class QuestionnaireTest {
     Answer answerWithLabSubitem = new Answer("Ja", List.of(labSubitem));
     Item labSpecimenTakenItem =
         new Item(
-            "labSpecimenTaken",
-            "Wurde ein Labor mit der Diagnostik beauftragt?",
-            List.of(answerWithLabSubitem));
+            null, "Wurde ein Labor mit der Diagnostik beauftragt?", List.of(answerWithLabSubitem));
 
     Questionnaire questionnaire =
         new Questionnaire("Test", List.of(labSpecimenTakenItem), "completed");
 
     // when
-    Optional<Item> result = questionnaire.findLabSpecimenTakenItem(true);
+    Optional<Item> result = questionnaire.findLabSpecimenTakenItem(false);
 
     // then
     assertThat(result).contains(labSpecimenTakenItem);
   }
 
   @Test
-  void findLaboratoryItem_shouldReturnLaboratoryItemEvenIfLabIsNull() {
+  void findLaboratoryItem_shouldNotReturnLaboratoryItemWhenLabResourceIsNull() {
     // given
     Resource labResource = Resource.laboratory(null);
     Item labSubitem = new Item(null, "Beauftragtes Labor", labResource);
@@ -109,18 +107,16 @@ class QuestionnaireTest {
     Answer answerWithLabSubitem = new Answer("Ja", List.of(labSubitem));
     Item labSpecimenTakenItem =
         new Item(
-            "labSpecimenTaken",
-            "Wurde ein Labor mit der Diagnostik beauftragt?",
-            List.of(answerWithLabSubitem));
+            null, "Wurde ein Labor mit der Diagnostik beauftragt?", List.of(answerWithLabSubitem));
 
     Questionnaire questionnaire =
         new Questionnaire("Test", List.of(labSpecimenTakenItem), "completed");
 
     // when
-    Optional<Item> result = questionnaire.findLabSpecimenTakenItem(true);
+    Optional<Item> result = questionnaire.findLabSpecimenTakenItem(false);
 
     // then
-    assertThat(result).contains(labSpecimenTakenItem);
+    assertThat(result).isEmpty();
   }
 
   @Test
@@ -136,7 +132,7 @@ class QuestionnaireTest {
     Questionnaire questionnaire = new Questionnaire("Test", List.of(item), "completed");
 
     // when
-    Optional<Item> result = questionnaire.findLabSpecimenTakenItem(true);
+    Optional<Item> result = questionnaire.findLabSpecimenTakenItem(false);
 
     // then
     assertThat(result).isEmpty();
@@ -150,7 +146,7 @@ class QuestionnaireTest {
         new Questionnaire("Test", List.of(itemWithNoAnswers), "completed");
 
     // when
-    Optional<Item> result = questionnaire.findLabSpecimenTakenItem(true);
+    Optional<Item> result = questionnaire.findLabSpecimenTakenItem(false);
 
     // then
     assertThat(result).isEmpty();

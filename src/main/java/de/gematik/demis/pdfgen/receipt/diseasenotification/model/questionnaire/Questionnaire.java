@@ -33,24 +33,28 @@ import java.util.Optional;
 /** Generic questionnaire response */
 public record Questionnaire(String title, List<Item> items, String status) {
 
+  static final String LAB_SPECIMEN_TAKEN_LINK_ID = "labSpecimenTaken";
+
   /**
    * Find the laboratory diagnostic question item (labSpecimenTaken) if present.
    *
    * @return Optional containing the laboratory item if found
    */
-  public Optional<Item> findLaboratoryItem() {
+  public Optional<Item> findLabSpecimenTakenItem(final boolean pdfSecondPageCrEnabled) {
     if (items == null) {
       return Optional.empty();
     }
     return items.stream()
-        .filter(Item::isResourceBlock)
-        .filter(Questionnaire::hasLaboratoryResource)
+        .filter(item -> Questionnaire.isLabSpecimenTakenItem(item, pdfSecondPageCrEnabled))
         .findFirst();
   }
 
-  private static boolean hasLaboratoryResource(Item item) {
+  private static boolean isLabSpecimenTakenItem(Item item, final boolean pdfSecondPageCrEnabled) {
     if (item.getAnswers().isEmpty()) {
       return false;
+    }
+    if (pdfSecondPageCrEnabled) {
+      return LAB_SPECIMEN_TAKEN_LINK_ID.equals(item.getLinkId());
     }
     List<Item> subitems = item.getAnswers().getFirst().subitems();
     return !subitems.isEmpty()

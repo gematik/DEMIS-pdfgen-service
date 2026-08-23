@@ -37,21 +37,22 @@ import lombok.Getter;
 @Getter
 public final class Item {
 
+  private final String linkId;
   private final String text;
   private final List<Answer> answers;
   private final List<Item> subitems;
   private final Resource resource;
 
-  public Item(String text, Answer answer) {
-    this(text, List.of(answer), null, null);
+  public Item(String linkId, String text, Answer answer) {
+    this(linkId, text, List.of(answer), null, null);
   }
 
-  public Item(String text, List<Answer> answers) {
-    this(text, answers, null, null);
+  public Item(String linkId, String text, List<Answer> answers) {
+    this(linkId, text, answers, null, null);
   }
 
-  public Item(String text, List<Answer> answers, List<Item> subitems) {
-    this(text, answers, subitems, null);
+  public Item(String linkId, String text, List<Answer> answers, List<Item> subitems) {
+    this(linkId, text, answers, subitems, null);
   }
 
   /**
@@ -60,7 +61,7 @@ public final class Item {
    * @param resource resource
    */
   public Item(Resource resource) {
-    this(null, null, null, resource);
+    this(null, null, null, null, resource);
   }
 
   /**
@@ -69,11 +70,13 @@ public final class Item {
    * @param text label text
    * @param resource resource
    */
-  public Item(String text, Resource resource) {
-    this(text, null, null, resource);
+  public Item(String linkId, String text, Resource resource) {
+    this(linkId, text, null, null, resource);
   }
 
-  private Item(String text, List<Answer> answers, List<Item> subitems, Resource resource) {
+  private Item(
+      String linkId, String text, List<Answer> answers, List<Item> subitems, Resource resource) {
+    this.linkId = linkId;
     this.text = text;
     this.answers = Objects.requireNonNullElseGet(answers, Collections::emptyList);
     this.subitems = Objects.requireNonNullElseGet(subitems, Collections::emptyList);

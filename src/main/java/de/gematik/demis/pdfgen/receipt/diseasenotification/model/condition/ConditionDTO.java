@@ -45,9 +45,14 @@ public record ConditionDTO(
     DateTimeHolder onsetDate,
     DateTimeHolder recordedDate,
     List<String> symptoms,
+    // TODO: remove note, when FEATURE_FLAG_PDF_SPLIT_NOTES gets removed
     String note,
+    List<String> notes,
     String clinicalStatus,
-    String verificationStatus) {
+    String verificationStatus,
+    boolean displayDateFields,
+    boolean displaySymptoms,
+    boolean pdfSplitNotes) {
 
   /**
    * Create text with line breaks, listing every symptom on a new line.

@@ -2,6 +2,21 @@
 
 # Release pdfgen-Service
 
+## Release 2.12.0
+- arranged jvm options
+- removed date fields for §7.3 disease notifications from PDF second page
+- removed symptoms for HIV disease notifications from PDF second page
+- added FEATURE_FLAG_WITHOUT_DATE_FIELDS_7_3
+- fixed handling of falsy custom environment variables (false, 0) in helm chart
+- upgraded Flying Saucer to 10.4.0
+- added labSpecimenTaken questionnaire item to pdf second page regardless of the answer
+- added FEATURE_FLAG_PDF_SECOND_PAGE_CR
+- updated spring-parent to 4.1.8
+- updated docker base image to gematik1/osadl-alpine-openjdk25-jre:1.0.7
+- added vex documents to repository
+- added line break in between condition notes
+- added FEATURE_FLAG_PDF_SPLIT_NOTES
+
 ## Release 2.11.0
 - arranged jvm options and resource limits
 - optimized custom environment variables handling in helm chart

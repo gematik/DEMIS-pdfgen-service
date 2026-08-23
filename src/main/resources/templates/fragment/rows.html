@@ -27,6 +27,15 @@
         <td th:text='${right}'></td>
     </tr>
 
+    <tr th:fragment="paddedRowListData(left,right)" th:if="${!#lists.isEmpty(right)}">
+        <th class="single-padded italic-header" th:text="${left}"></th>
+        <td class="multi-entry-td">
+            <th:block th:each="rightEntry : ${right}">
+                <div class="indent-entry" th:text="${rightEntry}"></div>
+            </th:block>
+        </td>
+    </tr>
+
     <tr th:fragment="doublePaddedRow(left,right)" th:if="${!#strings.isEmpty(right)}">
         <th class="double-padded italic-header" th:text='${left}'></th>
         <td th:text='${right}'></td>

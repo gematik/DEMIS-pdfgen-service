@@ -126,12 +126,14 @@ public class ResourceFactory {
       QuestionnaireResponse.QuestionnaireResponseItemComponent source,
       Context context,
       Reference reference) {
-    String text = context.translation().item(source.getLinkId());
+    String linkId = source.getLinkId();
+    String text = context.translation().item(linkId);
     IBaseResource resource = reference.getResource();
     if (resource instanceof Organization organization) {
       log.debug("Disease notification questionnaire response renders organization resource");
       return Optional.of(
-          new Item(text, Resource.organization(this.organizationFactory.create(organization))));
+          new Item(
+              linkId, text, Resource.organization(this.organizationFactory.create(organization))));
     }
     log.warn(
         "Unsupported type of single disease notification questionnaire response item resource reference. Reference: {}",
@@ -143,14 +145,15 @@ public class ResourceFactory {
       QuestionnaireResponse.QuestionnaireResponseItemComponent source, Context context) {
     log.debug(
         "Disease notification questionnaire response renders hospitalization resources block");
+    String linkId = source.getLinkId();
     List<Item> subitems =
         this.hospitalizationFactory.create(context.questionnaire()).stream()
             .map(Resource::hospitalization)
             .map(Item::new)
             .toList();
     Answer answer = new Answer(getAnswerValue(source), subitems);
-    String text = context.translation().item(source.getLinkId());
-    return new Item(text, answer);
+    String text = context.translation().item(linkId);
+    return new Item(linkId, text, answer);
   }
 
   private String getAnswerValue(QuestionnaireResponse.QuestionnaireResponseItemComponent source) {

@@ -29,12 +29,12 @@ package de.gematik.demis.pdfgen.pdf;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.pdf.BaseFont;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import lombok.extern.slf4j.Slf4j;
+import org.openpdf.text.DocumentException;
+import org.openpdf.text.pdf.BaseFont;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.xhtmlrenderer.pdf.ITextRenderer;

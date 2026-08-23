@@ -91,10 +91,11 @@ class ImmunizationBlockFactory {
    */
   public Item createItem(
       QuestionnaireResponse.QuestionnaireResponseItemComponent immunizationBlock, Context context) {
+    final String linkId = immunizationBlock.getLinkId();
     List<Item> subitems = createImmunizations(immunizationBlock, context);
     Answer answer = new Answer(getAnswerValue(immunizationBlock), subitems);
-    String text = context.translation().item(immunizationBlock.getLinkId());
-    return new Item(text, answer);
+    String text = context.translation().item(linkId);
+    return new Item(linkId, text, answer);
   }
 
   /**
@@ -112,18 +113,13 @@ class ImmunizationBlockFactory {
   private List<Item> createImmunizations(
       QuestionnaireResponse.QuestionnaireResponseItemComponent immunizationBlock, Context context) {
     List<Immunization> immunizations = getSortedImmunizations(immunizationBlock);
-    String itemText = getImmunizationItemText(immunizationBlock, context);
+    final String firstImmunizationLinkId =
+        immunizationBlock.getAnswerFirstRep().getItemFirstRep().getLinkId();
+    String itemText = context.translation().item(firstImmunizationLinkId);
     return immunizations.stream()
         .map(Resource::immunization)
-        .map(r -> new Item(itemText, r))
+        .map(r -> new Item(firstImmunizationLinkId, itemText, r))
         .toList();
-  }
-
-  private String getImmunizationItemText(
-      QuestionnaireResponse.QuestionnaireResponseItemComponent immunizationBlock, Context context) {
-    QuestionnaireResponse.QuestionnaireResponseItemComponent firstImmunization =
-        immunizationBlock.getAnswerFirstRep().getItemFirstRep();
-    return context.translation().item(firstImmunization.getLinkId());
   }
 
   private String getAnswerValue(QuestionnaireResponse.QuestionnaireResponseItemComponent source) {

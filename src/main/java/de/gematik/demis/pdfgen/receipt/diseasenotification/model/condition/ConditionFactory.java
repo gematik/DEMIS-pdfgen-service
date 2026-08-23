@@ -27,6 +27,7 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification.model.condition;
  * #L%
  */
 
+import de.gematik.demis.pdfgen.FeatureFlags;
 import de.gematik.demis.pdfgen.fhir.extract.ConditionQueries;
 import de.gematik.demis.pdfgen.translation.TranslationService;
 import de.gematik.demis.pdfgen.utils.DateTimeHolder;
@@ -38,6 +39,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4.model.Annotation;
 import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.CanonicalType;
 import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Condition.ConditionEvidenceComponent;
 import org.jetbrains.annotations.NotNull;
@@ -49,30 +51,52 @@ public class ConditionFactory {
 
   private final ConditionQueries conditionQueries;
   private final TranslationService translationService;
+  private final FeatureFlags featureFlags;
 
   @Nullable
   public ConditionDTO create(final Bundle bundle) {
     if (bundle == null) {
       return null;
     }
-    return this.conditionQueries.getCondition(bundle).map(this::create).orElse(null);
+    return this.conditionQueries
+        .getCondition(bundle)
+        .map(fhirCondition -> create(fhirCondition, isNonNominal(bundle)))
+        .orElse(null);
   }
 
-  private ConditionDTO create(Condition fhirCondition) {
+  private ConditionDTO create(Condition fhirCondition, final boolean isNonNominal) {
     ConditionDTO.ConditionDTOBuilder builder = ConditionDTO.builder();
     setDisease(fhirCondition, builder);
     setOnsetDate(fhirCondition, builder);
     setRecordedDate(fhirCondition, builder);
     setSymptoms(fhirCondition, builder);
-    setNote(fhirCondition, builder);
+    setNotes(fhirCondition, builder);
     setClinicalStatus(fhirCondition, builder);
     setVerificationStatus(fhirCondition, builder);
+    setDisplayDateFields(builder, isNonNominal);
+    setDisplaySymptoms(fhirCondition, builder);
+    setPdfSplitNotes(builder);
     return builder.build();
   }
 
   private void setDisease(Condition fhirCondition, ConditionDTO.ConditionDTOBuilder builder) {
     builder.disease(this.translationService.resolveCodeableConceptValues(fhirCondition.getCode()));
     builder.diseaseCode(fhirCondition.getCode().getCodingFirstRep().getCode());
+  }
+
+  private void setDisplayDateFields(
+      ConditionDTO.ConditionDTOBuilder builder, final boolean isNonNominal) {
+    builder.displayDateFields(!isNonNominal || !featureFlags.isWithoutDateFields73());
+  }
+
+  private void setDisplaySymptoms(
+      Condition fhirCondition, ConditionDTO.ConditionDTOBuilder builder) {
+    final String diseaseCode = fhirCondition.getCode().getCodingFirstRep().getCode();
+    builder.displaySymptoms(!"hivd".equals(diseaseCode) || !featureFlags.isPdfOptimization());
+  }
+
+  private void setPdfSplitNotes(ConditionDTO.ConditionDTOBuilder builder) {
+    builder.pdfSplitNotes(featureFlags.isPdfSplitNotes());
   }
 
   private void setOnsetDate(Condition fhirCondition, ConditionDTO.ConditionDTOBuilder builder) {
@@ -96,13 +120,21 @@ public class ConditionFactory {
         .toList();
   }
 
-  private void setNote(Condition fhirCondition, ConditionDTO.ConditionDTOBuilder builder) {
-    final String note =
-        fhirCondition.getNote().stream()
-            .map(Annotation::getText)
-            .collect(Collectors.joining(System.lineSeparator()));
-    if (StringUtils.isNotBlank(note)) {
-      builder.note(note);
+  private void setNotes(Condition fhirCondition, ConditionDTO.ConditionDTOBuilder builder) {
+    if (featureFlags.isPdfSplitNotes()) {
+      builder.notes(
+          fhirCondition.getNote().stream()
+              .map(Annotation::getText)
+              .filter(StringUtils::isNotBlank)
+              .toList());
+    } else {
+      final String note =
+          fhirCondition.getNote().stream()
+              .map(Annotation::getText)
+              .collect(Collectors.joining(System.lineSeparator()));
+      if (StringUtils.isNotBlank(note)) {
+        builder.note(note);
+      }
     }
   }
 
@@ -120,5 +152,14 @@ public class ConditionFactory {
     if (status != null) {
       builder.clinicalStatus(this.translationService.resolveCodeableConceptValues(status));
     }
+  }
+
+  private boolean isNonNominal(final Bundle bundle) {
+    final List<CanonicalType> metaProfile = bundle.getMeta().getProfile();
+    if (metaProfile != null && !metaProfile.isEmpty()) {
+      final String metaProfileUrl = metaProfile.getFirst().getValue();
+      return metaProfileUrl.contains("NonNominal");
+    }
+    return false;
   }
 }
