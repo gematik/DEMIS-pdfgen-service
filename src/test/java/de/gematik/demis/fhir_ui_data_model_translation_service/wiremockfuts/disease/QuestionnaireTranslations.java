@@ -61,6 +61,7 @@ final class QuestionnaireTranslations implements Feature {
   private void createQuestionnaireTranslations() {
     putCommon();
     putCvdd();
+    putHivd();
   }
 
   private void putCommon() {
@@ -119,5 +120,31 @@ final class QuestionnaireTranslations implements Feature {
         "outbreakNotificationId": "Notification-Id der zugehörigen Ausbruchsmeldung"
     }
 }""");
+  }
+
+  private void putHivd() {
+    this.questionnaires.put(
+        "hivd",
+"""
+                    {
+    "title": "Humanes Immundefizienz-Virus (HIV)-spezifische klinische und epidemiologische Angaben",
+    "items": {
+        "firstDiagnosisGER": "Ist dies der erste erfolgte Nachweis der HIV-Infektion in Deutschland?",
+        "lastNegTest": "Wann wurde der letzte negative HIV-Test durchgeführt?",
+        "firstDiagnosisAbroad": "Wurde zuvor ein positiver Test im Ausland durchgeführt?",
+        "countryOrigin": "Welches ist das Herkunftsland der betroffenen Person? (Das Land, in dem sich die Person Zeit ihres Lebens überwiegend aufgehalten hat)",
+        "countryOfInfection": "Welches ist das wahrscheinliche Infektionsland?",
+        "stadiumHIVD": "Welches Stadium der HIV-Erkrankung liegt vor (Siehe CDC-Klassifikation von 1993)?",
+        "cdcC": "Welche der AIDS definierenden Erkrankungen liegen vor?",
+        "coinfections": "Liegen Koinfektionen vor?",
+        "hivPrEPStatusHIVD": "Wurde innerhalb der letzten 12 Monate vor der HIV-Erstdiagnose eine HIV-PrEP eingenommen?",
+        "sexWorkSold": "Hat die betroffene Person Sexarbeit ausgeübt?",
+        "sexWorkBought": "Hat die betroffene Person Sexarbeit in Anspruch genommen?",
+        "infectionPathRisk": "Auf welchem Weg hat sich die betroffene Person wahrscheinlich infiziert?",
+        "infectionSource": "Auf welchem Wege hat sich die Person infiziert, die als Infektionsquelle vermutet wird?",
+        "infectionSourceSecure": "Ist die HIV-Infektion der Person, die als Infektionsquelle vermutet wird, gesichert?"
+    }
+}
+""");
   }
 }

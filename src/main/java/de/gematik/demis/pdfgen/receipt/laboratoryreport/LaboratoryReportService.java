@@ -83,7 +83,7 @@ public class LaboratoryReportService {
   }
 
   /**
-   * Run a complete PDF rendering to initialize FHIR, Thymeleaf and Flying Sourcer.
+   * Run a complete PDF rendering to initialize FHIR, Thymeleaf and Flying Saucer.
    *
    * @throws PdfGenerationException initialization failed
    */

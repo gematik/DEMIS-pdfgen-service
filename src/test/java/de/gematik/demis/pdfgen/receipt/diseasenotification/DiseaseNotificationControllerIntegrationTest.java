@@ -36,6 +36,7 @@ import de.gematik.demis.fhir_ui_data_model_translation_service.wiremockfuts.Wire
 import de.gematik.demis.fhir_ui_data_model_translation_service.wiremockfuts.disease.DiseaseFeature;
 import de.gematik.demis.pdfgen.FeatureFlags;
 import de.gematik.demis.pdfgen.test.helper.PdfExtractorHelper;
+import java.io.IOException;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -113,10 +114,12 @@ class DiseaseNotificationControllerIntegrationTest {
       """;
 
   @Nested
-  class PdfOptimizationDisabled {
+  class PdfFeatureFlagsDisabled {
     @BeforeEach
     void setup() {
       when(featureFlags.isPdfOptimization()).thenReturn(false);
+      when(featureFlags.isWithoutDateFields73()).thenReturn(false);
+      when(featureFlags.isPdfSplitNotes()).thenReturn(false);
     }
 
     @Test
@@ -187,13 +190,35 @@ class DiseaseNotificationControllerIntegrationTest {
       validateBodyDiseaseResponse(
           response, FOLLOW_UP_PAGE, expectedNotifierFacilityPdfText, expectedNotification);
     }
+
+    @Test
+    void
+        generatePdfFromNonNominalBundleJsonString_shouldRespond200WithPdf_NonNominal_shouldHaveDefaultDateAndSymptomsEntry()
+            throws Exception {
+      final var response =
+          generateAndValidateNotification(
+              DISEASE_NOTIFICATION_BUNDLE_HIV_JSON, MediaType.APPLICATION_JSON_VALUE);
+
+      validateOkResponseDiseaseNotification(
+          response,
+          "Empfangsbestätigung Erkrankungsmeldung - Bertha-Luise Hanna Karin Betroffen.pdf");
+
+      final String expectedNotifierFacilityPdfText =
+          getExpectedNotifierFacilityPdfText(
+              "Kontaktperson Dr. Anna Beate Carolin Ansprechpartner");
+      final String expectedNotification = getExpectedNotificationPdfText("");
+
+      validateBodyResponseForHIVD(response, expectedNotification, expectedNotifierFacilityPdfText);
+    }
   }
 
   @Nested
-  class PdfOptimizationEnabled {
+  class PdfFeatureFlagsEnabled {
     @BeforeEach
     void setup() {
       when(featureFlags.isPdfOptimization()).thenReturn(true);
+      when(featureFlags.isWithoutDateFields73()).thenReturn(true);
+      when(featureFlags.isPdfSplitNotes()).thenReturn(true);
     }
 
     @Test
@@ -213,7 +238,7 @@ class DiseaseNotificationControllerIntegrationTest {
           getExpectedNotificationPdfText("Meldungsverweis (Initiale Meldungs-ID) ABC123");
 
       validateBodyDiseaseResponse(
-          response, FOLLOW_UP_PAGE, expectedNotifierFacilityPdfText, expectedNotification);
+          response, getFollowUpPage(), expectedNotifierFacilityPdfText, expectedNotification);
     }
 
     @Test
@@ -237,7 +262,7 @@ class DiseaseNotificationControllerIntegrationTest {
           getExpectedNotificationPdfText("Meldungsverweis (Initiale Meldungs-ID) Keine Angabe");
 
       validateBodyDiseaseResponse(
-          response, FOLLOW_UP_PAGE, expectedNotifierFacilityPdfText, expectedNotification);
+          response, getFollowUpPage(), expectedNotifierFacilityPdfText, expectedNotification);
     }
 
     @Test
@@ -263,7 +288,27 @@ class DiseaseNotificationControllerIntegrationTest {
           getExpectedNotificationPdfText("Meldungsverweis (Initiale Meldungs-ID) ABC123");
 
       validateBodyDiseaseResponse(
-          response, FOLLOW_UP_PAGE, expectedNotifierFacilityPdfText, expectedNotification);
+          response, getFollowUpPage(), expectedNotifierFacilityPdfText, expectedNotification);
+    }
+
+    @Test
+    void generatePdfFromNonNominalBundleJsonString_NonNominal_shouldNotHaveDateAndSymptomsEntry()
+        throws Exception {
+      final var response =
+          generateAndValidateNotification(
+              DISEASE_NOTIFICATION_BUNDLE_HIV_JSON, MediaType.APPLICATION_JSON_VALUE);
+
+      validateOkResponseDiseaseNotification(
+          response,
+          "Empfangsbestätigung Erkrankungsmeldung - Bertha-Luise Hanna Karin Betroffen.pdf");
+
+      final String expectedNotifierFacilityPdfText =
+          getExpectedNotifierFacilityPdfText(
+              "Kontaktperson Frau Dr. Anna Beate Carolin Ansprechpartner");
+      final String expectedNotification =
+          getExpectedNotificationPdfText("Meldungsverweis (Initiale Meldungs-ID) Keine Angabe");
+
+      validateBodyResponseForHIVD(response, expectedNotification, expectedNotifierFacilityPdfText);
     }
   }
 
@@ -291,7 +336,7 @@ class DiseaseNotificationControllerIntegrationTest {
         Authentifizierungsmethode {authenticationMethod}
         Vertrauensniveau substanziell
         """
-            + FOLLOW_UP_PAGE;
+            + getFollowUpPage();
     expectedFurtherInformation =
         expectedFurtherInformation.replace("{notificationMethod}", notificationMethod);
     expectedFurtherInformation =
@@ -570,6 +615,130 @@ class DiseaseNotificationControllerIntegrationTest {
     assertThat(pdfText).as("disease notification PDF text").isEqualTo(cleanupString(expectedText));
   }
 
+  private void validateBodyResponseForHIVD(
+      final MockHttpServletResponse response,
+      final String expectedNotificationText,
+      final String expectedNotifierFacility)
+      throws IOException {
+    final String expectedText =
+        """
+            Empfangsbestätigung\s
+            Erkrankungsmeldung
+            Vielen Dank für Ihre Meldung. Die Daten wurden an das zuständige Gesundheitsamt gemeldet. Ggf. wird man von dort\s
+            Kontakt mit Ihnen aufnehmen, um weitere Daten zu ermitteln. Bitte speichern Sie die Meldungsquittung\s
+            datenschutzrechtlich sicher ab, da diese personenbezogene Daten enthält.
+            Weiterführende Informationen zur Meldung gemäß §6 IfSG finden Sie in der DEMIS-Wissensdatenbank
+            """
+            + expectedNotificationText
+            + """
+            Meldende Einrichtung
+            """
+            + expectedNotifierFacility
+            + """
+            Betroffene Person
+            Name Bertha-Luise Hanna Karin Betroffen
+            Geschlecht Weiblich
+            Geburtsdatum 09.06.1999
+            Adresse (Hauptwohnsitz) Berthastraße 123, 12345 Betroffenenstadt, Deutschland
+            Kontakt Telefon: 01234567
+            E-Mail: bertha@betroffen.de
+            Erkrankung
+            Verifikationsstatus der Diagnose Bestätigt
+            Klinischer Status Aktiv
+            Meldetatbestand HIV
+            Erkrankungsbeginn 01.01.2022
+            Datum der Diagnosestellung 02.01.2022
+            Diagnosehinweise Textueller Hinweis
+            Ein sehr langer Eintrag muss umgebrochen und in der zweiten Zeile eingerückt\s
+            werden
+            Weitere Hinweise
+            Humanes Immundefizienz-Virus (HIV)-spezifische klinische und epidemiologische Angaben
+            Status http://hl7.org/fhir/questionnaire-answers-status: completed
+            Ist dies der erste erfolgte Nachweis der HIV- Ja
+            Infektion in Deutschland?
+            Wann wurde der letzte negative HIV-Test 02.2024
+            durchgeführt?
+            Wurde zuvor ein positiver Test im Ausland Nein
+            durchgeführt?
+            Welches ist das Herkunftsland der betroffenen Deutschland
+            Person? (Das Land, in dem sich die Person\s
+            Zeit ihres Lebens überwiegend aufgehalten\s
+            hat)
+            Welches ist das wahrscheinliche Deutschland
+            Infektionsland?
+            Welches Stadium der HIV-Erkrankung liegt AIDS definierende Erkrankung (CDC-C)
+            vor (Siehe CDC-Klassifikation von 1993)?
+            Welche der AIDS definierenden Erkrankungen\s
+            liegen vor? Burkitt lymphoma co-occurrent with human immunodeficiency virus infection\s
+            (disorder)
+            Candidiasis of esophagus co-occurrent with human immunodeficiency virus\s
+            infection (disorder)
+            Liegen Koinfektionen vor? Unbekannt
+            Wurde innerhalb der letzten 12 Monate vor Nein
+            der HIV-Erstdiagnose eine HIV-PrEP\s
+            eingenommen?
+            Hat die betroffene Person Sexarbeit ausgeübt? Nein
+            Hat die betroffene Person Sexarbeit in Nein
+            Anspruch genommen?
+            Auf welchem Weg hat sich die betroffene Sexuell aktiv mit Männern
+            Person wahrscheinlich infiziert?
+            Auf welchem Wege hat sich die Person Sexuell aktiv mit Männern
+            infiziert, die als Infektionsquelle vermutet wird?
+            Ist die HIV-Infektion der Person, die als Ja
+            Infektionsquelle vermutet wird, gesichert?
+            Informationen zur Weitergabe der Meldungs-ID für zugehörige Folge- und\s
+            Ergänzungsmeldungen durch andere Einrichtungen
+            Das DEMIS-Lifecyclemanagement von Meldungen beschreibt in verschiedenen Szenarien den Umgang mit Meldungen\s
+            bzw. mit der Meldungs-ID bei Korrekturen und Ergänzungen sowie bei Ergänzungen von meldepflichtigen Informationen\s
+            durch mehrere Melder.
+            Insbesondere wenn weitere Meldepflichtige zusätzliche Inhalte ergänzen sollen, sollte die Meldungs-ID weitergegeben\s
+            werden, damit auf diese Meldung verwiesen werden kann. So wird gewährleistet, dass auf Seite der\s
+            Meldungsempfänger (z.B. im Gesundheitsamt) diese Meldungen eindeutig in Zusammenhang gebracht werden können.
+            Betroffene Person Meldungs-ID\s
+            Geschlecht Weiblich\s
+            Geburtsdatum (Monat/Jahr) 06/1999\s
+            Ersten 3 Ziffern der PLZ der Adresse 123
+            Meldende Einrichtung\s
+            Name SlowHealing Klinik (Krankenhaus)\s
+            Adresse Krankenhausstraße 1, 21481 Buchhorst, Deutschland\s
+            Kontakt Telefon: 01234567 E-Mail: anna@ansprechpartner.de
+            7f562b87-f2c2-4e9d-b3fc-37f6b5dca3a5
+            """
+            + (!featureFlags.isPdfSplitNotes()
+                ? """
+            Meldetatbestand HIVD\s
+            """
+                : """
+            Meldetatbestand HIVD
+            """)
+            + (!featureFlags.isWithoutDateFields73()
+                ? """
+                            Datum der Diagnosestellung 02.01.2022\s
+                            Erkrankungsbeginn 01.01.2022\s
+                            """
+                : """
+                            """)
+            + (!featureFlags.isPdfOptimization()
+                ? """
+                                    Symptome Keine Angabe\s
+                                    """
+                : """
+                                    """)
+            + (!featureFlags.isPdfSplitNotes()
+                ? """
+                Diagnosehinweise Textueller Hinweis Ein sehr langer Eintrag muss\s
+                umgebrochen und in der zweiten Zeile eingerückt werden Weitere Hinweise
+                """
+                : """
+            Diagnosehinweise Textueller Hinweis
+            Ein sehr langer Eintrag muss umgebrochen und in der\s
+            zweiten Zeile eingerückt werden
+            Weitere Hinweise
+            """);
+    final String pdfText = PdfExtractorHelper.extractPdfText(response.getContentAsByteArray());
+    assertThat(pdfText).as("disease notification PDF text").isEqualTo(cleanupString(expectedText));
+  }
+
   private String cleanupString(final String input) {
     return input.replaceAll("\r\n", "\n").replaceAll("^\\s+", "").replaceAll("\\s+$", "");
   }
@@ -607,5 +776,48 @@ class DiseaseNotificationControllerIntegrationTest {
         Meldungserstellung/-änderung 10.03.2022 14:57
         """
             + initalNotificationIdEntry);
+  }
+
+  private String getFollowUpPage() {
+    final String followUpPage =
+        """
+      Informationen zur Weitergabe der Meldungs-ID für zugehörige Folge- und\s
+      Ergänzungsmeldungen durch andere Einrichtungen
+      Das DEMIS-Lifecyclemanagement von Meldungen beschreibt in verschiedenen Szenarien den Umgang mit Meldungen\s
+      bzw. mit der Meldungs-ID bei Korrekturen und Ergänzungen sowie bei Ergänzungen von meldepflichtigen Informationen\s
+      durch mehrere Melder.
+      Insbesondere wenn weitere Meldepflichtige zusätzliche Inhalte ergänzen sollen, sollte die Meldungs-ID weitergegeben\s
+      werden, damit auf diese Meldung verwiesen werden kann. So wird gewährleistet, dass auf Seite der\s
+      Meldungsempfänger (z.B. im Gesundheitsamt) diese Meldungen eindeutig in Zusammenhang gebracht werden können.
+      Betroffene Person Meldungs-ID\s
+      Geschlecht Weiblich\s
+      Geburtsdatum (Monat/Jahr) 06/1999\s
+      Ersten 3 Ziffern der PLZ der Adresse 123
+      Meldende Einrichtung\s
+      Name SlowHealing Klinik (Krankenhaus)\s
+      Adresse Krankenhausstraße 1, 21481 Buchhorst, Deutschland\s
+      Kontakt Telefon: 01234567 E-Mail: anna@ansprechpartner.de
+      7f562b87-f2c2-4e9d-b3fc-37f6b5dca3a5
+      Meldetatbestand CVDD\s
+      Datum der Diagnosestellung 02.01.2022\s
+      Erkrankungsbeginn 01.01.2022\s
+      Symptome Fieber Halsschmerzen/-entzündung Husten Pneunomie\s
+      """
+            + (!featureFlags.isPdfSplitNotes()
+                ? """
+                  (Lungenentzündung) Schnupfen akutes schweres Atemnotsyndrom (ARDS)\s
+                  """
+                : """
+                  (Lungenentzündung) Schnupfen akutes schweres Atemnotsyndrom (ARDS)
+                  """)
+            + """
+      Diagnosehinweise Textueller Hinweis
+      Laborbeauftragung Ja\s
+      Beauftragtes Labor\s
+      Name QuickScan Labor (Erregerdiagnostische Untersuchungsstelle)\s
+      Adresse Laborstraße 345, 21481 Buchhorst, Deutschland\s
+      Kontakt Telefon: 666555444 E-Mail: mail@labor.de
+      """;
+    return followUpPage;
   }
 }

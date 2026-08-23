@@ -37,7 +37,15 @@ import de.gematik.demis.pdfgen.fhir.extract.ConditionQueries;
 import de.gematik.demis.pdfgen.translation.TranslationService;
 import java.util.List;
 import java.util.Optional;
-import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.Annotation;
+import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.CodeableConcept;
+import org.hl7.fhir.r4.model.Coding;
+import org.hl7.fhir.r4.model.Condition;
+import org.hl7.fhir.r4.model.DateTimeType;
+import org.hl7.fhir.r4.model.DiagnosticReport;
+import org.hl7.fhir.r4.model.Patient;
+import org.hl7.fhir.r4.model.Specimen;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,7 +54,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class ConditionFactoryTest {
+class ConditionFactoryRegressionTest {
+  // TODO: delete this test class when FEATURE_FLAG_PDF_SPLIT_NOTES gets removed
 
   private Bundle bundle;
 
@@ -78,7 +87,7 @@ class ConditionFactoryTest {
 
   @Test
   void create_shouldTestFactoryCreation() {
-    when(featureFlags.isPdfSplitNotes()).thenReturn(true);
+    when(featureFlags.isPdfSplitNotes()).thenReturn(false);
     CodeableConcept diseaseCode =
         new CodeableConcept(new Coding("diseases", "disease", "dontshowme"));
     String diseaseTranslation = "covid";
@@ -113,13 +122,13 @@ class ConditionFactoryTest {
     assertThat(actualConditionDTO.onsetDate()).hasToString("01.01.2022");
     assertThat(actualConditionDTO.recordedDate()).hasToString("02.01.2022");
     assertThat(actualConditionDTO.symptoms()).containsExactly(symptomTranslation);
-    assertThat(actualConditionDTO.note()).isNull();
-    assertThat(actualConditionDTO.notes().getFirst()).isEqualTo(note);
+    assertThat(actualConditionDTO.note()).isEqualTo(note);
+    assertThat(actualConditionDTO.notes()).isNull();
   }
 
   @Test
   void shouldNullifyEmptyAnnotation() {
-    when(featureFlags.isPdfSplitNotes()).thenReturn(true);
+    when(featureFlags.isPdfSplitNotes()).thenReturn(false);
     CodeableConcept diseaseCode =
         new CodeableConcept(new Coding("diseases", "disease", "dontshowme"));
     String diseaseTranslation = "covid";
@@ -153,12 +162,12 @@ class ConditionFactoryTest {
     assertThat(actualConditionDTO.recordedDate()).hasToString("02.01.2022");
     assertThat(actualConditionDTO.symptoms()).containsExactly(symptomTranslation);
     assertThat(actualConditionDTO.note()).isNull();
-    assertThat(actualConditionDTO.notes()).isEmpty();
+    assertThat(actualConditionDTO.notes()).isNull();
   }
 
   @Test
   void shouldAcceptMissingAnnotation() {
-    when(featureFlags.isPdfSplitNotes()).thenReturn(true);
+    when(featureFlags.isPdfSplitNotes()).thenReturn(false);
     CodeableConcept diseaseCode =
         new CodeableConcept(new Coding("diseases", "disease", "dontshowme"));
     String diseaseTranslation = "covid";
@@ -191,7 +200,7 @@ class ConditionFactoryTest {
     assertThat(actualConditionDTO.recordedDate()).hasToString("02.01.2022");
     assertThat(actualConditionDTO.symptoms()).containsExactly(symptomTranslation);
     assertThat(actualConditionDTO.note()).as("missing annotation").isNull();
-    assertThat(actualConditionDTO.notes()).isEmpty();
+    assertThat(actualConditionDTO.notes()).as("missing annotation").isNull();
   }
 
   @Test

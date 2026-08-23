@@ -63,37 +63,64 @@
                           th:text='#{laboratory-report.lab-report.notification-reason}'></span>
                     <span class="small-font heavy-font"
                           th:text='${#strings.toUpperCase(diseaseNotificationTemplateDto.conditionDTO.diseaseCode())}'></span>
-                    <br/>
-                    <span class="blue-font small-font"
-                          th:text='#{disease-notification.conditionDTO.recorded-date}'></span>
-                    <span class="small-font"
-                          th:text='${#strings.isEmpty(diseaseNotificationTemplateDto.conditionDTO.recordedDate()?.dateWithoutTime) ? #messages.msg("disease-notification.lifecycle.no-data") : diseaseNotificationTemplateDto.conditionDTO.recordedDate().dateWithoutTime}'></span>
-                    <br/>
-                    <span class="blue-font small-font"
-                          th:text='#{disease-notification.conditionDTO.onset-date}'></span>
-                    <span class="small-font"
-                          th:text='${#strings.isEmpty(diseaseNotificationTemplateDto.conditionDTO.onsetDate()?.dateWithoutTime) ? #messages.msg("disease-notification.lifecycle.no-data") : diseaseNotificationTemplateDto.conditionDTO.onsetDate().dateWithoutTime}'></span>
-                    <br/>
-                    <span class="blue-font small-font"
-                          th:text='#{disease-notification.conditionDTO.evidence}'></span>
-                    <span class="small-font"
-                          th:text='${#strings.isEmpty(diseaseNotificationTemplateDto.conditionDTO.allSymptoms) ? #messages.msg("disease-notification.lifecycle.no-data") : diseaseNotificationTemplateDto.conditionDTO.allSymptoms}'></span>
-                    <br/>
-                    <span class="blue-font small-font"
-                          th:text='#{disease-notification.conditionDTO.note}'></span>
-                    <span class="small-font"
-                          th:text='${#strings.isEmpty(diseaseNotificationTemplateDto.conditionDTO.note()) ? #messages.msg("disease-notification.lifecycle.no-data") : diseaseNotificationTemplateDto.conditionDTO.note()}'></span>
+                    <th:block th:if="${diseaseNotificationTemplateDto.conditionDTO.displayDateFields()}">
+                        <br/>
+                        <span class="blue-font small-font"
+                              th:text='#{disease-notification.conditionDTO.recorded-date}'></span>
+                        <span class="small-font"
+                              th:text='${#strings.isEmpty(diseaseNotificationTemplateDto.conditionDTO.recordedDate()?.dateWithoutTime) ? #messages.msg("disease-notification.lifecycle.no-data") : diseaseNotificationTemplateDto.conditionDTO.recordedDate().dateWithoutTime}'></span>
+                        <br/>
+                        <span class="blue-font small-font"
+                              th:text='#{disease-notification.conditionDTO.onset-date}'></span>
+                        <span class="small-font"
+                              th:text='${#strings.isEmpty(diseaseNotificationTemplateDto.conditionDTO.onsetDate()?.dateWithoutTime) ? #messages.msg("disease-notification.lifecycle.no-data") : diseaseNotificationTemplateDto.conditionDTO.onsetDate().dateWithoutTime}'></span>
+                    </th:block>
+
+                    <th:block th:if="${diseaseNotificationTemplateDto.conditionDTO.displaySymptoms()}">
+                        <br/>
+                        <span class="blue-font small-font"
+                              th:text='#{disease-notification.conditionDTO.evidence}'></span>
+                            <span class="small-font"
+                                  th:text='${#strings.isEmpty(diseaseNotificationTemplateDto.conditionDTO.allSymptoms) ? #messages.msg("disease-notification.lifecycle.no-data") : diseaseNotificationTemplateDto.conditionDTO.allSymptoms}'></span>
+                    </th:block>
+
+
+                    <th:block th:if="${!diseaseNotificationTemplateDto.conditionDTO.pdfSplitNotes()}">
+                        <br/>
+                        <span class="blue-font small-font"
+                              th:text='#{disease-notification.conditionDTO.note}'></span>
+                        <span class="small-font"
+                              th:text='${#strings.isEmpty(diseaseNotificationTemplateDto.conditionDTO.note()) ? #messages.msg("disease-notification.lifecycle.no-data") : diseaseNotificationTemplateDto.conditionDTO.note()}'></span>
+                    </th:block>
+
+                    <th:block th:if="${diseaseNotificationTemplateDto.conditionDTO.pdfSplitNotes()}">
+                    <span class="notes-row">
+                        <br/>
+                        <span class="blue-font small-font notes-label"
+                              th:text='#{disease-notification.conditionDTO.note}'></span>
+                        <span class="small-font notes-value"
+                              th:if="${#lists.isEmpty(diseaseNotificationTemplateDto.conditionDTO.notes())}"
+                                  th:text='#{disease-notification.lifecycle.no-data}'>
+                        </span>
+                        <span class="notes-value"
+                              th:if="${!#lists.isEmpty(diseaseNotificationTemplateDto.conditionDTO.notes())}">
+                            <th:block th:each="note, iter : ${diseaseNotificationTemplateDto.conditionDTO.notes()}">
+                                <span class="small-font indent-entry" th:text="${note}"></span>
+                            </th:block>
+                        </span>
+                    </span>
+                    </th:block>
                 </div>
             </th:block>
             <br/>
             <br/>
             <th:block th:if="${diseaseNotificationTemplateDto.commonQuestionnaire != null}">
-                <th:block th:with="labItem=${diseaseNotificationTemplateDto.commonQuestionnaire.findLaboratoryItem().orElse(null)}">
+                <th:block th:with="labItem=${diseaseNotificationTemplateDto.commonQuestionnaire.findLabSpecimenTakenItem(diseaseNotificationTemplateDto.isPdfSecondPageCrEnabled()).orElse(null)}">
                     <th:block th:if="${labItem != null}">
                         <div id="box-laboratory-information">
                             <span class="blue-font small-font" th:text='${labItem.text}'></span>
-                            <span class="small-font" th:text='${labItem.answers.get(0).value()}'></span>
-                            <th:block th:each="subitem : ${labItem.answers.get(0).subitems()}">
+                            <span class="small-font" th:text='${labItem.answers.get(0)?.value()}'></span>
+                            <th:block th:each="subitem : ${labItem.answers.get(0)?.subitems()}">
                                 <th:block th:if="${subitem.resource != null and subitem.resource.laboratory != null}"
                                           th:with="lab=${subitem.resource.laboratory}">
                                     <br/>
@@ -101,13 +128,13 @@
                                     <span class="blue-font heavy-font" th:text='${subitem.text}'></span>
                                     <br/>
                                     <span class="blue-font small-font" th:text='#{disease-notification.common-questions.lab.name}'></span>
-                                    <span class="small-font" th:text='${lab.nameAndType}'></span>
+                                    <span class="small-font" th:text='${#strings.isEmpty(lab.nameAndType) && diseaseNotificationTemplateDto.isPdfSecondPageCrEnabled() ? #messages.msg("disease-notification.lifecycle.no-data") : lab.nameAndType}'></span>
                                     <br/>
                                     <span class="blue-font small-font" th:text='#{common.section.address.header}'></span>
-                                    <span class="small-font" th:text='${lab.addressDTO?.fullAddressAsSingleLine}'></span>
+                                    <span class="small-font" th:text='${#strings.isEmpty(lab.addressDTO?.fullAddressAsSingleLine) && diseaseNotificationTemplateDto.isPdfSecondPageCrEnabled() ? #messages.msg("disease-notification.lifecycle.no-data") : lab.addressDTO?.fullAddressAsSingleLine}'></span>
                                     <br/>
                                     <span class="blue-font small-font" th:text='#{common.section.contact.header}'></span>
-                                    <span class="small-font" th:text='${lab.telecomsAsMultipleLines}'></span>
+                                    <span class="small-font" th:text='${#strings.isEmpty(lab.telecomsAsMultipleLines) && diseaseNotificationTemplateDto.isPdfSecondPageCrEnabled() ? #messages.msg("disease-notification.lifecycle.no-data") : lab.telecomsAsMultipleLines}'></span>
                                 </th:block>
                             </th:block>
                         </div>

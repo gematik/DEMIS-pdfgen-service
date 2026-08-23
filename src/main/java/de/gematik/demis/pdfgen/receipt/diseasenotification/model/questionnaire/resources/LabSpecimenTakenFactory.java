@@ -34,6 +34,7 @@ import de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.I
 import de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.factory.AnswerValues;
 import de.gematik.demis.pdfgen.receipt.diseasenotification.model.questionnaire.factory.Context;
 import java.util.Collections;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.hl7.fhir.r4.model.Organization;
 import org.hl7.fhir.r4.model.QuestionnaireResponse;
@@ -55,33 +56,36 @@ class LabSpecimenTakenFactory {
   }
 
   boolean isLabSpecimenTaken(QuestionnaireResponse.QuestionnaireResponseItemComponent item) {
-    return LINK_ID.equals(item.getLinkId())
-        && item.hasAnswer()
-        && item.getAnswerFirstRep().hasItem();
+    return LINK_ID.equals(item.getLinkId()) && item.hasAnswer();
   }
 
   Item createLabSpecimenTaken(
       QuestionnaireResponse.QuestionnaireResponseItemComponent item, Context context) {
     String text = getText(item, context);
     Answer answer = createAnswer(item, context);
-    return new Item(text, answer);
+    return new Item(item.getLinkId(), text, answer);
   }
 
   private Answer createAnswer(
       QuestionnaireResponse.QuestionnaireResponseItemComponent item, Context context) {
-    String text = this.answerValues.apply(item.getAnswerFirstRep());
-    Item laboratory = createLaboratory(item, context);
+    QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent answer =
+        item.getAnswerFirstRep();
+    String text = this.answerValues.apply(answer);
+    if (!answer.hasItem()) {
+      return new Answer(text, Collections.emptyList());
+    }
+    Item laboratory = createLaboratory(answer.getItemFirstRep(), context);
     return new Answer(text, Collections.singletonList(laboratory));
   }
 
   private Item createLaboratory(
-      QuestionnaireResponse.QuestionnaireResponseItemComponent item, Context context) {
-    QuestionnaireResponse.QuestionnaireResponseItemComponent labItem =
-        item.getAnswerFirstRep().getItemFirstRep();
-    String text = context.translation().item(labItem.getLinkId());
-    OrganizationDTO organization =
-        this.organizationFactory.create(
-            (Organization) labItem.getAnswerFirstRep().getValueReference().getResource());
-    return new Item(text, Resource.laboratory(organization));
+      QuestionnaireResponse.QuestionnaireResponseItemComponent labItem, Context context) {
+    String linkId = labItem.getLinkId();
+    String text = context.translation().item(linkId);
+    final Organization organization =
+        (Organization) labItem.getAnswerFirstRep().getValueReference().getResource();
+    OrganizationDTO organizationDTO =
+        Optional.ofNullable(organization).map(organizationFactory::create).orElse(null);
+    return new Item(linkId, text, Resource.laboratory(organizationDTO));
   }
 }

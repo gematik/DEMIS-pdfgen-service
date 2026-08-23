@@ -31,7 +31,7 @@ import java.util.function.Supplier;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-/** Changing resource URLs to enable Flying Sourcer to use HTTP to grab them. */
+/** Changing resource URLs to enable Flying Saucer to use HTTP to grab them. */
 @RequiredArgsConstructor
 @Slf4j
 final class HttpResourcesHtml implements Supplier<String> {
