@@ -27,7 +27,6 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification.model;
  * #L%
  */
 
-import de.gematik.demis.pdfgen.FeatureFlags;
 import de.gematik.demis.pdfgen.receipt.common.model.section.AuthenticationFactory;
 import de.gematik.demis.pdfgen.receipt.common.model.section.MetadataFactory;
 import de.gematik.demis.pdfgen.receipt.common.model.section.NotificationFactory;
@@ -63,7 +62,6 @@ public class DiseaseNotificationTemplateDtoFactory {
   private final AuthenticationFactory authenticationFactory;
   private final QrGenerator qrGenerator;
   private final WatermarkService watermarkService;
-  private final FeatureFlags featureFlags;
 
   @Nullable
   public DiseaseNotificationTemplateDto create(final Bundle bundle) {
@@ -80,8 +78,7 @@ public class DiseaseNotificationTemplateDtoFactory {
             .notifiedPersonDTO(notifiedPersonFactory.create(bundle))
             .conditionDTO(conditionFactory.create(bundle))
             .commonQuestionnaire(questionnaireService.createCommonQuestionnaire(bundle))
-            .authentication(authenticationFactory.create(bundle))
-            .pdfSecondPageCrEnabled(featureFlags.isPdfSecondPageCr());
+            .authentication(authenticationFactory.create(bundle));
     Questionnaire specific = questionnaireService.createSpecificQuestionnaire(bundle);
     if (specific != null) {
       builder.specificQuestionnaire(specific);

@@ -104,8 +104,7 @@ public class FacilityFactory {
             .addressDTO(addressDTO)
             .type(type)
             .telecoms(telecoms)
-            .nameDTO(nameDTO)
-            .reorderContactPersonText(featureFlags.isPdfOptimization());
+            .nameDTO(nameDTO);
 
     return builder.build();
   }

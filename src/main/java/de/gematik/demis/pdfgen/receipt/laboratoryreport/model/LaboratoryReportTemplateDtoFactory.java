@@ -27,7 +27,6 @@ package de.gematik.demis.pdfgen.receipt.laboratoryreport.model;
  * #L%
  */
 
-import de.gematik.demis.pdfgen.FeatureFlags;
 import de.gematik.demis.pdfgen.receipt.common.model.section.AuthenticationFactory;
 import de.gematik.demis.pdfgen.receipt.common.model.section.MetadataFactory;
 import de.gematik.demis.pdfgen.receipt.common.model.section.NotificationFactory;
@@ -60,7 +59,6 @@ public class LaboratoryReportTemplateDtoFactory {
   private final AuthenticationFactory authenticationFactory;
   private final QrGenerator qrGenerator;
   private final WatermarkService watermarkService;
-  private final FeatureFlags featureFlags;
 
   public LaboratoryReportTemplateDto create(final Bundle bundle, final boolean qrCodeOnLastPage) {
     Optional<String> notificationIdOptional =
@@ -91,8 +89,7 @@ public class LaboratoryReportTemplateDtoFactory {
             .submitter(submitterFactory.create(bundle))
             .labReport(labReportFactory.create(bundle))
             .authentication(authenticationFactory.create(bundle))
-            .qrCodeOnLastPage(qrCodeOnLastPage)
-            .pdfOptimization(featureFlags.isPdfOptimization());
+            .qrCodeOnLastPage(qrCodeOnLastPage);
     watermarkService.getWatermarkBase64Image().ifPresent(builder::watermarkBase64Image);
     return builder.build();
   }

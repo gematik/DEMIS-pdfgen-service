@@ -29,7 +29,6 @@ package de.gematik.demis.pdfgen.receipt.laboratoryreport;
 
 import static de.gematik.demis.pdfgen.test.helper.FhirFactory.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import de.gematik.demis.fhir_ui_data_model_translation_service.wiremockfuts.WireMockFuts;
@@ -44,7 +43,6 @@ import org.assertj.core.api.Assertions;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -87,150 +85,65 @@ class LaboratoryReportControllerIntegrationTest {
     new WireMockFuts().setDefaults().add(new LaboratoryFeature());
   }
 
-  @Nested
-  class PdfOptimizationDisabled {
-    @BeforeEach
-    void setup() {
-      when(featureFlags.isPdfOptimization()).thenReturn(false);
-    }
+  @Test
+  void generatePdfFromDv2BundleJsonString_shouldRespond200WithPdf() throws Exception {
+    final MockHttpServletResponse response =
+        generateLaboratoryPdf(LABORATORY_REPORT_BUNDLE_DV2_JSON);
 
-    @Test
-    void generatePdfFromDv2BundleJsonString_shouldRespond200WithPdf() throws Exception {
-      final MockHttpServletResponse response =
-          generateLaboratoryPdf(LABORATORY_REPORT_BUNDLE_DV2_JSON);
+    validateOkResponse(response, "Empfangsbestätigung Labormeldung - Maxime Mustermann.pdf");
 
-      validateOkResponse(response, "Empfangsbestätigung Labormeldung - Maxime Mustermann.pdf");
+    final String expectedNotifierFacilityPdfText =
+        getExpectedNotifierFacilityPdfText("Kontaktperson Dr Adam Careful");
+    final String expectedNotification =
+        getExpectedNotificationPdfText("Meldungsverweis (Initiale Meldungs-ID) ABC123");
 
-      final String expectedNotifierFacilityPdfText =
-          getExpectedNotifierFacilityPdfText("Kontaktperson Dr Adam Careful");
-      final String expectedNotification =
-          getExpectedNotificationPdfText("Meldungsverweis (Primärlabor) ABC123");
-
-      validateLabReportDv2Body(
-          response,
-          getReportDv2PdfText("", expectedNotifierFacilityPdfText, null, expectedNotification));
-    }
-
-    @Test
-    void generatePdfFromDv2BundleJsonString_withoutRelatesTo_shouldNotHaveEntryInPdf()
-        throws Exception {
-      final MockHttpServletResponse response =
-          generateLaboratoryPdf(LABORATORY_REPORT_BUNDLE_DV2_WITHOUT_RELATES_TO_JSON);
-
-      validateOkResponse(response, "Empfangsbestätigung Labormeldung - Maxime Mustermann.pdf");
-
-      final String expectedNotifierFacilityPdfText =
-          getExpectedNotifierFacilityPdfText("Kontaktperson Dr Adam Careful");
-
-      // FEATURE_FLAG_PDF_OPTIMIZATION is disabled -> no entry for initial notification id in pdf
-      final String expectedNotification = getExpectedNotificationPdfText("");
-
-      validateLabReportDv2Body(
-          response,
-          getReportDv2PdfText("", expectedNotifierFacilityPdfText, null, expectedNotification));
-    }
-
-    @Test
-    void
-        generatePdfFromDv2BundleJsonString_withContactNameText_shouldHaveContactNameConcatenationAsContactPerson()
-            throws Exception {
-      final MockHttpServletResponse response =
-          generateLaboratoryPdf(LABORATORY_REPORT_BUNDLE_DV2_WITH_CONTACT_TEXT_JSON);
-
-      validateOkResponse(response, "Empfangsbestätigung Labormeldung - Maxime Mustermann.pdf");
-
-      // FEATURE_FLAG_PDF_OPTIMIZATION is disabled -> entry "Kontaktperson" build from contact.name
-      // concatenation
-      final String expectedNotifierFacilityPdfText =
-          getExpectedNotifierFacilityPdfText("Kontaktperson Dr Adam Careful");
-      final String expectedSubmitterFacilityPdfText =
-          getExpectedSubmitterFacilityPdfText("Kontaktperson Dr Mila Careful");
-
-      final String expectedNotification =
-          getExpectedNotificationPdfText("Meldungsverweis (Primärlabor) ABC123");
-
-      validateLabReportDv2Body(
-          response,
-          getReportDv2PdfText(
-              "",
-              expectedNotifierFacilityPdfText,
-              expectedSubmitterFacilityPdfText,
-              expectedNotification));
-    }
+    validateLabReportDv2Body(
+        response,
+        getReportDv2PdfText("", expectedNotifierFacilityPdfText, null, expectedNotification));
   }
 
-  @Nested
-  class PdfOptimizationEnabled {
-    @BeforeEach
-    void setup() {
-      when(featureFlags.isPdfOptimization()).thenReturn(true);
-    }
+  @Test
+  void generatePdfFromDv2BundleJsonString_withoutRelatesTo_shouldHaveEntryInPdf() throws Exception {
+    final MockHttpServletResponse response =
+        generateLaboratoryPdf(LABORATORY_REPORT_BUNDLE_DV2_WITHOUT_RELATES_TO_JSON);
 
-    @Test
-    void generatePdfFromDv2BundleJsonString_shouldRespond200WithPdf() throws Exception {
-      final MockHttpServletResponse response =
-          generateLaboratoryPdf(LABORATORY_REPORT_BUNDLE_DV2_JSON);
+    validateOkResponse(response, "Empfangsbestätigung Labormeldung - Maxime Mustermann.pdf");
 
-      validateOkResponse(response, "Empfangsbestätigung Labormeldung - Maxime Mustermann.pdf");
+    final String expectedNotifierFacilityPdfText =
+        getExpectedNotifierFacilityPdfText("Kontaktperson Dr Adam Careful");
 
-      final String expectedNotifierFacilityPdfText =
-          getExpectedNotifierFacilityPdfText("Kontaktperson Dr Adam Careful");
-      final String expectedNotification =
-          getExpectedNotificationPdfText("Meldungsverweis (Initiale Meldungs-ID) ABC123");
+    final String expectedNotification =
+        getExpectedNotificationPdfText("Meldungsverweis (Initiale Meldungs-ID) Keine Angabe");
 
-      validateLabReportDv2Body(
-          response,
-          getReportDv2PdfText("", expectedNotifierFacilityPdfText, null, expectedNotification));
-    }
+    validateLabReportDv2Body(
+        response,
+        getReportDv2PdfText("", expectedNotifierFacilityPdfText, null, expectedNotification));
+  }
 
-    @Test
-    void generatePdfFromDv2BundleJsonString_withoutRelatesTo_shouldHaveEntryInPdf()
-        throws Exception {
-      final MockHttpServletResponse response =
-          generateLaboratoryPdf(LABORATORY_REPORT_BUNDLE_DV2_WITHOUT_RELATES_TO_JSON);
+  @Test
+  void
+      generatePdfFromDv2BundleJsonString_withContactNameText_shouldHaveContactNameTextAsContactPerson()
+          throws Exception {
+    final MockHttpServletResponse response =
+        generateLaboratoryPdf(LABORATORY_REPORT_BUNDLE_DV2_WITH_CONTACT_TEXT_JSON);
 
-      validateOkResponse(response, "Empfangsbestätigung Labormeldung - Maxime Mustermann.pdf");
+    validateOkResponse(response, "Empfangsbestätigung Labormeldung - Maxime Mustermann.pdf");
 
-      final String expectedNotifierFacilityPdfText =
-          getExpectedNotifierFacilityPdfText("Kontaktperson Dr Adam Careful");
+    final String expectedNotifierFacilityPdfText =
+        getExpectedNotifierFacilityPdfText("Kontaktperson Dr. Adam Careful Notifier");
+    final String expectedSubmitterFacilityPdfText =
+        getExpectedSubmitterFacilityPdfText("Kontaktperson Dr. Mila Careful Submitter");
 
-      // FEATURE_FLAG_PDF_OPTIMIZATION is enabled -> entry for initial notification id in pdf "Keine
-      // Angabe"
-      final String expectedNotification =
-          getExpectedNotificationPdfText("Meldungsverweis (Initiale Meldungs-ID) Keine Angabe");
+    final String expectedNotification =
+        getExpectedNotificationPdfText("Meldungsverweis (Initiale Meldungs-ID) ABC123");
 
-      validateLabReportDv2Body(
-          response,
-          getReportDv2PdfText("", expectedNotifierFacilityPdfText, null, expectedNotification));
-    }
-
-    @Test
-    void
-        generatePdfFromDv2BundleJsonString_withContactNameText_shouldHaveContactNameTextAsContactPerson()
-            throws Exception {
-      final MockHttpServletResponse response =
-          generateLaboratoryPdf(LABORATORY_REPORT_BUNDLE_DV2_WITH_CONTACT_TEXT_JSON);
-
-      validateOkResponse(response, "Empfangsbestätigung Labormeldung - Maxime Mustermann.pdf");
-
-      // FEATURE_FLAG_PDF_OPTIMIZATION is enabled -> entry "Kontaktperson" build from
-      // contact.name.text
-      final String expectedNotifierFacilityPdfText =
-          getExpectedNotifierFacilityPdfText("Kontaktperson Dr. Adam Careful Notifier");
-      final String expectedSubmitterFacilityPdfText =
-          getExpectedSubmitterFacilityPdfText("Kontaktperson Dr. Mila Careful Submitter");
-
-      final String expectedNotification =
-          getExpectedNotificationPdfText("Meldungsverweis (Initiale Meldungs-ID) ABC123");
-
-      validateLabReportDv2Body(
-          response,
-          getReportDv2PdfText(
-              "",
-              expectedNotifierFacilityPdfText,
-              expectedSubmitterFacilityPdfText,
-              expectedNotification));
-    }
+    validateLabReportDv2Body(
+        response,
+        getReportDv2PdfText(
+            "",
+            expectedNotifierFacilityPdfText,
+            expectedSubmitterFacilityPdfText,
+            expectedNotification));
   }
 
   @Test
@@ -462,57 +375,46 @@ class LaboratoryReportControllerIntegrationTest {
   }
 
   private String getExpectedNotifierFacilityPdfText(final String contactPersonEntryString) {
-    return (featureFlags.isPdfOptimization() ? contactPersonEntryString + "\n" : "")
+    return contactPersonEntryString
+        + "\n"
         + """
     Name Primärlabor (Erregerdiagnostische Untersuchungsstelle)
     Identifier BSNR: 98765430
     DEMIS-Id: 13589
     Adresse Dingsweg 321, 13055 Berlin, Deutschland
     Kontakt Telefon: 0309876543210 (Dienstlich)
-    """
-        + (!featureFlags.isPdfOptimization() ? contactPersonEntryString + "\n" : "");
+    """;
   }
 
   private String getExpectedSubmitterFacilityPdfText(final String contactPersonEntryString) {
     return """
     Einsendende Einrichtung
     """
-        + (featureFlags.isPdfOptimization() ? contactPersonEntryString + "\n" : "")
+        + contactPersonEntryString
+        + "\n"
         + """
     Name Einsendepraxis ABC
     Identifier BSNR: 135896780
     Adresse Teststr. 123, 13589 Berlin, Deutschland
     Kontakt Telefon: 030 1358967890 (Dienstlich)
-    """
-        + (!featureFlags.isPdfOptimization() ? contactPersonEntryString + "\n" : "");
+    """;
   }
 
   private String getExpectedNotificationPdfText(String initalNotificationIdEntry) {
     initalNotificationIdEntry =
         !initalNotificationIdEntry.isEmpty() ? initalNotificationIdEntry + "\n" : "";
-    return (featureFlags.isPdfOptimization()
-        ? """
+    return """
     Meldungs-ID e8d8cc43-32c2-4f93-8eaf-b2f3e6deb2a9
     """
-            + initalNotificationIdEntry
-            + """
+        + initalNotificationIdEntry
+        + """
     Meldevorgangs-ID a5e00874-bb26-45ac-8eea-0bde76456703
     Meldungserstellung 24.10.2023 09:06
     Meldungsstatus Final
-    """
-        : """
-    Meldevorgangs-ID a5e00874-bb26-45ac-8eea-0bde76456703
-    Zeitpunkt des Eingangs 24.10.2023 09:06
-    Meldungs-ID e8d8cc43-32c2-4f93-8eaf-b2f3e6deb2a9
-    Meldungsstatus Final
-    Meldungserstellung/-änderung 04.03.2021 20:16
-    """
-            + initalNotificationIdEntry);
+    """;
   }
 
   private String getLaboratoryOrderNumber() {
-    return (featureFlags.isPdfOptimization()
-        ? "Laboreigene Auftragsnummer 2021-000672922"
-        : "Auftragsnummer (E2E-Referenz) 2021-000672922");
+    return "Laboreigene Auftragsnummer 2021-000672922";
   }
 }

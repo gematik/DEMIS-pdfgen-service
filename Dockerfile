@@ -1,9 +1,8 @@
 # Declare Source Digest for the Base Image
-ARG SOURCE_DIGEST=cd5a2602cb5ab80a41cd71a7988d07608b7d553f827b4c58eb0a1618e4f3d843
-FROM gematik1/osadl-alpine-openjdk25-jre:1.0.7@sha256:${SOURCE_DIGEST}
-
-ARG SOURCE_DIGEST=cd5a2602cb5ab80a41cd71a7988d07608b7d553f827b4c58eb0a1618e4f3d843
-
+ARG SOURCE_DIGEST=sha256:257288f1dc49eb6984140869d104c0ea9ef884854eb357474a7b9ced7d01ef9e
+FROM gematik1/osadl-alpine-openjdk25-jre:1.0.8@${SOURCE_DIGEST}
+# inherit global build arg
+ARG SOURCE_DIGEST
 # As root: install OpenJDK and necessary native libraries for watermark image rendering
 USER root
 RUN apk add --no-cache \
@@ -37,7 +36,7 @@ HEALTHCHECK --interval=15s \
 COPY --chown=$USERID:$GROUPID ./target/pdfgen-service.jar /app.jar
 
 # Run as User (not root)
-USER $USERID:$USERID
+USER $USERID:$GROUPID
 
 ENTRYPOINT ["java", "-jar", "/app.jar"]
 

@@ -1,0 +1,517 @@
+{
+  "resourceType": "Bundle",
+  "id": "1eb78e17-3b81-4c1e-9c0f-a239b82064f8",
+  "meta": {
+    "lastUpdated": "2026-08-26T15:13:12.173+02:00",
+    "profile": [
+      "https://demis.rki.de/fhir/StructureDefinition/NotificationBundleDiseaseNonNominal"
+    ],
+    "tag": [
+      {
+        "system": "https://demis.rki.de/fhir/CodeSystem/ResponsibleDepartment",
+        "code": "1."
+      }
+    ]
+  },
+  "identifier": {
+    "system": "https://demis.rki.de/fhir/NamingSystem/NotificationBundleId",
+    "value": "3a2246e1-1309-5280-bc9f-1795143c09bd"
+  },
+  "type": "document",
+  "timestamp": "2026-08-26T15:13:11.781+02:00",
+  "entry": [
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Composition/5739af09-7087-4720-8ab7-0efb8dee8405",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "5739af09-7087-4720-8ab7-0efb8dee8405",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotificationDiseaseNonNominalTOXD"
+          ]
+        },
+        "extension": [
+          {
+            "url": "https://demis.rki.de/fhir/StructureDefinition/ReceptionTimeStampType",
+            "valueDateTime": "2026-08-26T15:13:12+02:00"
+          }
+        ],
+        "identifier": {
+          "system": "https://demis.rki.de/fhir/NamingSystem/NotificationId",
+          "value": "4a1cc56a-54c4-4f3e-8834-207999ac347e"
+        },
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "34782-3",
+              "display": "Infectious disease Note"
+            }
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "https://demis.rki.de/fhir/CodeSystem/notificationType",
+                "code": "7.3",
+                "display": "Meldung gemäß §7 Absatz 3 IfSG"
+              }
+            ]
+          }
+        ],
+        "subject": {
+          "reference": "Patient/e04708b2-9c35-40d5-8317-6786bd3ed7ac"
+        },
+        "date": "2026-08-26T15:13:11+02:00",
+        "author": [
+          {
+            "reference": "PractitionerRole/38d4e6ae-3b4c-4cb2-aa74-d6d3898102ec"
+          }
+        ],
+        "title": "Meldung gemäß §7 Absatz 3 IfSG",
+        "section": [
+          {
+            "title": "Diagnose",
+            "code": {
+              "coding": [
+                {
+                  "system": "https://demis.rki.de/fhir/CodeSystem/sectionCode",
+                  "code": "diagnosis",
+                  "display": "Diagnose"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "Condition/8fbbeb39-00d7-4568-a2d4-5df20c751c21"
+              }
+            ]
+          },
+          {
+            "title": "Meldetatbestandsspezifische klinische und epidemiologische Angaben",
+            "code": {
+              "coding": [
+                {
+                  "system": "https://demis.rki.de/fhir/CodeSystem/sectionCode",
+                  "code": "specificClinAndEpiInformation",
+                  "display": "Meldetatbestandsspezifische klinische und epidemiologische Angaben"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "QuestionnaireResponse/dce56d06-d49b-405e-a418-3bfb3b346381"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Patient/e04708b2-9c35-40d5-8317-6786bd3ed7ac",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "e04708b2-9c35-40d5-8317-6786bd3ed7ac",
+        "meta": {
+          "lastUpdated": "2026-08-26T15:13:12.174+02:00",
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifiedPersonNotByName"
+          ]
+        },
+        "extension": [
+          {
+            "url": "https://demis.rki.de/fhir/StructureDefinition/PseudonymRecordType",
+            "valueBase64Binary": "ey=="
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1970-01",
+        "address": [
+          {
+            "extension": [
+              {
+                "url": "https://demis.rki.de/fhir/StructureDefinition/AddressUse",
+                "valueCoding": {
+                  "system": "https://demis.rki.de/fhir/CodeSystem/addressUse",
+                  "code": "primary",
+                  "display": "Hauptwohnsitz"
+                }
+              }
+            ],
+            "postalCode": "123",
+            "country": "DE"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Condition/8fbbeb39-00d7-4568-a2d4-5df20c751c21",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "8fbbeb39-00d7-4568-a2d4-5df20c751c21",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/DiseaseTOXD"
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "https://demis.rki.de/fhir/CodeSystem/notificationDiseaseCategory",
+              "code": "toxd"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/e04708b2-9c35-40d5-8317-6786bd3ed7ac"
+        },
+        "onsetDateTime": "2026-08-18",
+        "recordedDate": "2026-08-19",
+        "evidence": [
+          {
+            "code": [
+              {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "271737000",
+                    "display": "Anämie"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "code": [
+              {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "276654001",
+                    "display": "Angeborene Fehlbildung"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "note": [
+          {
+            "text": "Wichtiger Hinweis zum Status der betroffenen Person."
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/PractitionerRole/38d4e6ae-3b4c-4cb2-aa74-d6d3898102ec",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "38d4e6ae-3b4c-4cb2-aa74-d6d3898102ec",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifierRole"
+          ]
+        },
+        "organization": {
+          "reference": "Organization/0772b356-7b03-4f5f-b495-208a65b34729"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Organization/0772b356-7b03-4f5f-b495-208a65b34729",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "0772b356-7b03-4f5f-b495-208a65b34729",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/NotifierFacility"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR",
+            "value": "123456789"
+          },
+          {
+            "system": "https://demis.rki.de/fhir/NamingSystem/SendingServiceProvider",
+            "value": "test-int"
+          }
+        ],
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "https://demis.rki.de/fhir/CodeSystem/organizationType",
+                "code": "hospital",
+                "display": "Krankenhaus"
+              }
+            ]
+          }
+        ],
+        "name": "Kreiskrankenhaus Riedlingen",
+        "telecom": [
+          {
+            "system": "email",
+            "value": "t.person@gmail.com"
+          },
+          {
+            "system": "email",
+            "value": "test.person@kh-rie.de"
+          },
+          {
+            "system": "phone",
+            "value": "01234567"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Im Himmelreich 1"
+            ],
+            "city": "Frühling",
+            "postalCode": "21481",
+            "country": "DE"
+          }
+        ],
+        "contact": [
+          {
+            "name": {
+              "text": "Test Person",
+              "family": "Person",
+              "given": [
+                "Test"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/QuestionnaireResponse/dce56d06-d49b-405e-a418-3bfb3b346381",
+      "resource": {
+        "resourceType": "QuestionnaireResponse",
+        "id": "dce56d06-d49b-405e-a418-3bfb3b346381",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/DiseaseInformationTOXD"
+          ]
+        },
+        "questionnaire": "https://demis.rki.de/fhir/Questionnaire/DiseaseQuestionsTOXD",
+        "status": "completed",
+        "subject": {
+          "reference": "Patient/e04708b2-9c35-40d5-8317-6786bd3ed7ac"
+        },
+        "item": [
+          {
+            "linkId": "pregnancyWeek",
+            "answer": [
+              {
+                "valueQuantity": {
+                  "value": 12,
+                  "system": "http://unitsofmeasure.org",
+                  "code": "wk"
+                }
+              }
+            ]
+          },
+          {
+            "linkId": "newbornWeight",
+            "answer": [
+              {
+                "valueQuantity": {
+                  "value": 3000,
+                  "system": "http://unitsofmeasure.org",
+                  "code": "g"
+                }
+              }
+            ]
+          },
+          {
+            "linkId": "newbornStatus",
+            "answer": [
+              {
+                "valueCoding": {
+                  "system": "http://snomed.info/sct",
+                  "code": "281050002",
+                  "display": "Lebendgeburt"
+                }
+              }
+            ]
+          },
+          {
+            "linkId": "motherDOB",
+            "answer": [
+              {
+                "valueDate": "1993"
+              }
+            ]
+          },
+          {
+            "linkId": "motherEvidence",
+            "answer": [
+              {
+                "valueCoding": {
+                  "system": "http://snomed.info/sct",
+                  "code": "373067005",
+                  "display": "Nein"
+                }
+              }
+            ]
+          },
+          {
+            "linkId": "travelAbroad",
+            "answer": [
+              {
+                "valueCoding": {
+                  "system": "http://snomed.info/sct",
+                  "code": "373067005",
+                  "display": "Nein"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://demis.rki.de/fhir/Provenance/4811c679-5bed-4bbe-9eb3-b9d834ef18d9",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "4811c679-5bed-4bbe-9eb3-b9d834ef18d9",
+        "meta": {
+          "profile": [
+            "https://demis.rki.de/fhir/StructureDefinition/DemisProvenance"
+          ]
+        },
+        "target": [
+          {
+            "reference": "Composition/5739af09-7087-4720-8ab7-0efb8dee8405"
+          }
+        ],
+        "recorded": "2026-08-26T15:13:12.119+02:00",
+        "activity": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "code": "CREATE"
+            }
+          ]
+        },
+        "agent": [
+          {
+            "extension": [
+              {
+                "url": "https://demis.rki.de/fhir/StructureDefinition/ProvenanceAgentLevelOfAssurance",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "https://demis.rki.de/fhir/CodeSystem/levelOfAssurance",
+                      "code": "substantial"
+                    }
+                  ]
+                }
+              },
+              {
+                "url": "https://demis.rki.de/fhir/StructureDefinition/ProvenanceAgentOrganizationType",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "https://demis.rki.de/fhir/CodeSystem/organizationType",
+                      "code": "hospital"
+                    }
+                  ]
+                }
+              }
+            ],
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "code": "performer"
+                }
+              ]
+            },
+            "role": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+                    "code": "AUT"
+                  }
+                ]
+              }
+            ],
+            "who": {
+              "type": "Organization",
+              "identifier": {
+                "type": {
+                  "coding": [
+                    {
+                      "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                      "code": "AN"
+                    }
+                  ]
+                },
+                "system": "urn:ietf:rfc:3986",
+                "value": "urn:uuid:8651ed8e-13df-4eea-abe6-ea5bd2000fe0"
+              }
+            },
+            "onBehalfOf": {
+              "type": "Organization",
+              "identifier": {
+                "type": {
+                  "coding": [
+                    {
+                      "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                      "code": "PRN"
+                    }
+                  ]
+                },
+                "system": "https://demis.rki.de/fhir/NamingSystem/DemisParticipantId",
+                "value": "test-int"
+              }
+            }
+          }
+        ],
+        "entity": [
+          {
+            "role": "source",
+            "what": {
+              "type": "Endpoint",
+              "identifier": {
+                "type": {
+                  "coding": [
+                    {
+                      "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                      "code": "RI"
+                    }
+                  ]
+                },
+                "system": "https://demis.rki.de/fhir/sid/DemisClientId",
+                "value": "demis-test"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

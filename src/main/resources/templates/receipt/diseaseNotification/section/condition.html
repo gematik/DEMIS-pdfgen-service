@@ -33,16 +33,9 @@
             #{disease-notification.conditionDTO.evidence},
             ${conditionDTO.getAllSymptoms()})}'></tr>
 
-        <th:block th:if="${diseaseNotificationTemplateDto.conditionDTO.pdfSplitNotes()}">
-            <tr th:replace='~{fragment/rows :: paddedRowListData(
+        <tr th:replace='~{fragment/rows :: paddedRowListData(
             #{disease-notification.conditionDTO.note},
             ${conditionDTO.notes})}'></tr>
-        </th:block>
-        <th:block th:if="${!diseaseNotificationTemplateDto.conditionDTO.pdfSplitNotes()}">
-            <tr th:replace='~{fragment/rows :: paddedRow(
-            #{disease-notification.conditionDTO.note},
-            ${conditionDTO.note})}'></tr>
-        </th:block>
 
         <tr th:replace='~{fragment/rows :: doubleBorder}'></tr>
     </th:block>

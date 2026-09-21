@@ -2,6 +2,14 @@
 
 # Release pdfgen-Service
 
+## Release 2.12.1
+- add date fields for §7.3 disease notifications from PDF second page for toxd and echd only
+- removed FEATURE_FLAG_PDF_OPTIMIZATION
+- removed FEATURE_FLAG_PDF_SECOND_PAGE_CR
+- removed FEATURE_FLAG_PDF_SPLIT_NOTES
+- Updated minor/patch versions of dependencies
+- updated spring-parent to 4.1.12
+
 ## Release 2.12.0
 - arranged jvm options
 - removed date fields for §7.3 disease notifications from PDF second page
@@ -11,7 +19,7 @@
 - upgraded Flying Saucer to 10.4.0
 - added labSpecimenTaken questionnaire item to pdf second page regardless of the answer
 - added FEATURE_FLAG_PDF_SECOND_PAGE_CR
-- updated spring-parent to 4.1.8
+- updated spring-parent to 4.1.11
 - updated docker base image to gematik1/osadl-alpine-openjdk25-jre:1.0.7
 - added vex documents to repository
 - added line break in between condition notes

@@ -45,7 +45,7 @@ class QuestionnaireTest {
     Questionnaire questionnaire = new Questionnaire("Test", null, "completed");
 
     // when
-    Optional<Item> result = questionnaire.findLabSpecimenTakenItem(true);
+    Optional<Item> result = questionnaire.findLabSpecimenTakenItem();
 
     // then
     assertThat(result).isEmpty();
@@ -57,7 +57,7 @@ class QuestionnaireTest {
     Questionnaire questionnaire = new Questionnaire("Test", Collections.emptyList(), "completed");
 
     // when
-    Optional<Item> result = questionnaire.findLabSpecimenTakenItem(true);
+    Optional<Item> result = questionnaire.findLabSpecimenTakenItem();
 
     // then
     assertThat(result).isEmpty();
@@ -70,7 +70,7 @@ class QuestionnaireTest {
     Questionnaire questionnaire = new Questionnaire("Test", List.of(simpleItem), "completed");
 
     // when
-    Optional<Item> result = questionnaire.findLabSpecimenTakenItem(true);
+    Optional<Item> result = questionnaire.findLabSpecimenTakenItem();
 
     // then
     assertThat(result).isEmpty();
@@ -94,7 +94,7 @@ class QuestionnaireTest {
         new Questionnaire("Test", List.of(labSpecimenTakenItem), "completed");
 
     // when
-    Optional<Item> result = questionnaire.findLabSpecimenTakenItem(true);
+    Optional<Item> result = questionnaire.findLabSpecimenTakenItem();
 
     // then
     assertThat(result).contains(labSpecimenTakenItem);
@@ -117,7 +117,7 @@ class QuestionnaireTest {
         new Questionnaire("Test", List.of(labSpecimenTakenItem), "completed");
 
     // when
-    Optional<Item> result = questionnaire.findLabSpecimenTakenItem(true);
+    Optional<Item> result = questionnaire.findLabSpecimenTakenItem();
 
     // then
     assertThat(result).contains(labSpecimenTakenItem);
@@ -136,7 +136,7 @@ class QuestionnaireTest {
     Questionnaire questionnaire = new Questionnaire("Test", List.of(item), "completed");
 
     // when
-    Optional<Item> result = questionnaire.findLabSpecimenTakenItem(true);
+    Optional<Item> result = questionnaire.findLabSpecimenTakenItem();
 
     // then
     assertThat(result).isEmpty();
@@ -150,7 +150,7 @@ class QuestionnaireTest {
         new Questionnaire("Test", List.of(itemWithNoAnswers), "completed");
 
     // when
-    Optional<Item> result = questionnaire.findLabSpecimenTakenItem(true);
+    Optional<Item> result = questionnaire.findLabSpecimenTakenItem();
 
     // then
     assertThat(result).isEmpty();

@@ -33,7 +33,7 @@ import de.gematik.demis.pdfgen.translation.TranslationService;
 import de.gematik.demis.pdfgen.utils.DateTimeHolder;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -73,9 +73,8 @@ public class ConditionFactory {
     setNotes(fhirCondition, builder);
     setClinicalStatus(fhirCondition, builder);
     setVerificationStatus(fhirCondition, builder);
-    setDisplayDateFields(builder, isNonNominal);
+    setDisplayDateFields(fhirCondition, isNonNominal, builder);
     setDisplaySymptoms(fhirCondition, builder);
-    setPdfSplitNotes(builder);
     return builder.build();
   }
 
@@ -85,18 +84,21 @@ public class ConditionFactory {
   }
 
   private void setDisplayDateFields(
-      ConditionDTO.ConditionDTOBuilder builder, final boolean isNonNominal) {
-    builder.displayDateFields(!isNonNominal || !featureFlags.isWithoutDateFields73());
+      Condition fhirCondition, boolean isNonNominal, ConditionDTO.ConditionDTOBuilder builder) {
+    final String diseaseCode = fhirCondition.getCode().getCodingFirstRep().getCode();
+    final var relevantCodes = Set.of("toxd", "echd");
+    final boolean showFields =
+        !featureFlags.isWithoutDateFields73()
+            || !isNonNominal
+            || relevantCodes.contains(diseaseCode);
+
+    builder.displayDateFields(showFields);
   }
 
   private void setDisplaySymptoms(
       Condition fhirCondition, ConditionDTO.ConditionDTOBuilder builder) {
     final String diseaseCode = fhirCondition.getCode().getCodingFirstRep().getCode();
-    builder.displaySymptoms(!"hivd".equals(diseaseCode) || !featureFlags.isPdfOptimization());
-  }
-
-  private void setPdfSplitNotes(ConditionDTO.ConditionDTOBuilder builder) {
-    builder.pdfSplitNotes(featureFlags.isPdfSplitNotes());
+    builder.displaySymptoms(!"hivd".equals(diseaseCode));
   }
 
   private void setOnsetDate(Condition fhirCondition, ConditionDTO.ConditionDTOBuilder builder) {
@@ -121,21 +123,11 @@ public class ConditionFactory {
   }
 
   private void setNotes(Condition fhirCondition, ConditionDTO.ConditionDTOBuilder builder) {
-    if (featureFlags.isPdfSplitNotes()) {
-      builder.notes(
-          fhirCondition.getNote().stream()
-              .map(Annotation::getText)
-              .filter(StringUtils::isNotBlank)
-              .toList());
-    } else {
-      final String note =
-          fhirCondition.getNote().stream()
-              .map(Annotation::getText)
-              .collect(Collectors.joining(System.lineSeparator()));
-      if (StringUtils.isNotBlank(note)) {
-        builder.note(note);
-      }
-    }
+    builder.notes(
+        fhirCondition.getNote().stream()
+            .map(Annotation::getText)
+            .filter(StringUtils::isNotBlank)
+            .toList());
   }
 
   private void setVerificationStatus(

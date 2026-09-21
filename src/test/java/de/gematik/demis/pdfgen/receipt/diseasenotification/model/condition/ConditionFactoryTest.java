@@ -37,10 +37,14 @@ import de.gematik.demis.pdfgen.fhir.extract.ConditionQueries;
 import de.gematik.demis.pdfgen.translation.TranslationService;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 import org.hl7.fhir.r4.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -78,7 +82,6 @@ class ConditionFactoryTest {
 
   @Test
   void create_shouldTestFactoryCreation() {
-    when(featureFlags.isPdfSplitNotes()).thenReturn(true);
     CodeableConcept diseaseCode =
         new CodeableConcept(new Coding("diseases", "disease", "dontshowme"));
     String diseaseTranslation = "covid";
@@ -113,13 +116,11 @@ class ConditionFactoryTest {
     assertThat(actualConditionDTO.onsetDate()).hasToString("01.01.2022");
     assertThat(actualConditionDTO.recordedDate()).hasToString("02.01.2022");
     assertThat(actualConditionDTO.symptoms()).containsExactly(symptomTranslation);
-    assertThat(actualConditionDTO.note()).isNull();
     assertThat(actualConditionDTO.notes().getFirst()).isEqualTo(note);
   }
 
   @Test
   void shouldNullifyEmptyAnnotation() {
-    when(featureFlags.isPdfSplitNotes()).thenReturn(true);
     CodeableConcept diseaseCode =
         new CodeableConcept(new Coding("diseases", "disease", "dontshowme"));
     String diseaseTranslation = "covid";
@@ -152,13 +153,11 @@ class ConditionFactoryTest {
     assertThat(actualConditionDTO.onsetDate()).hasToString("01.01.2022");
     assertThat(actualConditionDTO.recordedDate()).hasToString("02.01.2022");
     assertThat(actualConditionDTO.symptoms()).containsExactly(symptomTranslation);
-    assertThat(actualConditionDTO.note()).isNull();
     assertThat(actualConditionDTO.notes()).isEmpty();
   }
 
   @Test
   void shouldAcceptMissingAnnotation() {
-    when(featureFlags.isPdfSplitNotes()).thenReturn(true);
     CodeableConcept diseaseCode =
         new CodeableConcept(new Coding("diseases", "disease", "dontshowme"));
     String diseaseTranslation = "covid";
@@ -190,7 +189,6 @@ class ConditionFactoryTest {
     assertThat(actualConditionDTO.onsetDate()).hasToString("01.01.2022");
     assertThat(actualConditionDTO.recordedDate()).hasToString("02.01.2022");
     assertThat(actualConditionDTO.symptoms()).containsExactly(symptomTranslation);
-    assertThat(actualConditionDTO.note()).as("missing annotation").isNull();
     assertThat(actualConditionDTO.notes()).isEmpty();
   }
 
@@ -204,5 +202,40 @@ class ConditionFactoryTest {
 
     // then
     assertThat(actualConditionDTO).isNull();
+  }
+
+  @ParameterizedTest
+  @MethodSource("displayDateFieldsCases")
+  void create_shouldSetDisplayDateFieldsAsExpected(
+      boolean withoutDateFields73, boolean isNonNominal, String diseaseCode, boolean expected) {
+
+    when(featureFlags.isWithoutDateFields73()).thenReturn(withoutDateFields73);
+
+    if (isNonNominal) {
+      bundle.setMeta(new Meta().addProfile("http://example.org/profile/NonNominal"));
+    } else {
+      bundle.setMeta(new Meta().addProfile("http://example.org/profile/Nominal"));
+    }
+
+    Condition condition =
+        new Condition()
+            .setCode(new CodeableConcept(new Coding("system", diseaseCode, "display")))
+            .setEvidence(List.of());
+
+    when(conditionQueries.getCondition(bundle)).thenReturn(Optional.of(condition));
+
+    ConditionDTO actual = conditionFactory.create(bundle);
+
+    assertThat(actual).isNotNull();
+    assertThat(actual.displayDateFields()).isEqualTo(expected);
+  }
+
+  private static Stream<Arguments> displayDateFieldsCases() {
+    return Stream.of(
+        Arguments.of(false, true, "cvdd", true),
+        Arguments.of(true, false, "cvdd", true),
+        Arguments.of(true, true, "toxd", true),
+        Arguments.of(true, true, "echd", true),
+        Arguments.of(true, true, "hivd", false));
   }
 }

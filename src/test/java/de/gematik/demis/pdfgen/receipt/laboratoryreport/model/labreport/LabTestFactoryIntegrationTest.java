@@ -42,7 +42,6 @@ import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Quantity;
 import org.hl7.fhir.r4.model.Ratio;
 import org.hl7.fhir.r4.model.Specimen;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -173,137 +172,65 @@ class LabTestFactoryIntegrationTest {
     assertThat(labTests.getFirst().getValue()).isEqualTo("von 5 bis 15");
   }
 
-  @Nested
-  @SpringBootTest(properties = {"feature.flag.pdf-optimization=true"})
-  class Ratio_PdfOptimizationEnabled {
+  @Test
+  void createLabTests_createLabTestsWithRatioAsExpected_WithBothComparator() {
+    // given
+    Bundle bundle = createLaboratoryReportRatioBundle();
+    final Observation resource = (Observation) bundle.getEntry().get(8).getResource();
+    final Ratio ratio = (Ratio) resource.getValue();
+    ratio.getNumerator().setComparator(Quantity.QuantityComparator.GREATER_THAN);
+    ratio.getDenominator().setComparator(Quantity.QuantityComparator.GREATER_OR_EQUAL);
 
-    @Test
-    void createLabTests_createLabTestsWithRatioAsExpected_WithBothComparator() {
-      // given
-      Bundle bundle = createLaboratoryReportRatioBundle();
-      final Observation resource = (Observation) bundle.getEntry().get(8).getResource();
-      final Ratio ratio = (Ratio) resource.getValue();
-      ratio.getNumerator().setComparator(Quantity.QuantityComparator.GREATER_THAN);
-      ratio.getDenominator().setComparator(Quantity.QuantityComparator.GREATER_OR_EQUAL);
+    // when
+    List<LabTest> labTests = labTestFactory.createLabTests(bundle);
 
-      // when
-      List<LabTest> labTests = labTestFactory.createLabTests(bundle);
-
-      // then
-      assertThat(labTests).hasSize(1);
-      assertThat(labTests.getFirst().getValue()).isEqualTo(">1.0:>=100.0");
-    }
-
-    @Test
-    void createLabTests_createLabTestsWithRatioAsExpected_WithNumeratorComparator() {
-      // given
-      Bundle bundle = createLaboratoryReportRatioBundle();
-      final Observation resource = (Observation) bundle.getEntry().get(8).getResource();
-      final Ratio ratio = (Ratio) resource.getValue();
-      ratio.getNumerator().setComparator(Quantity.QuantityComparator.GREATER_THAN);
-
-      // when
-      List<LabTest> labTests = labTestFactory.createLabTests(bundle);
-
-      // then
-      assertThat(labTests).hasSize(1);
-      assertThat(labTests.getFirst().getValue()).isEqualTo(">1.0:100.0");
-    }
-
-    @Test
-    void createLabTests_createLabTestsWithRatioAsExpected_WithDenominatorComparator() {
-      // given
-      Bundle bundle = createLaboratoryReportRatioBundle();
-      final Observation resource = (Observation) bundle.getEntry().get(8).getResource();
-      final Ratio ratio = (Ratio) resource.getValue();
-      ratio.getDenominator().setComparator(Quantity.QuantityComparator.GREATER_THAN);
-
-      // when
-      List<LabTest> labTests = labTestFactory.createLabTests(bundle);
-
-      // then
-      assertThat(labTests).hasSize(1);
-      assertThat(labTests.getFirst().getValue()).isEqualTo("1.0:>100.0");
-    }
-
-    @Test
-    void createLabTests_createLabTestsWithRatioAsExpected_WithNoComparator() {
-      // given
-      Bundle bundle = createLaboratoryReportRatioBundle();
-
-      // when
-      List<LabTest> labTests = labTestFactory.createLabTests(bundle);
-
-      // then
-      assertThat(labTests).hasSize(1);
-      assertThat(labTests.getFirst().getValue()).isEqualTo("1.0:100.0");
-    }
+    // then
+    assertThat(labTests).hasSize(1);
+    assertThat(labTests.getFirst().getValue()).isEqualTo(">1.0:>=100.0");
   }
 
-  @Nested
-  @SpringBootTest(properties = {"feature.flag.pdf-optimization=false"})
-  class Ratio_PdfOptimizationDisabled {
+  @Test
+  void createLabTests_createLabTestsWithRatioAsExpected_WithNumeratorComparator() {
+    // given
+    Bundle bundle = createLaboratoryReportRatioBundle();
+    final Observation resource = (Observation) bundle.getEntry().get(8).getResource();
+    final Ratio ratio = (Ratio) resource.getValue();
+    ratio.getNumerator().setComparator(Quantity.QuantityComparator.GREATER_THAN);
 
-    @Test
-    void createLabTests_createLabTestsWithRatioAsExpected_WithBothComparator() {
-      // given
-      Bundle bundle = createLaboratoryReportRatioBundle();
-      final Observation resource = (Observation) bundle.getEntry().get(8).getResource();
-      final Ratio ratio = (Ratio) resource.getValue();
-      ratio.getNumerator().setComparator(Quantity.QuantityComparator.GREATER_THAN);
-      ratio.getDenominator().setComparator(Quantity.QuantityComparator.GREATER_THAN);
+    // when
+    List<LabTest> labTests = labTestFactory.createLabTests(bundle);
 
-      // when
-      List<LabTest> labTests = labTestFactory.createLabTests(bundle);
+    // then
+    assertThat(labTests).hasSize(1);
+    assertThat(labTests.getFirst().getValue()).isEqualTo(">1.0:100.0");
+  }
 
-      // then
-      assertThat(labTests).hasSize(1);
-      assertThat(labTests.getFirst().getValue()).isEqualTo("1.0:100.0");
-    }
+  @Test
+  void createLabTests_createLabTestsWithRatioAsExpected_WithDenominatorComparator() {
+    // given
+    Bundle bundle = createLaboratoryReportRatioBundle();
+    final Observation resource = (Observation) bundle.getEntry().get(8).getResource();
+    final Ratio ratio = (Ratio) resource.getValue();
+    ratio.getDenominator().setComparator(Quantity.QuantityComparator.GREATER_THAN);
 
-    @Test
-    void createLabTests_createLabTestsWithRatioAsExpected_WithNumeratorComparator() {
-      // given
-      Bundle bundle = createLaboratoryReportRatioBundle();
-      final Observation resource = (Observation) bundle.getEntry().get(8).getResource();
-      final Ratio ratio = (Ratio) resource.getValue();
-      ratio.getNumerator().setComparator(Quantity.QuantityComparator.GREATER_THAN);
+    // when
+    List<LabTest> labTests = labTestFactory.createLabTests(bundle);
 
-      // when
-      List<LabTest> labTests = labTestFactory.createLabTests(bundle);
+    // then
+    assertThat(labTests).hasSize(1);
+    assertThat(labTests.getFirst().getValue()).isEqualTo("1.0:>100.0");
+  }
 
-      // then
-      assertThat(labTests).hasSize(1);
-      assertThat(labTests.getFirst().getValue()).isEqualTo("1.0:100.0");
-    }
+  @Test
+  void createLabTests_createLabTestsWithRatioAsExpected_WithNoComparator() {
+    // given
+    Bundle bundle = createLaboratoryReportRatioBundle();
 
-    @Test
-    void createLabTests_createLabTestsWithRatioAsExpected_WithDenominatorComparator() {
-      // given
-      Bundle bundle = createLaboratoryReportRatioBundle();
-      final Observation resource = (Observation) bundle.getEntry().get(8).getResource();
-      final Ratio ratio = (Ratio) resource.getValue();
-      ratio.getDenominator().setComparator(Quantity.QuantityComparator.GREATER_THAN);
+    // when
+    List<LabTest> labTests = labTestFactory.createLabTests(bundle);
 
-      // when
-      List<LabTest> labTests = labTestFactory.createLabTests(bundle);
-
-      // then
-      assertThat(labTests).hasSize(1);
-      assertThat(labTests.getFirst().getValue()).isEqualTo("1.0:100.0");
-    }
-
-    @Test
-    void createLabTests_createLabTestsWithRatioAsExpected_WithNoComparator() {
-      // given
-      Bundle bundle = createLaboratoryReportRatioBundle();
-
-      // when
-      List<LabTest> labTests = labTestFactory.createLabTests(bundle);
-
-      // then
-      assertThat(labTests).hasSize(1);
-      assertThat(labTests.getFirst().getValue()).isEqualTo("1.0:100.0");
-    }
+    // then
+    assertThat(labTests).hasSize(1);
+    assertThat(labTests.getFirst().getValue()).isEqualTo("1.0:100.0");
   }
 }

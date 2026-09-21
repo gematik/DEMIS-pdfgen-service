@@ -29,6 +29,7 @@ package de.gematik.demis.pdfgen.receipt.diseasenotification;
 
 import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_BUNDLE_HIV_JSON;
 import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_BUNDLE_JSON;
+import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_BUNDLE_TOXD_JSON;
 import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_BUNDLE_WITHOUT_LAB_SPECIMEN_LAB_DETAILS_JSON;
 import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_BUNDLE_WITHOUT_LAB_SPECIMEN_TAKEN_JSON;
 import static de.gematik.demis.pdfgen.test.helper.FhirFactory.DISEASE_NOTIFICATION_BUNDLE_WITH_CONTACT_NAME_TEXT_JSON;
@@ -121,113 +122,6 @@ class DiseaseNotificationServiceTest {
   }
 
   @Nested
-  @SpringBootTest(properties = {"feature.flag.pdf-second-page-cr=true"})
-  class PdfSecondPageCrEnabled {
-    @Autowired private DiseaseNotificationService diseaseNotificationService;
-
-    @Test
-    void generatePdfFromBundleJsonString_doesContainLabQuestionEntry_withAnswerYes()
-        throws Exception {
-      final String pdfText =
-          generateAndValidateDiseaseNotificationPdf(
-              diseaseNotificationService.generatePdfFromBundleJsonString(
-                  DISEASE_NOTIFICATION_BUNDLE_JSON));
-      assertThat(pdfText)
-          .containsPattern(
-              "Diagnosehinweise Textueller Hinweis ?\\n"
-                  + "labSpecimenTaken Ja ?\\n"
-                  + "labSpecimenLab ?\\n"
-                  + "Name QuickScan Labor \\(Erregerdiagnostische Untersuchungsstelle\\) ?\\n"
-                  + "Adresse Laborstraße 345, 21481 Buchhorst, .* 20422 ?\\n"
-                  + "Kontakt Telefon: 666555444 E-Mail: mail@labor\\.de");
-    }
-
-    @Test
-    void generatePdfFromBundleJsonString_doesContainLabQuestionEntry_withAnswerNo()
-        throws Exception {
-      final String pdfText =
-          generateAndValidateDiseaseNotificationPdf(
-              diseaseNotificationService.generatePdfFromBundleJsonString(
-                  DISEASE_NOTIFICATION_BUNDLE_WITHOUT_LAB_SPECIMEN_TAKEN_JSON));
-      assertThat(pdfText)
-          .containsPattern("Diagnosehinweise Textueller Hinweis\\n" + "labSpecimenTaken Nein")
-          .doesNotContain("labSpecimenLab");
-    }
-
-    @Test
-    void
-        generatePdfFromBundleJsonString_doesContainLabQuestionEntry_missingLabDetails_hasDefaultText()
-            throws Exception {
-      final String pdfText =
-          generateAndValidateDiseaseNotificationPdf(
-              diseaseNotificationService.generatePdfFromBundleJsonString(
-                  DISEASE_NOTIFICATION_BUNDLE_WITHOUT_LAB_SPECIMEN_LAB_DETAILS_JSON));
-      assertThat(pdfText)
-          .containsPattern(
-              "Diagnosehinweise Textueller Hinweis ?\\n"
-                  + "labSpecimenTaken Ja ?\\n"
-                  + "labSpecimenLab ?\\n"
-                  + "Name QuickScan Labor \\(Erregerdiagnostische Untersuchungsstelle\\) ?\\n"
-                  + "Adresse Keine Angabe ?\\n"
-                  + "Kontakt Keine Angabe ?\\n");
-    }
-  }
-
-  @Nested
-  @SpringBootTest(properties = {"feature.flag.pdf-second-page-cr=false"})
-  class PdfSecondPageCrDisabled {
-    @Autowired private DiseaseNotificationService diseaseNotificationService;
-
-    @Test
-    void generatePdfFromBundleJsonString_doesContainLabQuestionEntry_withAnswerYes()
-        throws Exception {
-      final String pdfText =
-          generateAndValidateDiseaseNotificationPdf(
-              diseaseNotificationService.generatePdfFromBundleJsonString(
-                  DISEASE_NOTIFICATION_BUNDLE_JSON));
-
-      assertThat(pdfText)
-          .containsPattern(
-              "Diagnosehinweise Textueller Hinweis ?\\n"
-                  + "labSpecimenTaken Ja ?\\n"
-                  + "labSpecimenLab ?\\n"
-                  + "Name QuickScan Labor \\(Erregerdiagnostische Untersuchungsstelle\\) ?\\n"
-                  + "Adresse Laborstraße 345, 21481 Buchhorst, .* 20422 ?\\n"
-                  + "Kontakt Telefon: 666555444 E-Mail: mail@labor\\.de");
-    }
-
-    @Test
-    void generatePdfFromBundleJsonString_doesNotContainLabQuestionEntry_withAnswerNo()
-        throws Exception {
-      final String pdfText =
-          generateAndValidateDiseaseNotificationPdf(
-              diseaseNotificationService.generatePdfFromBundleJsonString(
-                  DISEASE_NOTIFICATION_BUNDLE_WITHOUT_LAB_SPECIMEN_TAKEN_JSON));
-      assertThat(pdfText)
-          .doesNotContainPattern("Diagnosehinweise Textueller Hinweis\\n" + "labSpecimenTaken Nein")
-          .doesNotContain("labSpecimenLab");
-    }
-
-    @Test
-    void
-        generatePdfFromBundleJsonString_doesContainLabQuestionEntry_missingLabDetails_hasEmptyText()
-            throws Exception {
-      final String pdfText =
-          generateAndValidateDiseaseNotificationPdf(
-              diseaseNotificationService.generatePdfFromBundleJsonString(
-                  DISEASE_NOTIFICATION_BUNDLE_WITHOUT_LAB_SPECIMEN_LAB_DETAILS_JSON));
-      assertThat(pdfText)
-          .containsPattern(
-              "Diagnosehinweise Textueller Hinweis ?\\n"
-                  + "labSpecimenTaken Ja ?\\n"
-                  + "labSpecimenLab ?\\n"
-                  + "Name QuickScan Labor \\(Erregerdiagnostische Untersuchungsstelle\\) ?\\n"
-                  + "Adresse ?\\n"
-                  + "Kontakt ?\\n");
-    }
-  }
-
-  @Nested
   @SpringBootTest(properties = {"feature.flag.without-date-fields-7-3=false"})
   class WithoutDateFields73Disabled {
     @Autowired private DiseaseNotificationService diseaseNotificationService;
@@ -281,6 +175,31 @@ class DiseaseNotificationServiceTest {
       assertThat(pdfText)
           .contains("Datum der Diagnosestellung Keine Angabe \nErkrankungsbeginn Keine Angabe");
     }
+
+    @Test
+    void generatePdfFromBundleJsonString_Toxd_doesContainDateEntry() throws Exception {
+      final String pdfText =
+          generateAndValidateDiseaseNotificationPdf(
+              diseaseNotificationService.generatePdfFromBundleJsonString(
+                  DISEASE_NOTIFICATION_BUNDLE_TOXD_JSON));
+      assertThat(pdfText)
+          .contains("Datum der Diagnosestellung 19.08.2026 \nErkrankungsbeginn 18.08.2026");
+    }
+
+    @Test
+    void generatePdfFromBundleJsonString_Toxd_withoutDateFields_doesContainDefaultDateEntry()
+        throws Exception {
+      String bundleWithoutDateFields =
+          DISEASE_NOTIFICATION_BUNDLE_TOXD_JSON
+              .replace("\"onsetDateTime\": \"2026-08-18\",", "")
+              .replace("\"recordedDate\": \"2026-08-19\",", "");
+
+      final String pdfText =
+          generateAndValidateDiseaseNotificationPdf(
+              diseaseNotificationService.generatePdfFromBundleJsonString(bundleWithoutDateFields));
+      assertThat(pdfText)
+          .contains("Datum der Diagnosestellung Keine Angabe \nErkrankungsbeginn Keine Angabe");
+    }
   }
 
   @Nested
@@ -326,6 +245,29 @@ class DiseaseNotificationServiceTest {
     }
 
     @Test
+    void generatePdfFromBundleJsonString_Toxd_containsDateEntry() throws Exception {
+      final String pdfText =
+          generateAndValidateDiseaseNotificationPdf(
+              diseaseNotificationService.generatePdfFromBundleJsonString(
+                  DISEASE_NOTIFICATION_BUNDLE_TOXD_JSON));
+      assertThat(pdfText)
+          .contains("Datum der Diagnosestellung 19.08.2026 \nErkrankungsbeginn 18.08.2026");
+    }
+
+    @Test
+    void generatePdfFromBundleJsonString_Toxd_containsDefaultDateEntry() throws Exception {
+      String bundleWithoutDateFields =
+          DISEASE_NOTIFICATION_BUNDLE_TOXD_JSON
+              .replace("\"onsetDateTime\": \"2026-08-18\",", "")
+              .replace("\"recordedDate\": \"2026-08-19\",", "");
+      final String pdfText =
+          generateAndValidateDiseaseNotificationPdf(
+              diseaseNotificationService.generatePdfFromBundleJsonString(bundleWithoutDateFields));
+      assertThat(pdfText)
+          .contains("Datum der Diagnosestellung Keine Angabe \nErkrankungsbeginn Keine Angabe");
+    }
+
+    @Test
     void generatePdfFromBundleJsonString_NonNominal_withoutDateFields_doesNotContainDateEntry()
         throws Exception {
       String bundleWithoutDateFields =
@@ -343,8 +285,8 @@ class DiseaseNotificationServiceTest {
   }
 
   @Nested
-  @SpringBootTest(properties = {"feature.flag.pdf-optimization=true"})
-  class PdfOptimizationEnabled {
+  @SpringBootTest
+  class PdfContentTest {
     @Autowired private DiseaseNotificationService diseaseNotificationService;
 
     @Test
@@ -370,8 +312,7 @@ class DiseaseNotificationServiceTest {
     void generatePdfFromBundleJsonString_withoutSymptoms_doesContainDefaultSymptomsEntry()
         throws Exception {
       final String bundleWithoutEvidence =
-          DISEASE_NOTIFICATION_BUNDLE_JSON.replaceAll(
-              "(?s)\"evidence\"\\s*:\\s*\\[.*?\\]\\s*,", "");
+          DISEASE_NOTIFICATION_BUNDLE_JSON.replaceAll("(?s)\"evidence\"\\s*:\\s*\\[.*?]\\s*,", "");
       final String pdfText =
           generateAndValidateDiseaseNotificationPdf(
               diseaseNotificationService.generatePdfFromBundleJsonString(bundleWithoutEvidence));
@@ -399,65 +340,52 @@ class DiseaseNotificationServiceTest {
                   DISEASE_NOTIFICATION_BUNDLE_HIV_JSON));
       assertThat(pdfText).doesNotContain("Symptome Keine Angabe");
     }
-  }
-
-  @Nested
-  @SpringBootTest(properties = {"feature.flag.pdf-optimization=false"})
-  class PdfOptimizationDisabled {
-    @Autowired private DiseaseNotificationService diseaseNotificationService;
 
     @Test
-    void generatePdfFromBundleJsonString_shouldHaveContactPersonEntry() throws Exception {
+    void generatePdfFromBundleJsonString_doesContainLabQuestionEntry_withAnswerYes()
+        throws Exception {
       final String pdfText =
           generateAndValidateDiseaseNotificationPdf(
               diseaseNotificationService.generatePdfFromBundleJsonString(
                   DISEASE_NOTIFICATION_BUNDLE_JSON));
-      assertThat(pdfText).contains("Kontaktperson Dr. Anna Beate Carolin Ansprechpartner");
+      assertThat(pdfText)
+          .containsPattern(
+              "Diagnosehinweise Textueller Hinweis ?\\n"
+                  + "labSpecimenTaken Ja ?\\n"
+                  + "labSpecimenLab ?\\n"
+                  + "Name QuickScan Labor \\(Erregerdiagnostische Untersuchungsstelle\\) ?\\n"
+                  + "Adresse Laborstraße 345, 21481 Buchhorst, .* 20422 ?\\n"
+                  + "Kontakt Telefon: 666555444 E-Mail: mail@labor\\.de");
     }
 
     @Test
-    void generatePdfFromBundleJsonString_shouldHaveContactPersonEntry_fromContactNameText()
+    void generatePdfFromBundleJsonString_doesContainLabQuestionEntry_withAnswerNo()
         throws Exception {
       final String pdfText =
           generateAndValidateDiseaseNotificationPdf(
               diseaseNotificationService.generatePdfFromBundleJsonString(
-                  DISEASE_NOTIFICATION_BUNDLE_WITH_CONTACT_NAME_TEXT_JSON));
-      assertThat(pdfText).contains("Kontaktperson Dr. Anna Beate Carolin Ansprechpartner");
-    }
-
-    @Test
-    void generatePdfFromBundleJsonString_withoutSymptoms_doesContainDefaultSymptomsEntry()
-        throws Exception {
-      final String bundleWithoutEvidence =
-          DISEASE_NOTIFICATION_BUNDLE_JSON.replaceAll(
-              "(?s)\"evidence\"\\s*:\\s*\\[.*?\\]\\s*,", "");
-      final String pdfText =
-          generateAndValidateDiseaseNotificationPdf(
-              diseaseNotificationService.generatePdfFromBundleJsonString(bundleWithoutEvidence));
-      assertThat(pdfText).contains("Symptome Keine Angabe");
+                  DISEASE_NOTIFICATION_BUNDLE_WITHOUT_LAB_SPECIMEN_TAKEN_JSON));
+      assertThat(pdfText)
+          .containsPattern("Diagnosehinweise Textueller Hinweis\\n" + "labSpecimenTaken Nein")
+          .doesNotContain("labSpecimenLab");
     }
 
     @Test
     void
-        generatePdfFromBundleJsonString_NonNominal_NotHIV_withoutSymptoms_doesContainDefaultSymptomsEntry()
-            throws Exception {
-      final String bundleNotHivd = DISEASE_NOTIFICATION_BUNDLE_HIV_JSON.replace("hivd", "chtd");
-
-      final String pdfText =
-          generateAndValidateDiseaseNotificationPdf(
-              diseaseNotificationService.generatePdfFromBundleJsonString(bundleNotHivd));
-      assertThat(pdfText).contains("Symptome Keine Angabe");
-    }
-
-    @Test
-    void
-        generatePdfFromBundleJsonString_NonNominal_HIV_withoutSymptoms_doesContainDefaultSymptomsEntry()
+        generatePdfFromBundleJsonString_doesContainLabQuestionEntry_missingLabDetails_hasDefaultText()
             throws Exception {
       final String pdfText =
           generateAndValidateDiseaseNotificationPdf(
               diseaseNotificationService.generatePdfFromBundleJsonString(
-                  DISEASE_NOTIFICATION_BUNDLE_HIV_JSON));
-      assertThat(pdfText).contains("Symptome Keine Angabe");
+                  DISEASE_NOTIFICATION_BUNDLE_WITHOUT_LAB_SPECIMEN_LAB_DETAILS_JSON));
+      assertThat(pdfText)
+          .containsPattern(
+              "Diagnosehinweise Textueller Hinweis ?\\n"
+                  + "labSpecimenTaken Ja ?\\n"
+                  + "labSpecimenLab ?\\n"
+                  + "Name QuickScan Labor \\(Erregerdiagnostische Untersuchungsstelle\\) ?\\n"
+                  + "Adresse Keine Angabe ?\\n"
+                  + "Kontakt Keine Angabe ?\\n");
     }
   }
 

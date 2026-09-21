@@ -37,8 +37,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class FeatureFlags {
   private boolean hospitalizationOrder;
   private boolean diseaseStrict;
-  private boolean pdfOptimization;
   private boolean withoutDateFields73;
-  private boolean pdfSecondPageCr;
-  private boolean pdfSplitNotes;
 }

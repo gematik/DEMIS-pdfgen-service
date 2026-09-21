@@ -41,5 +41,4 @@ public class Facility implements PrintableOrganization {
   private List<Telecom> telecoms;
   private NameDTO nameDTO;
   private String department;
-  private boolean reorderContactPersonText;
 }
