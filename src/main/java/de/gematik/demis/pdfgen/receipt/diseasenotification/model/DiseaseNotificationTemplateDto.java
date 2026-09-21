@@ -55,5 +55,4 @@ public class DiseaseNotificationTemplateDto {
   private Authentication authentication;
   private Map<String, String> additionalConfig;
   private String watermarkBase64Image;
-  private boolean pdfSecondPageCrEnabled;
 }

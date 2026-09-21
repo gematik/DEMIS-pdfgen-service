@@ -104,7 +104,7 @@ class DiseaseNotificationControllerIntegrationTest {
       Datum der Diagnosestellung 02.01.2022\s
       Erkrankungsbeginn 01.01.2022\s
       Symptome Fieber Halsschmerzen/-entzündung Husten Pneunomie\s
-      (Lungenentzündung) Schnupfen akutes schweres Atemnotsyndrom (ARDS)\s
+      (Lungenentzündung) Schnupfen akutes schweres Atemnotsyndrom (ARDS)
       Diagnosehinweise Textueller Hinweis
       Laborbeauftragung Ja\s
       Beauftragtes Labor\s
@@ -117,9 +117,7 @@ class DiseaseNotificationControllerIntegrationTest {
   class PdfFeatureFlagsDisabled {
     @BeforeEach
     void setup() {
-      when(featureFlags.isPdfOptimization()).thenReturn(false);
       when(featureFlags.isWithoutDateFields73()).thenReturn(false);
-      when(featureFlags.isPdfSplitNotes()).thenReturn(false);
     }
 
     @Test
@@ -158,8 +156,8 @@ class DiseaseNotificationControllerIntegrationTest {
           getExpectedNotifierFacilityPdfText(
               "Kontaktperson Dr. Anna Beate Carolin Ansprechpartner");
 
-      // FEATURE_FLAG_PDF_OPTIMIZATION is disabled -> no entry for initial notification id in pdf
-      final String expectedNotification = getExpectedNotificationPdfText("");
+      final String expectedNotification =
+          getExpectedNotificationPdfText("Meldungsverweis (Initiale Meldungs-ID) Keine Angabe");
 
       validateBodyDiseaseResponse(
           response, FOLLOW_UP_PAGE, expectedNotifierFacilityPdfText, expectedNotification);
@@ -178,11 +176,9 @@ class DiseaseNotificationControllerIntegrationTest {
           response,
           "Empfangsbestätigung Erkrankungsmeldung - Bertha-Luise Hanna Karin Betroffen.pdf");
 
-      // FEATURE_FLAG_PDF_OPTIMIZATION is disabled -> entry "Kontaktperson" build from contact.name
-      // concatenation
       final String expectedNotifierFacilityPdfText =
           getExpectedNotifierFacilityPdfText(
-              "Kontaktperson Dr. Anna Beate Carolin Ansprechpartner");
+              "Kontaktperson Frau Dr. Anna Beate Carolin Ansprechpartner");
 
       final String expectedNotification =
           getExpectedNotificationPdfText("Meldungsverweis (Initiale Meldungs-ID) ABC123");
@@ -205,8 +201,9 @@ class DiseaseNotificationControllerIntegrationTest {
 
       final String expectedNotifierFacilityPdfText =
           getExpectedNotifierFacilityPdfText(
-              "Kontaktperson Dr. Anna Beate Carolin Ansprechpartner");
-      final String expectedNotification = getExpectedNotificationPdfText("");
+              "Kontaktperson Frau Dr. Anna Beate Carolin Ansprechpartner");
+      final String expectedNotification =
+          getExpectedNotificationPdfText("Meldungsverweis (Initiale Meldungs-ID) Keine Angabe");
 
       validateBodyResponseForHIVD(response, expectedNotification, expectedNotifierFacilityPdfText);
     }
@@ -216,9 +213,7 @@ class DiseaseNotificationControllerIntegrationTest {
   class PdfFeatureFlagsEnabled {
     @BeforeEach
     void setup() {
-      when(featureFlags.isPdfOptimization()).thenReturn(true);
       when(featureFlags.isWithoutDateFields73()).thenReturn(true);
-      when(featureFlags.isPdfSplitNotes()).thenReturn(true);
     }
 
     @Test
@@ -256,8 +251,6 @@ class DiseaseNotificationControllerIntegrationTest {
           getExpectedNotifierFacilityPdfText(
               "Kontaktperson Dr. Anna Beate Carolin Ansprechpartner");
 
-      // FEATURE_FLAG_PDF_OPTIMIZATION is enabled -> entry for initial notification id in pdf "Keine
-      // Angabe"
       final String expectedNotification =
           getExpectedNotificationPdfText("Meldungsverweis (Initiale Meldungs-ID) Keine Angabe");
 
@@ -278,8 +271,6 @@ class DiseaseNotificationControllerIntegrationTest {
           response,
           "Empfangsbestätigung Erkrankungsmeldung - Bertha-Luise Hanna Karin Betroffen.pdf");
 
-      // FEATURE_FLAG_PDF_OPTIMIZATION is enabled -> entry "Kontaktperson" build from
-      // contact.name.text
       final String expectedNotifierFacilityPdfText =
           getExpectedNotifierFacilityPdfText(
               "Kontaktperson Frau Dr. Anna Beate Carolin Ansprechpartner");
@@ -704,37 +695,21 @@ class DiseaseNotificationControllerIntegrationTest {
             Kontakt Telefon: 01234567 E-Mail: anna@ansprechpartner.de
             7f562b87-f2c2-4e9d-b3fc-37f6b5dca3a5
             """
-            + (!featureFlags.isPdfSplitNotes()
-                ? """
-            Meldetatbestand HIVD\s
-            """
-                : """
-            Meldetatbestand HIVD
-            """)
             + (!featureFlags.isWithoutDateFields73()
                 ? """
+                            Meldetatbestand HIVD\s
                             Datum der Diagnosestellung 02.01.2022\s
-                            Erkrankungsbeginn 01.01.2022\s
+                            Erkrankungsbeginn 01.01.2022
                             """
                 : """
+                            Meldetatbestand HIVD
                             """)
-            + (!featureFlags.isPdfOptimization()
-                ? """
-                                    Symptome Keine Angabe\s
-                                    """
-                : """
-                                    """)
-            + (!featureFlags.isPdfSplitNotes()
-                ? """
-                Diagnosehinweise Textueller Hinweis Ein sehr langer Eintrag muss\s
-                umgebrochen und in der zweiten Zeile eingerückt werden Weitere Hinweise
-                """
-                : """
+            + """
             Diagnosehinweise Textueller Hinweis
             Ein sehr langer Eintrag muss umgebrochen und in der\s
             zweiten Zeile eingerückt werden
             Weitere Hinweise
-            """);
+            """;
     final String pdfText = PdfExtractorHelper.extractPdfText(response.getContentAsByteArray());
     assertThat(pdfText).as("disease notification PDF text").isEqualTo(cleanupString(expectedText));
   }
@@ -744,80 +719,61 @@ class DiseaseNotificationControllerIntegrationTest {
   }
 
   private String getExpectedNotifierFacilityPdfText(final String contactPersonEntryString) {
-    return (featureFlags.isPdfOptimization() ? contactPersonEntryString + "\n" : "")
+    return contactPersonEntryString
+        + "\n"
         + """
         Name SlowHealing Klinik (Krankenhaus)
         Identifier BSNR: 123456789
         Adresse Krankenhausstraße 1, 21481 Buchhorst, Deutschland
         Kontakt Telefon: 01234567
         E-Mail: anna@ansprechpartner.de
-        """
-        + (!featureFlags.isPdfOptimization() ? contactPersonEntryString + "\n" : "");
+        """;
   }
 
   private String getExpectedNotificationPdfText(String initalNotificationIdEntry) {
     initalNotificationIdEntry =
         !initalNotificationIdEntry.isEmpty() ? initalNotificationIdEntry + "\n" : "";
-    return (featureFlags.isPdfOptimization()
-        ? """
+    return """
         Meldungs-ID 7f562b87-f2c2-4e9d-b3fc-37f6b5dca3a5
         """
-            + initalNotificationIdEntry
-            + """
+        + initalNotificationIdEntry
+        + """
         Meldevorgangs-ID 2d66a331-102a-4047-b666-1b2f18ee955e
         Meldungserstellung 11.03.2022 09:06
         Meldungsstatus Final
-        """
-        : """
-        Meldevorgangs-ID 2d66a331-102a-4047-b666-1b2f18ee955e
-        Zeitpunkt des Eingangs 11.03.2022 09:06
-        Meldungs-ID 7f562b87-f2c2-4e9d-b3fc-37f6b5dca3a5
-        Meldungsstatus Final
-        Meldungserstellung/-änderung 10.03.2022 14:57
-        """
-            + initalNotificationIdEntry);
+        """;
   }
 
   private String getFollowUpPage() {
-    final String followUpPage =
-        """
-      Informationen zur Weitergabe der Meldungs-ID für zugehörige Folge- und\s
-      Ergänzungsmeldungen durch andere Einrichtungen
-      Das DEMIS-Lifecyclemanagement von Meldungen beschreibt in verschiedenen Szenarien den Umgang mit Meldungen\s
-      bzw. mit der Meldungs-ID bei Korrekturen und Ergänzungen sowie bei Ergänzungen von meldepflichtigen Informationen\s
-      durch mehrere Melder.
-      Insbesondere wenn weitere Meldepflichtige zusätzliche Inhalte ergänzen sollen, sollte die Meldungs-ID weitergegeben\s
-      werden, damit auf diese Meldung verwiesen werden kann. So wird gewährleistet, dass auf Seite der\s
-      Meldungsempfänger (z.B. im Gesundheitsamt) diese Meldungen eindeutig in Zusammenhang gebracht werden können.
-      Betroffene Person Meldungs-ID\s
-      Geschlecht Weiblich\s
-      Geburtsdatum (Monat/Jahr) 06/1999\s
-      Ersten 3 Ziffern der PLZ der Adresse 123
-      Meldende Einrichtung\s
-      Name SlowHealing Klinik (Krankenhaus)\s
-      Adresse Krankenhausstraße 1, 21481 Buchhorst, Deutschland\s
-      Kontakt Telefon: 01234567 E-Mail: anna@ansprechpartner.de
-      7f562b87-f2c2-4e9d-b3fc-37f6b5dca3a5
-      Meldetatbestand CVDD\s
-      Datum der Diagnosestellung 02.01.2022\s
-      Erkrankungsbeginn 01.01.2022\s
-      Symptome Fieber Halsschmerzen/-entzündung Husten Pneunomie\s
-      """
-            + (!featureFlags.isPdfSplitNotes()
-                ? """
-                  (Lungenentzündung) Schnupfen akutes schweres Atemnotsyndrom (ARDS)\s
-                  """
-                : """
-                  (Lungenentzündung) Schnupfen akutes schweres Atemnotsyndrom (ARDS)
-                  """)
-            + """
-      Diagnosehinweise Textueller Hinweis
-      Laborbeauftragung Ja\s
-      Beauftragtes Labor\s
-      Name QuickScan Labor (Erregerdiagnostische Untersuchungsstelle)\s
-      Adresse Laborstraße 345, 21481 Buchhorst, Deutschland\s
-      Kontakt Telefon: 666555444 E-Mail: mail@labor.de
-      """;
-    return followUpPage;
+    return """
+    Informationen zur Weitergabe der Meldungs-ID für zugehörige Folge- und\s
+    Ergänzungsmeldungen durch andere Einrichtungen
+    Das DEMIS-Lifecyclemanagement von Meldungen beschreibt in verschiedenen Szenarien den Umgang mit Meldungen\s
+    bzw. mit der Meldungs-ID bei Korrekturen und Ergänzungen sowie bei Ergänzungen von meldepflichtigen Informationen\s
+    durch mehrere Melder.
+    Insbesondere wenn weitere Meldepflichtige zusätzliche Inhalte ergänzen sollen, sollte die Meldungs-ID weitergegeben\s
+    werden, damit auf diese Meldung verwiesen werden kann. So wird gewährleistet, dass auf Seite der\s
+    Meldungsempfänger (z.B. im Gesundheitsamt) diese Meldungen eindeutig in Zusammenhang gebracht werden können.
+    Betroffene Person Meldungs-ID\s
+    Geschlecht Weiblich\s
+    Geburtsdatum (Monat/Jahr) 06/1999\s
+    Ersten 3 Ziffern der PLZ der Adresse 123
+    Meldende Einrichtung\s
+    Name SlowHealing Klinik (Krankenhaus)\s
+    Adresse Krankenhausstraße 1, 21481 Buchhorst, Deutschland\s
+    Kontakt Telefon: 01234567 E-Mail: anna@ansprechpartner.de
+    7f562b87-f2c2-4e9d-b3fc-37f6b5dca3a5
+    Meldetatbestand CVDD\s
+    Datum der Diagnosestellung 02.01.2022\s
+    Erkrankungsbeginn 01.01.2022\s
+    Symptome Fieber Halsschmerzen/-entzündung Husten Pneunomie\s
+    (Lungenentzündung) Schnupfen akutes schweres Atemnotsyndrom (ARDS)
+    Diagnosehinweise Textueller Hinweis
+    Laborbeauftragung Ja\s
+    Beauftragtes Labor\s
+    Name QuickScan Labor (Erregerdiagnostische Untersuchungsstelle)\s
+    Adresse Laborstraße 345, 21481 Buchhorst, Deutschland\s
+    Kontakt Telefon: 666555444 E-Mail: mail@labor.de
+    """;
   }
 }

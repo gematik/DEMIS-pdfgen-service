@@ -108,6 +108,8 @@ public final class FhirFactory {
       readResourceFile("bundles/disease/DiseaseNotificationBundle_withContactNameText.json");
   public static final String DISEASE_NOTIFICATION_BUNDLE_HIV_JSON =
       readResourceFile("bundles/disease/DiseaseNotificationBundleHiv.json");
+  public static final String DISEASE_NOTIFICATION_BUNDLE_TOXD_JSON =
+      readResourceFile("bundles/disease/DiseaseNotificationBundleToxd.json");
   public static final String DISEASE_NOTIFICATION_BUNDLE_XML =
       readResourceFile("bundles/disease/DiseaseNotificationBundle.xml");
   public static final String DISEASE_NOTIFICATION_WITH_MISSING_POSTALCODE_BUNDLE_XML =

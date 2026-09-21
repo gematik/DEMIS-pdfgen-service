@@ -71,7 +71,7 @@ class ConditionDTOTest {
                               .symptoms(symptoms)
                               .onsetDate(onsetDate)
                               .recordedDate(recordedDate)
-                              .note("Fascinating!")
+                              .notes(List.of("Fascinating!"))
                               .build();
 
                       // then
@@ -81,9 +81,9 @@ class ConditionDTOTest {
                       assertThat(conditionDTO.onsetDate()).isEqualTo(onsetDate);
                       assertThat(conditionDTO.recordedDate()).isEqualTo(recordedDate);
                       assertThat(conditionDTO.getAllSymptoms()).isNotNull();
-                      assertThat(conditionDTO.note())
+                      assertThat(conditionDTO.notes())
                           .as("diagnostic note")
-                          .isEqualTo("Fascinating!");
+                          .contains("Fascinating!");
                     });
               });
         });

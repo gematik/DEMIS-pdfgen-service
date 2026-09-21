@@ -27,7 +27,6 @@ package de.gematik.demis.pdfgen.receipt.common.model.section;
  * #L%
  */
 
-import de.gematik.demis.pdfgen.FeatureFlags;
 import de.gematik.demis.pdfgen.fhir.extract.NotificationFhirQueries;
 import de.gematik.demis.pdfgen.receipt.common.model.enums.NotificationStatusEnum;
 import de.gematik.demis.pdfgen.receipt.common.model.enums.NotificationType;
@@ -45,8 +44,6 @@ public class NotificationFactory {
 
   private final NotificationFhirQueries notificationFhirQueries;
 
-  private final FeatureFlags featureFlags;
-
   @Nullable
   public Notification create(final Bundle bundle) {
     Optional<Composition> fhirNotificationOptional =
@@ -62,7 +59,6 @@ public class NotificationFactory {
     setRelations(fhirNotification, notification);
     notification.notificationType(NotificationType.getNotificationType(bundle));
     notification.metadata(MetadataFactory.create(bundle));
-    notification.pdfOptimization(featureFlags.isPdfOptimization());
     return notification.build();
   }
 

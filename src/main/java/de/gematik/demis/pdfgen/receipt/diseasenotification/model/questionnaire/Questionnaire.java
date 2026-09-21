@@ -40,27 +40,17 @@ public record Questionnaire(String title, List<Item> items, String status) {
    *
    * @return Optional containing the laboratory item if found
    */
-  public Optional<Item> findLabSpecimenTakenItem(final boolean pdfSecondPageCrEnabled) {
+  public Optional<Item> findLabSpecimenTakenItem() {
     if (items == null) {
       return Optional.empty();
     }
-    return items.stream()
-        .filter(item -> Questionnaire.isLabSpecimenTakenItem(item, pdfSecondPageCrEnabled))
-        .findFirst();
+    return items.stream().filter(Questionnaire::isLabSpecimenTakenItem).findFirst();
   }
 
-  private static boolean isLabSpecimenTakenItem(Item item, final boolean pdfSecondPageCrEnabled) {
+  private static boolean isLabSpecimenTakenItem(Item item) {
     if (item.getAnswers().isEmpty()) {
       return false;
     }
-    if (pdfSecondPageCrEnabled) {
-      return LAB_SPECIMEN_TAKEN_LINK_ID.equals(item.getLinkId());
-    }
-    List<Item> subitems = item.getAnswers().getFirst().subitems();
-    return !subitems.isEmpty()
-        && subitems.stream()
-            .anyMatch(
-                subitem ->
-                    subitem.getResource() != null && subitem.getResource().getLaboratory() != null);
+    return LAB_SPECIMEN_TAKEN_LINK_ID.equals(item.getLinkId());
   }
 }

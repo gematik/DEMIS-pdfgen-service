@@ -47,7 +47,6 @@ public class LabReport {
   private String conclusion;
   private String labRequestId;
   private List<LabTest> labTests;
-  private boolean pdfOptimization;
 
   public boolean hasContent() {
     return hasIssued() || hasLabTest();

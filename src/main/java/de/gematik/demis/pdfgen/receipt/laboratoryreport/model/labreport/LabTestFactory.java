@@ -149,17 +149,14 @@ public class LabTestFactory {
     final Quantity denominator = ratio.getDenominator();
     final BigDecimal denominatorValue = denominator.getValue();
     final String code = displayTranslationService.getValueQuantityUnit(numerator.getCode());
-    if (featureFlags.isPdfOptimization()) {
-      return String.format(
-              "%s%s:%s%s %s",
-              getComparator(numerator).trim(),
-              numeratorValue,
-              getComparator(denominator).trim(),
-              denominatorValue,
-              code)
-          .trim();
-    }
-    return String.format("%s:%s %s", numeratorValue, denominatorValue, code).trim();
+    return String.format(
+            "%s%s:%s%s %s",
+            getComparator(numerator).trim(),
+            numeratorValue,
+            getComparator(denominator).trim(),
+            denominatorValue,
+            code)
+        .trim();
   }
 
   private String resolveQuantityValues(Quantity quantity) {
